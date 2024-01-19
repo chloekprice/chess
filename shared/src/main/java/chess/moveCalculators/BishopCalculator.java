@@ -92,7 +92,6 @@ public class BishopCalculator {
             }
             temp_col -= 1;
         }
-
         return moves;
     }
 }
