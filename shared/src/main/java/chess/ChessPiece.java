@@ -5,6 +5,12 @@ import java.util.Collection;
 
 import chess.moveCalculators.BishopCalculator;
 import chess.moveCalculators.RookCalculator;
+import chess.moveCalculators.QueenCalculator;
+import chess.moveCalculators.KingCalculator;
+import chess.moveCalculators.PawnCalculator;
+import chess.moveCalculators.KnightCalculator;
+
+
 
 /**
  * Represents a single chess piece
@@ -59,10 +65,21 @@ public class ChessPiece {
         if (piece == PieceType.BISHOP) {
             BishopCalculator bishop = new BishopCalculator(board, myPosition);
             possibleMoves = bishop.getMoves();
-        }
-        if (piece == PieceType.ROOK) {
+        } else if (piece == PieceType.QUEEN) {
+//            QueenCalculator queen = new QueenCalculator(board, myPosition);
+//            possibleMoves = queen.getMoves();
+        } else if (piece == PieceType.KING) {
+//            KingCalculator king = new KingCalculator(board, myPosition);
+//            possibleMoves = king.getMoves();
+        } else if (piece == PieceType.ROOK) {
             RookCalculator rook = new RookCalculator(board, myPosition);
             possibleMoves = rook.getMoves();
+        } else if (piece == PieceType.PAWN) {
+//            PawnCalculator pawn = new PawnCalculator(board, myPosition);
+//            possibleMoves = pawn.getMoves();
+        } else if (piece == PieceType.KNIGHT) {
+//            KnightCalculator knight = new KnightCalculator(board, myPosition);
+//            possibleMoves = knight.getMoves();
         }
 
         return possibleMoves;
