@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import chess.moveCalculators.BishopCalculator;
+import chess.moveCalculators.RookCalculator;
 
 /**
  * Represents a single chess piece
@@ -58,6 +59,10 @@ public class ChessPiece {
         if (piece == PieceType.BISHOP) {
             BishopCalculator bishop = new BishopCalculator(board, myPosition);
             possibleMoves = bishop.getMoves();
+        }
+        if (piece == PieceType.ROOK) {
+            RookCalculator rook = new RookCalculator(board, myPosition);
+            possibleMoves = rook.getMoves();
         }
 
         return possibleMoves;
