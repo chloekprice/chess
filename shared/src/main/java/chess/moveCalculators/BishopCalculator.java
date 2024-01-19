@@ -23,7 +23,7 @@ public class BishopCalculator {
         // UP ONE RIGHT ONE
         int temp_col = col + 1;
         for (int i = (row + 1); i <= 8; i++) {
-            if (temp_col > 8) {
+            if (temp_col >= 8) {
                 break;
             }
             ChessPosition new_position = new ChessPosition(i, temp_col);
@@ -92,6 +92,7 @@ public class BishopCalculator {
             }
             temp_col -= 1;
         }
+
         return moves;
     }
 }
