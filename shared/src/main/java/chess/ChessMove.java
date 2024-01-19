@@ -9,7 +9,7 @@ package chess;
 public class ChessMove {
     private final ChessPosition start;
     private final ChessPosition end;
-    private ChessPiece.PieceType promotion;
+    private final ChessPiece.PieceType promotion;
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
         this.start = startPosition;
@@ -19,6 +19,7 @@ public class ChessMove {
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
         this.start = startPosition;
         this.end = endPosition;
+        this.promotion = null;
     }
 
     /**
@@ -44,5 +45,19 @@ public class ChessMove {
      */
     public ChessPiece.PieceType getPromotionPiece() {
         return this.promotion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) { return false;}
+        if (o == this) { return true;}
+        if (this.getClass() != o.getClass()) { return false;}
+        ChessMove other = (ChessMove) o;
+        return ((this.start.equals(other.getStartPosition())) && ((this.end.equals(other.getEndPosition()))));
+    }
+
+    @Override
+    public int hashCode() {
+        return (this.start.hashCode() * this.end.hashCode());
     }
 }

@@ -62,4 +62,13 @@ public class ChessPiece {
 
         return possibleMoves;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) { return false;}
+        if (o == this) { return true;}
+        if (this.getClass() != o.getClass()) { return false;}
+        ChessPiece other = (ChessPiece) o;
+        return ((this.piece.equals(other.getPieceType())) && ((this.color.equals(other.getTeamColor()))));
+    }
 }
