@@ -69,8 +69,8 @@ public class ChessPiece {
             QueenCalculator queen = new QueenCalculator(board, myPosition);
             possibleMoves = queen.getMoves();
         } else if (piece == PieceType.KING) {
-//            KingCalculator king = new KingCalculator(board, myPosition);
-//            possibleMoves = king.getMoves();
+            KingCalculator king = new KingCalculator(board, myPosition);
+            possibleMoves = king.getMoves();
         } else if (piece == PieceType.ROOK) {
             RookCalculator rook = new RookCalculator(board, myPosition);
             possibleMoves = rook.getMoves();
