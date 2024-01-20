@@ -52,11 +52,21 @@ public class ChessMove {
         if (o == this) { return true;}
         if (this.getClass() != o.getClass()) { return false;}
         ChessMove other = (ChessMove) o;
-        return ((this.start.equals(other.getStartPosition())) && ((this.end.equals(other.getEndPosition()))));
+        if (this.promotion != null && other.getPromotionPiece() == null) { return false;}
+        if (this.promotion == null && other.getPromotionPiece() != null) { return false;}
+        if (this.promotion != null) {
+            return ((this.start.equals(other.getStartPosition())) && ((this.end.equals(other.getEndPosition()))) && (this.promotion.equals(other.getPromotionPiece())));
+        } else {
+            return ((this.start.equals(other.getStartPosition())) && ((this.end.equals(other.getEndPosition()))));
+        }
     }
 
     @Override
     public int hashCode() {
-        return (this.start.hashCode() * this.end.hashCode());
+        if( this.promotion != null) {
+            return (this.start.hashCode() * this.end.hashCode() * this.promotion.hashCode());
+        } else {
+            return (this.start.hashCode() * this.end.hashCode());
+        }
     }
 }

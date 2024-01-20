@@ -60,7 +60,7 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        //TO-DO
+
         Collection<ChessMove> possibleMoves = new ArrayList<>();
         if (piece == PieceType.BISHOP) {
             BishopCalculator bishop = new BishopCalculator(board, myPosition);

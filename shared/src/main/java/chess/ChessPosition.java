@@ -43,6 +43,6 @@ public class ChessPosition {
 
     @Override
     public int hashCode() {
-        return (this.row * this.col);
+        return ((this.row + 15) * (this.col + 27));
     }
 }
