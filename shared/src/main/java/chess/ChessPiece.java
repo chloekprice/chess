@@ -75,8 +75,8 @@ public class ChessPiece {
             RookCalculator rook = new RookCalculator(board, myPosition);
             possibleMoves = rook.getMoves();
         } else if (piece == PieceType.PAWN) {
-//            PawnCalculator pawn = new PawnCalculator(board, myPosition);
-//            possibleMoves = pawn.getMoves();
+            PawnCalculator pawn = new PawnCalculator(board, myPosition);
+            possibleMoves = pawn.getMoves();
         } else if (piece == PieceType.KNIGHT) {
             KnightCalculator knight = new KnightCalculator(board, myPosition);
             possibleMoves = knight.getMoves();
