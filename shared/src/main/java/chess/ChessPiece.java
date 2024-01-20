@@ -66,8 +66,8 @@ public class ChessPiece {
             BishopCalculator bishop = new BishopCalculator(board, myPosition);
             possibleMoves = bishop.getMoves();
         } else if (piece == PieceType.QUEEN) {
-//            QueenCalculator queen = new QueenCalculator(board, myPosition);
-//            possibleMoves = queen.getMoves();
+            QueenCalculator queen = new QueenCalculator(board, myPosition);
+            possibleMoves = queen.getMoves();
         } else if (piece == PieceType.KING) {
 //            KingCalculator king = new KingCalculator(board, myPosition);
 //            possibleMoves = king.getMoves();

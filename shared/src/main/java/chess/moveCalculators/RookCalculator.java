@@ -36,6 +36,7 @@ public class RookCalculator {
             } else {
                 break;
             }
+//            System.out.printf("%d,%d ", i, col);
         }
 
         // DOWN ONE ONLY
@@ -50,6 +51,7 @@ public class RookCalculator {
             } else {
                 break;
             }
+//            System.out.printf("%d,%d ", i, col);
         }
         // RIGHT ONE ONLY
         for (int j = (col + 1); j <= 8; j++) {
@@ -63,6 +65,7 @@ public class RookCalculator {
             } else {
                 break;
             }
+//            System.out.printf("%d,%d ", row, j);
         }
 
         // LEFT ONE ONLY
@@ -77,6 +80,7 @@ public class RookCalculator {
             } else {
                 break;
             }
+//            System.out.printf("%d,%d ", row, j);
         }
         return moves;
     }
