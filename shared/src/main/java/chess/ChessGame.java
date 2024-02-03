@@ -115,9 +115,14 @@ public class ChessGame {
 
     public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPiece captured = this.verifyMove(move);
+        if (this.isInCheck(this.getTeamTurn())) {
+            this.undoMove(move, captured);
+            throw new InvalidMoveException();
+        }
         // MAKE SURE IT IS THEIR TURN
         if (this.getBoard().getPiece(move.getEndPosition()) != null) {
             if (this.getBoard().getPiece(move.getEndPosition()).getTeamColor() != this.getTeamTurn()) {
+                this.undoMove(move, captured);
                 throw new InvalidMoveException();
             }
         }
