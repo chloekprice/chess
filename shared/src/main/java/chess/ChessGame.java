@@ -40,16 +40,6 @@ public class ChessGame {
         BLACK
     }
 
-    public ChessBoard makeDeepCopy(ChessBoard board) {
-        ChessBoard copy_board = new ChessBoard();
-        for (int i = 1; i < 8; i++) {
-            for (int j = 1; j <= 8; j++) {
-                ChessPosition temp = new ChessPosition(i, j);
-                copy_board.addPiece(temp, board.getPiece(temp));
-            }
-        }
-        return copy_board;
-    }
     /**
      * Gets a valid moves for a piece at the given location
      *
