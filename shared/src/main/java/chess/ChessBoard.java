@@ -24,6 +24,10 @@ public class ChessBoard {
         board[(position.getRow() - 1)][(position.getColumn() - 1)] = piece;
     }
 
+    public void removePiece(ChessPosition position) {
+        board[position.getRow() - 1][position.getColumn() - 1] = null;
+    }
+
     /**
      * Gets a chess piece on the chessboard
      *
@@ -163,5 +167,10 @@ public class ChessBoard {
         if (this.getClass() != o.getClass()) { return false;}
         ChessBoard other = (ChessBoard) o;
         return (Arrays.deepEquals(this.board, other.getBoard()));
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(this.board);
     }
 }
