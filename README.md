@@ -3,7 +3,8 @@
 This project demonstrates mastery of proper software design, client/server architecture, networking using HTTP and WebSocket, database persistence, unit testing, serialization, and security.
 
 ## Chess Server Design
-![(Server diagram.png?raw=true)]
+![Untitled](https://github.com/chloekprice/chess/assets/144487076/e7db8497-67d0-48d7-b8bf-2f8ec9bd44cb)
+
 
 ## 10k Architecture Overview
 
