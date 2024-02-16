@@ -1,4 +1,5 @@
 package dataAccess;
 
-public class authDAO implements DAO {
+public interface authDAO extends DAO {
+    void clear() throws DataAccessException;
 }
