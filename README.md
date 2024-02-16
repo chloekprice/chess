@@ -2,6 +2,10 @@
 
 This project demonstrates mastery of proper software design, client/server architecture, networking using HTTP and WebSocket, database persistence, unit testing, serialization, and security.
 
+## Chess Server Design
+![Design](https://github.com/chloekprice/chess/blob/main/Server_Design.png?raw=true)
+
+
 ## 10k Architecture Overview
 
 The application implements a multiplayer chess server and a command line chess client.
