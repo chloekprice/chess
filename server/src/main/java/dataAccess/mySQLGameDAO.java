@@ -1,6 +1,6 @@
 package dataAccess;
 
-public class mySQLGameDAO implements gameDAO{
+public abstract class mySQLGameDAO implements gameDAO{
     public void clear() throws DataAccessException {
 
     }

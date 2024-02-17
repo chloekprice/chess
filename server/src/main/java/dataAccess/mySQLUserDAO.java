@@ -1,6 +1,6 @@
 package dataAccess;
 
-public class mySQLUserDAO implements userDAO{
+public abstract class mySQLUserDAO implements userDAO{
     public void clear() throws DataAccessException {
 
     }
