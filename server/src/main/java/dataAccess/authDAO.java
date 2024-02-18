@@ -1,5 +1,8 @@
 package dataAccess;
 
-public interface authDAO extends DAO {
-    void clear() throws DataAccessException;
+import dataAccess.dataModelClasses.authData;
+
+public interface authDAO {
+    public void clear();
+    public authData insertAuth(String username, String auth_token);
 }

@@ -1,26 +1,21 @@
 package server;
 
 import com.google.gson.Gson;
-import dataAccess.DataAccessException;
+import dataAccess.*;
+import dataAccess.dataModelClasses.authData;
+import org.eclipse.jetty.util.ajax.JSON;
 import spark.*;
 import server.service.chessService;
-import dataAccess.DAO;
 
 import javax.xml.crypto.Data;
+import java.util.HashMap;
 
 public class Server {
     private final chessService service;
-
-    //constructor
-    public Server(DAO dataAccess) {
-        service = new chessService(dataAccess);
-    }
-
-    //empty constructor
     public Server() {
-        service = null;
-        System.out.println("constructed empty server");
+          service = new chessService();
     }
+
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -29,9 +24,19 @@ public class Server {
 
         // Register your endpoints and handle exceptions here.
         Spark.get("/", this::test);
-        //register handler
-        Spark.post("/user", this::register);
-        //delete handler
+        // register handler
+        Spark.post("/user", this::registerUser);
+        // login handler
+        Spark.post("/session", this::login);
+        // logout handler
+        Spark.delete("/session", this::logout);
+        // list games handler
+        Spark.get("/game", this::listGames);
+        // create game handler
+        Spark.post("/game", this::createGame);
+        // join game handler
+        Spark.put("/game", this::joinGame);
+        // delete handler
         Spark.delete("/db", this::clear);
 
         Spark.awaitInitialization();
@@ -55,32 +60,66 @@ public class Server {
     }
 
     // register new user
-    private Object register(Request req, Response res) throws DataAccessException {
-        String auth_token = null;
-        var username = req.params(":username");
-        var password = req.params(":password");
-        var email = req.params(":email");
+    private Object registerUser(Request req, Response res) throws DataAccessException {
+        authData auth_data = null;
 
         if (service != null) {
-            auth_token = service.registerHandler(username, password, email);
+            HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
+
+            // parse request body
+            String username = paramsMap.get("username").toString();
+            String password = paramsMap.get("password").toString();
+            String email = paramsMap.get("email").toString();
+
+            auth_data = service.registerHandler(username, password, email);
             res.status(200);
         } else {
-            res.status(200);
-//            throw new DataAccessException("Error: service is null");
+            res.status(500);
         }
 
-        return new Gson().toJson(auth_token);
-    }
+        if (auth_data == null) {
+            res.status(401);
+        }
 
+        return new Gson().toJson(auth_data);
+    }
+    // login to existing user
+    private Object login(Request req, Response res) throws DataAccessException {
+        HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
+
+        // parse request body
+        String username = paramsMap.get("username").toString();
+        String password = paramsMap.get("password").toString();
+
+        res.status(200);
+        return "";
+    }
+    // logout of account
+    private Object logout(Request req, Response res) throws DataAccessException {
+        res.status(200);
+        return "";
+    }
+    // create a new game
+    private Object createGame(Request req, Response res) throws DataAccessException {
+        res.status(200);
+        return "";
+    }
+    // join an existing game
+    private Object joinGame(Request req, Response res) throws DataAccessException {
+        res.status(200);
+        return "";
+    }
+    // list all available games
+    private Object listGames(Request req, Response res) throws DataAccessException {
+        res.status(200);
+        return "";
+    }
     // clear databases
     private Object clear(Request req, Response res) throws DataAccessException {
-        if (service != null) {
-            service.clearHandler();
-            res.status(200);
-        } else {
-            res.status(200);
-//            throw new DataAccessException("Error: service is null");
-        }
+
+        service.clearHandler();
+        res.status(200);
+
         return "";
     }
 }

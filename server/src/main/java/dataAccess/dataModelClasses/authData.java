@@ -13,7 +13,6 @@ public class authData {
         this.username = null;
         this.auth_token = null;
     }
-
     public String getUsername() {
         return username;
     }

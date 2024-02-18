@@ -1,5 +1,5 @@
 package dataAccess;
 
-public interface gameDAO extends DAO{
+public interface gameDAO {
     void clear() throws DataAccessException;
 }

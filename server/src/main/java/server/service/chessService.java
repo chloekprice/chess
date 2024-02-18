@@ -1,58 +1,51 @@
 package server.service;
 
-import dataAccess.DataAccessException;
-import dataAccess.DAO;
-import dataAccess.dataModelClasses.*;
-import dataAccess.memoryUserDAO;
+import dataAccess.*;
+import dataAccess.dataModelClasses.authData;
+import dataAccess.dataModelClasses.userData;
 
-import javax.xml.crypto.Data;
 import java.util.UUID;
 
 public class chessService {
-    private final DAO dataAccess;
+    private final memoryAuthDAO authDataAccess;
+    private final memoryGameDAO gameDataAccess;
+    private final userDAO userDataAccess;
 
-    public chessService(DAO dataAccess) {
-        this.dataAccess = dataAccess;
-    }
     // empty constructor
     public chessService() {
-        this.dataAccess = null;
+        this.authDataAccess = new memoryAuthDAO();
+        this.gameDataAccess = new memoryGameDAO();
+        this.userDataAccess = new memoryUserDAO();
     }
 
     // clear handler
     public void clearHandler() throws DataAccessException {
-        if (dataAccess != null) {
-            dataAccess.clear();
-        } else {
-            throw new DataAccessException(("data access is null"));
-        }
+        authDataAccess.clear();
+        gameDataAccess.clear();
+        userDataAccess.clear();
     }
     // register handlers
-    public String registerHandler(String username, String password, String email) throws DataAccessException {
-        String auth_token = null;
+    public authData registerHandler(String username, String password, String email) throws DataAccessException {
+        authData auth_data = null;
 
-        if (dataAccess != null) {
-            memoryUserDAO user_data = getUser(username);
-            if (user_data == null) {
-                createUser(username, password, email);
-                auth_token = createAuth(username);
-            } else {
-                throw new DataAccessException("Error: user already taken");
-            }
+        userData user_data = getUser(username);
+        if (user_data == null) {
+            createUser(username, password, email);
+            auth_data = createAuth(username);
         } else {
-            throw new DataAccessException("Error: data access is null");
+            throw new DataAccessException("Error: user already taken");
         }
 
-        return auth_token;
+        return auth_data;
     }
-    private memoryUserDAO getUser(String username) {
-        return dataAccess.getUser();
+    private userData getUser(String username) {
+        return userDataAccess.getUser(username);
     }
     private void createUser(String username, String password, String email) {
-        return;
+        userDataAccess.insertUser(username, password, email);
     }
-    private String createAuth(String username) {
-        String auth_token = String.valueOf(UUID.fromString(username));
-        return dataAccess.insertAuth(username,auth_token);
+    private authData createAuth(String username) {
+        String auth_token = UUID.randomUUID().toString();
+         return authDataAccess.insertAuth(username,auth_token);
     }
 }
