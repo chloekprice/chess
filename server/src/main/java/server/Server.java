@@ -86,13 +86,14 @@ public class Server {
     // login to existing user
     private Object login(Request req, Response res) throws DataAccessException {
         HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
-
+        authData auth_data = null;
         // parse request body
         String username = paramsMap.get("username").toString();
         String password = paramsMap.get("password").toString();
 
+        auth_data = service.loginHandler(username, password);
         res.status(200);
-        return "";
+        return new Gson().toJson(auth_data);
     }
     // logout of account
     private Object logout(Request req, Response res) throws DataAccessException {

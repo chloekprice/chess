@@ -24,7 +24,7 @@ public class chessService {
         gameDataAccess.clear();
         userDataAccess.clear();
     }
-    // register handlers
+    // register handler
     public authData registerHandler(String username, String password, String email) throws DataAccessException {
         authData auth_data = null;
 
@@ -38,6 +38,21 @@ public class chessService {
 
         return auth_data;
     }
+    // login handler
+    public authData loginHandler(String username, String password) throws DataAccessException {
+        authData auth_data = null;
+
+        userData user_data = getUser(username);
+        if (user_data == null) {
+            throw new DataAccessException("Error: user does not exist");
+        } else if (!user_data.getPassword().equals(password)) {
+            throw new DataAccessException("Error: wrong password");
+        } else {
+            auth_data = createAuth(username);
+        }
+        return auth_data;
+    }
+    // helper functions
     private userData getUser(String username) {
         return userDataAccess.getUser(username);
     }
