@@ -44,7 +44,8 @@ public class chessService {
 
         userData user_data = getUser(username);
         if (user_data == null) {
-            throw new DataAccessException("Error: user does not exist");
+            return auth_data;
+//            throw new DataAccessException("Error: user does not exist");
         } else if (!user_data.getPassword().equals(password)) {
             throw new DataAccessException("Error: wrong password");
         } else {

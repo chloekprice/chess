@@ -92,8 +92,13 @@ public class Server {
         String password = paramsMap.get("password").toString();
 
         auth_data = service.loginHandler(username, password);
-        res.status(200);
-        return new Gson().toJson(auth_data);
+        if (auth_data == null) {
+            res.status(401);
+            return new Gson().toJson(auth_data);
+        } else {
+            res.status(200);
+            return new Gson().toJson(auth_data);
+        }
     }
     // logout of account
     private Object logout(Request req, Response res) throws DataAccessException {
