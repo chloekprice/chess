@@ -50,11 +50,11 @@ public class chessService {
         userData userData = getUser(username);
         if (userData == null) {
             result.setStatus(401);
-            result.setMessage("Error: unauthorized");
+            result.setMessage("Error: unauthorized; user does not exist");
             return result;
         } else if (!userData.getPassword().equals(password)) {
             result.setStatus(401);
-            result.setMessage("Error: unauthorized");
+            result.setMessage("Error: unauthorized; incorrect password");
             return result;
         } else {
             authData = createAuth(username);
