@@ -61,7 +61,7 @@ public class Server {
 
     // register new user
     private Object registerUser(Request req, Response res) throws DataAccessException {
-        authData auth_data = null;
+        authData authData = null;
 
         if (service != null) {
             HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
@@ -71,33 +71,33 @@ public class Server {
             String password = paramsMap.get("password").toString();
             String email = paramsMap.get("email").toString();
 
-            auth_data = service.registerHandler(username, password, email);
+            authData = service.registerHandler(username, password, email);
             res.status(200);
         } else {
             res.status(500);
         }
 
-        if (auth_data == null) {
+        if (authData == null) {
             res.status(401);
         }
 
-        return new Gson().toJson(auth_data);
+        return new Gson().toJson(authData);
     }
     // login to existing user
     private Object login(Request req, Response res) throws DataAccessException {
         HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
-        authData auth_data = null;
+        authData authData = null;
         // parse request body
         String username = paramsMap.get("username").toString();
         String password = paramsMap.get("password").toString();
 
-        auth_data = service.loginHandler(username, password);
-        if (auth_data == null) {
+        authData = service.loginHandler(username, password);
+        if (authData == null) {
             res.status(401);
-            return new Gson().toJson(auth_data);
+            return new Gson().toJson(authData);
         } else {
             res.status(200);
-            return new Gson().toJson(auth_data);
+            return new Gson().toJson(authData);
         }
     }
     // logout of account

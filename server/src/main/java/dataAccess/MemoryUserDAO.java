@@ -3,10 +3,10 @@ package dataAccess;
 import java.util.HashMap;
 import dataAccess.dataModelClasses.userData;
 
-public class memoryUserDAO implements userDAO{
+public class MemoryUserDAO implements UserDAO {
 
     final private HashMap<String, userData> users;
-    public memoryUserDAO() {
+    public MemoryUserDAO() {
         users = new HashMap<String, userData>();
     }
 

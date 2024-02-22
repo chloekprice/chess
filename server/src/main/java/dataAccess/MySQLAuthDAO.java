@@ -1,6 +1,6 @@
 package dataAccess;
 
-public abstract class mySQLAuthDAO implements authDAO{
+public abstract class MySQLAuthDAO implements AuthDAO {
     public void clear() {
 
     }

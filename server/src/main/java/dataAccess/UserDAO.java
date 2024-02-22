@@ -2,7 +2,7 @@ package dataAccess;
 
 import dataAccess.dataModelClasses.userData;
 
-public interface userDAO{
+public interface UserDAO {
     void clear() throws DataAccessException;
     public userData getUser(String username);
 

@@ -7,15 +7,15 @@ import dataAccess.dataModelClasses.userData;
 import java.util.UUID;
 
 public class chessService {
-    private final memoryAuthDAO authDataAccess;
-    private final memoryGameDAO gameDataAccess;
-    private final userDAO userDataAccess;
+    private final MemoryAuthDAO authDataAccess;
+    private final MemoryGameDAO gameDataAccess;
+    private final UserDAO userDataAccess;
 
     // empty constructor
     public chessService() {
-        this.authDataAccess = new memoryAuthDAO();
-        this.gameDataAccess = new memoryGameDAO();
-        this.userDataAccess = new memoryUserDAO();
+        this.authDataAccess = new MemoryAuthDAO();
+        this.gameDataAccess = new MemoryGameDAO();
+        this.userDataAccess = new MemoryUserDAO();
     }
 
     // clear handler
@@ -26,32 +26,32 @@ public class chessService {
     }
     // register handler
     public authData registerHandler(String username, String password, String email) throws DataAccessException {
-        authData auth_data = null;
+        authData authData = null;
 
-        userData user_data = getUser(username);
-        if (user_data == null) {
+        userData userData = getUser(username);
+        if (userData == null) {
             createUser(username, password, email);
-            auth_data = createAuth(username);
+            authData = createAuth(username);
         } else {
             throw new DataAccessException("Error: user already taken");
         }
 
-        return auth_data;
+        return authData;
     }
     // login handler
     public authData loginHandler(String username, String password) throws DataAccessException {
-        authData auth_data = null;
+        authData authData = null;
 
-        userData user_data = getUser(username);
-        if (user_data == null) {
-            return auth_data;
+        userData userData = getUser(username);
+        if (userData == null) {
+            return authData;
 //            throw new DataAccessException("Error: user does not exist");
-        } else if (!user_data.getPassword().equals(password)) {
+        } else if (!userData.getPassword().equals(password)) {
             throw new DataAccessException("Error: wrong password");
         } else {
-            auth_data = createAuth(username);
+            authData = createAuth(username);
         }
-        return auth_data;
+        return authData;
     }
     // helper functions
     private userData getUser(String username) {
@@ -61,7 +61,7 @@ public class chessService {
         userDataAccess.insertUser(username, password, email);
     }
     private authData createAuth(String username) {
-        String auth_token = UUID.randomUUID().toString();
-         return authDataAccess.insertAuth(username,auth_token);
+        String authToken = UUID.randomUUID().toString();
+         return authDataAccess.insertAuth(username,authToken);
     }
 }

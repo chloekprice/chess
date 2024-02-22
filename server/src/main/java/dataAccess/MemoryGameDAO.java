@@ -3,9 +3,9 @@ package dataAccess;
 import java.util.HashMap;
 import dataAccess.dataModelClasses.gameData;
 
-public class memoryGameDAO implements gameDAO{
+public class MemoryGameDAO implements GameDAO {
     final private HashMap<String, gameData> games;
-    public memoryGameDAO() {
+    public MemoryGameDAO() {
         games = new HashMap<String, gameData>();
     }
     public void clear(){

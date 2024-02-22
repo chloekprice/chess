@@ -4,9 +4,9 @@ import dataAccess.dataModelClasses.authData;
 
 import java.util.HashMap;
 
-public class memoryAuthDAO implements authDAO{
+public class MemoryAuthDAO implements AuthDAO {
     HashMap<String, authData> auth;
-    public memoryAuthDAO() {
+    public MemoryAuthDAO() {
         HashMap<String, authData> auth = new HashMap<String, authData>();
     }
     public void clear() {
