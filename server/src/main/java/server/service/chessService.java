@@ -3,6 +3,8 @@ package server.service;
 import dataAccess.*;
 import dataAccess.dataModelClasses.authData;
 import dataAccess.dataModelClasses.userData;
+import server.ResultInfo;
+
 
 import java.util.UUID;
 
@@ -24,6 +26,7 @@ public class chessService {
         gameDataAccess.clear();
         userDataAccess.clear();
     }
+
     // register handler
     public authData registerHandler(String username, String password, String email) throws DataAccessException {
         authData authData = null;
@@ -38,21 +41,29 @@ public class chessService {
 
         return authData;
     }
+
     // login handler
-    public authData loginHandler(String username, String password) throws DataAccessException {
+    public ResultInfo loginHandler(String username, String password) throws DataAccessException {
+        ResultInfo result = new ResultInfo();
         authData authData = null;
 
         userData userData = getUser(username);
         if (userData == null) {
-            return authData;
-//            throw new DataAccessException("Error: user does not exist");
+            result.setStatus(401);
+            result.setMessage("Error: unauthorized");
+            return result;
         } else if (!userData.getPassword().equals(password)) {
-            throw new DataAccessException("Error: wrong password");
+            result.setStatus(401);
+            result.setMessage("Error: unauthorized");
+            return result;
         } else {
             authData = createAuth(username);
+            result.setAuthData(authData);
+            result.setUserData(userData);
         }
-        return authData;
+        return result;
     }
+
     // helper functions
     private userData getUser(String username) {
         return userDataAccess.getUser(username);

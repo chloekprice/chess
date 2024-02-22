@@ -7,6 +7,7 @@ import org.eclipse.jetty.util.ajax.JSON;
 import spark.*;
 import server.service.chessService;
 
+
 import javax.xml.crypto.Data;
 import java.util.HashMap;
 
@@ -20,7 +21,7 @@ public class Server {
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
-        Spark.staticFiles.location("java/resources");
+        Spark.staticFiles.location("web");
 
         // Register your endpoints and handle exceptions here.
         Spark.get("/", this::test);
@@ -63,19 +64,17 @@ public class Server {
     private Object registerUser(Request req, Response res) throws DataAccessException {
         authData authData = null;
 
-        if (service != null) {
-            HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
 
-            // parse request body
-            String username = paramsMap.get("username").toString();
-            String password = paramsMap.get("password").toString();
-            String email = paramsMap.get("email").toString();
+        HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
 
-            authData = service.registerHandler(username, password, email);
-            res.status(200);
-        } else {
-            res.status(500);
-        }
+        // parse request body
+        String username = paramsMap.get("username").toString();
+        String password = paramsMap.get("password").toString();
+        String email = paramsMap.get("email").toString();
+
+        authData = service.registerHandler(username, password, email);
+        res.status(200);
+
 
         if (authData == null) {
             res.status(401);
@@ -86,19 +85,16 @@ public class Server {
     // login to existing user
     private Object login(Request req, Response res) throws DataAccessException {
         HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
+        ResultInfo result = null;
         authData authData = null;
+
         // parse request body
         String username = paramsMap.get("username").toString();
         String password = paramsMap.get("password").toString();
 
-        authData = service.loginHandler(username, password);
-        if (authData == null) {
-            res.status(401);
-            return new Gson().toJson(authData);
-        } else {
-            res.status(200);
-            return new Gson().toJson(authData);
-        }
+        result = service.loginHandler(username, password);
+        res.status(result.getStatus());
+        return new Gson().toJson(result);
     }
     // logout of account
     private Object logout(Request req, Response res) throws DataAccessException {
