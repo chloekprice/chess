@@ -74,6 +74,20 @@ public class chessService {
         return result;
     }
 
+    // logout handler
+
+    public ResultInfo logoutHandler(String authToken) throws DataAccessException {
+        ResultInfo result = new ResultInfo();
+
+        if (getAuth(authToken) == null) {
+            result.setStatus(401);
+            result.setMessage("Error: unauthorized");
+        } else {
+            deleteAuth(authToken);
+        }
+        return result;
+    }
+
     // helper functions
     private UserData getUser(String username) {
         return userDataAccess.getUser(username);
@@ -84,5 +98,11 @@ public class chessService {
     private AuthData createAuth(String username) {
         String authToken = UUID.randomUUID().toString();
          return authDataAccess.insertAuth(username,authToken);
+    }
+    private AuthData getAuth(String authToken) {
+        return authDataAccess.getAuth(authToken);
+    }
+    private void deleteAuth(String authToken) {
+        authDataAccess.delete(authToken);
     }
 }

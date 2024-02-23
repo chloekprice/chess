@@ -22,4 +22,10 @@ public class MemoryAuthDAO implements AuthDAO {
         auth.put(auth_token, auth_data);
         return auth_data;
     }
+    public AuthData getAuth(String authToken) {
+        return auth.getOrDefault(authToken, null);
+    }
+    public void delete(String authToken) {
+        auth.remove(authToken);
+    }
 }

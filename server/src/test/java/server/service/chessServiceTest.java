@@ -57,4 +57,25 @@ class chessServiceTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    void logoutHandler() throws DataAccessException {
+        int expected;
+        int actual;
+
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+        String authToken = serviceTest.registerHandler(user, password, email).getAuthData().getAuthToken();
+
+        // BAD
+        expected = 401;
+        actual = serviceTest.logoutHandler("abcdefg").getStatus();
+        assertEquals(expected, actual);
+
+        // GOOD
+        expected = 200;
+        actual = serviceTest.logoutHandler(authToken).getStatus();
+        assertEquals(expected, actual);
+    }
 }

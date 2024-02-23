@@ -97,8 +97,11 @@ public class Server {
     // logout of account
     private Object logout(Request req, Response res) throws DataAccessException {
         ResultInfo result = null;
+        String authToken = req.headers("authorization");
 
-        return "";
+        result = service.logoutHandler(authToken);
+        res.status(result.getStatus());
+        return new Gson().toJson(result);
     }
     // create a new game
     private Object createGame(Request req, Response res) throws DataAccessException {
