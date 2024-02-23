@@ -1,10 +1,10 @@
 package dataAccess;
 
-import dataAccess.dataModelClasses.userData;
+import dataAccess.dataModelClasses.UserData;
 
 public interface UserDAO {
     void clear() throws DataAccessException;
-    public userData getUser(String username);
+     UserData getUser(String username);
 
-    void insertUser(String username, String password, String email);
+    UserData insertUser(String username, String password, String email);
 }

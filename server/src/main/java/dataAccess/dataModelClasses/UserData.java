@@ -1,16 +1,16 @@
 package dataAccess.dataModelClasses;
 
-public class userData {
+public class UserData {
     private final String username;
     private final String password;
     private final String email;
-    public userData(String username, String password, String email) {
+    public UserData(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
     // empty constructor
-    public userData() {
+    public UserData() {
         this.username = null;
         this.password = null;
         this.email = null;

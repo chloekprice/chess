@@ -1,23 +1,23 @@
 package dataAccess;
 
-import dataAccess.dataModelClasses.authData;
+import dataAccess.dataModelClasses.AuthData;
 
 import java.util.HashMap;
 
 public class MemoryAuthDAO implements AuthDAO {
-    HashMap<String, authData> auth;
+    HashMap<String, AuthData> auth;
     public MemoryAuthDAO() {
-        HashMap<String, authData> auth = new HashMap<String, authData>();
+        HashMap<String, AuthData> auth = new HashMap<String, AuthData>();
     }
     public void clear() {
         if (auth != null) {
             auth.clear();
         }
     }
-    public authData insertAuth(String username, String auth_token) {
-        authData auth_data = new authData(username, auth_token);
+    public AuthData insertAuth(String username, String auth_token) {
+        AuthData auth_data = new AuthData(username, auth_token);
         if (auth == null) {
-            auth = new HashMap<String, authData>();
+            auth = new HashMap<String, AuthData>();
         }
         auth.put(auth_token, auth_data);
         return auth_data;

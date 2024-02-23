@@ -2,13 +2,11 @@ package server;
 
 import com.google.gson.Gson;
 import dataAccess.*;
-import dataAccess.dataModelClasses.authData;
-import org.eclipse.jetty.util.ajax.JSON;
+import dataAccess.dataModelClasses.AuthData;
 import spark.*;
 import server.service.chessService;
 
 
-import javax.xml.crypto.Data;
 import java.util.HashMap;
 
 public class Server {
@@ -62,31 +60,31 @@ public class Server {
 
     // register new user
     private Object registerUser(Request req, Response res) throws DataAccessException {
-        authData authData = null;
-
+        ResultInfo result = null;
 
         HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
-
         // parse request body
-        String username = paramsMap.get("username").toString();
-        String password = paramsMap.get("password").toString();
-        String email = paramsMap.get("email").toString();
+        try {
+            String username = paramsMap.get("username").toString();
+            String password = paramsMap.get("password").toString();
+            String email = paramsMap.get("email").toString();
 
-        authData = service.registerHandler(username, password, email);
-        res.status(200);
-
-
-        if (authData == null) {
-            res.status(401);
+            result = service.registerHandler(username, password, email);
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        } catch (Exception e){
+            result = new ResultInfo();
+            result.setStatus(400);
+            result.setMessage("Error: bad request");
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
         }
-
-        return new Gson().toJson(authData);
     }
     // login to existing user
     private Object login(Request req, Response res) throws DataAccessException {
         HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
         ResultInfo result = null;
-        authData authData = null;
+        AuthData authData = null;
 
         // parse request body
         String username = paramsMap.get("username").toString();

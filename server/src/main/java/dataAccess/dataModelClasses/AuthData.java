@@ -1,15 +1,15 @@
 package dataAccess.dataModelClasses;
 
-public class authData {
+public class AuthData {
     private final String username;
     private final String authToken;
 
-    public authData(String username, String auth_token) {
+    public AuthData(String username, String auth_token) {
         this.username = username;
         this.authToken = auth_token;
     }
     // empty constructor
-    public authData() {
+    public AuthData() {
         this.username = null;
         this.authToken = null;
     }

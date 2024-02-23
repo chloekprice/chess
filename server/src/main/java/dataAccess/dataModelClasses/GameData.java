@@ -2,20 +2,20 @@ package dataAccess.dataModelClasses;
 
 import chess.ChessGame;
 
-public class gameData {
+public class GameData {
     private final int gameID;
     private final String whiteUsername;
     private final String blackUsername;
     private final ChessGame game;
 
-    public gameData(int gameID, String whiteUsername, String blackUsername, ChessGame game) {
+    public GameData(int gameID, String whiteUsername, String blackUsername, ChessGame game) {
         this.gameID = gameID;
         this.whiteUsername = whiteUsername;
         this.blackUsername = blackUsername;
         this.game = game;
     }
     // empty constructor
-    public gameData() {
+    public GameData() {
         this.gameID = 0;
         this.whiteUsername = null;
         this.blackUsername = null;

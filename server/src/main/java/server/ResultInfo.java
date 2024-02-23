@@ -1,13 +1,13 @@
 package server;
 
-import dataAccess.dataModelClasses.authData;
-import dataAccess.dataModelClasses.gameData;
-import dataAccess.dataModelClasses.userData;
+import dataAccess.dataModelClasses.AuthData;
+import dataAccess.dataModelClasses.GameData;
+import dataAccess.dataModelClasses.UserData;
 
 public class ResultInfo {
-    private authData authData;
-    private gameData gameData;
-    private userData userData;
+    private AuthData authData;
+    private GameData gameData;
+    private UserData userData;
     private String message;
     private int status;
     private String username;
@@ -23,16 +23,16 @@ public class ResultInfo {
     }
 
     // setters
-    public void setAuthData(authData authData) {
+    public void setAuthData(AuthData authData) {
         this.authData = authData;
         this.username = authData.getUsername();
         this.authToken = authData.getAuthToken();
     }
 
-    public void setGameData(gameData gameData) {
+    public void setGameData(GameData gameData) {
         this.gameData = gameData;
     }
-    public void setUserData(userData userData) {
+    public void setUserData(UserData userData) {
         this.userData = userData;
         this.username = userData.getUsername();
         this.password = userData.getPassword();
@@ -48,15 +48,15 @@ public class ResultInfo {
     }
 
     // getters
-    public authData getAuthData() {
+    public AuthData getAuthData() {
         return authData;
     }
 
-    public gameData getGameData() {
+    public GameData getGameData() {
         return gameData;
     }
 
-    public userData getUserData() {
+    public UserData getUserData() {
         return userData;
     }
 

@@ -1,27 +1,26 @@
 package dataAccess;
 
 import java.util.HashMap;
-import dataAccess.dataModelClasses.userData;
+import dataAccess.dataModelClasses.UserData;
 
 public class MemoryUserDAO implements UserDAO {
 
-    final private HashMap<String, userData> users;
+    final private HashMap<String, UserData> users;
     public MemoryUserDAO() {
-        users = new HashMap<String, userData>();
+        users = new HashMap<String, UserData>();
     }
 
     public void clear() {
-        if (users != null) {
-            users.clear();
-        }
+        users.clear();
     }
-    public userData getUser(String username) {
+    public UserData getUser(String username) {
         return users.getOrDefault(username, null);
     }
 
-    public void insertUser(String username, String password, String email) {
-        userData user_data = new userData(username, password, email);
-        users.put(username, user_data);
+    public UserData insertUser(String username, String password, String email) {
+        UserData userData = new UserData(username, password, email);
+        users.put(username, userData);
+        return userData;
     }
 
 }

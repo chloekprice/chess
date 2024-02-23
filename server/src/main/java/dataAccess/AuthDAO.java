@@ -1,8 +1,8 @@
 package dataAccess;
 
-import dataAccess.dataModelClasses.authData;
+import dataAccess.dataModelClasses.AuthData;
 
 public interface AuthDAO {
     public void clear();
-    public authData insertAuth(String username, String auth_token);
+    public AuthData insertAuth(String username, String auth_token);
 }

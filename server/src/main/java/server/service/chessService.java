@@ -1,8 +1,8 @@
 package server.service;
 
 import dataAccess.*;
-import dataAccess.dataModelClasses.authData;
-import dataAccess.dataModelClasses.userData;
+import dataAccess.dataModelClasses.AuthData;
+import dataAccess.dataModelClasses.UserData;
 import server.ResultInfo;
 
 
@@ -28,26 +28,30 @@ public class chessService {
     }
 
     // register handler
-    public authData registerHandler(String username, String password, String email) throws DataAccessException {
-        authData authData = null;
+    public ResultInfo registerHandler(String username, String password, String email) throws DataAccessException {
+        AuthData authData = null;
+        ResultInfo result = new ResultInfo();
 
-        userData userData = getUser(username);
+        UserData userData = getUser(username);
         if (userData == null) {
-            createUser(username, password, email);
+            userData = createUser(username, password, email);
             authData = createAuth(username);
         } else {
-            throw new DataAccessException("Error: user already taken");
+            result.setStatus(403);
+            result.setMessage("Error: already taken");
+            return result;
         }
-
-        return authData;
+        result.setUserData(userData);
+        result.setAuthData(authData);
+        return result;
     }
 
     // login handler
     public ResultInfo loginHandler(String username, String password) throws DataAccessException {
         ResultInfo result = new ResultInfo();
-        authData authData = null;
+        AuthData authData = null;
 
-        userData userData = getUser(username);
+        UserData userData = getUser(username);
         if (userData == null) {
             result.setStatus(401);
             result.setMessage("Error: unauthorized; user does not exist");
@@ -65,13 +69,13 @@ public class chessService {
     }
 
     // helper functions
-    private userData getUser(String username) {
+    private UserData getUser(String username) {
         return userDataAccess.getUser(username);
     }
-    private void createUser(String username, String password, String email) {
-        userDataAccess.insertUser(username, password, email);
+    private UserData createUser(String username, String password, String email) {
+        return userDataAccess.insertUser(username, password, email);
     }
-    private authData createAuth(String username) {
+    private AuthData createAuth(String username) {
         String authToken = UUID.randomUUID().toString();
          return authDataAccess.insertAuth(username,authToken);
     }
