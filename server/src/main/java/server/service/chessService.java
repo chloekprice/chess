@@ -32,6 +32,12 @@ public class chessService {
         AuthData authData = null;
         ResultInfo result = new ResultInfo();
 
+        if (username == null || password == null || email == null) {
+            result.setStatus(400);
+            result.setMessage("Error: bad request");
+            return result;
+        }
+
         UserData userData = getUser(username);
         if (userData == null) {
             userData = createUser(username, password, email);

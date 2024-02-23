@@ -96,7 +96,8 @@ public class Server {
     }
     // logout of account
     private Object logout(Request req, Response res) throws DataAccessException {
-        res.status(200);
+        ResultInfo result = null;
+
         return "";
     }
     // create a new game

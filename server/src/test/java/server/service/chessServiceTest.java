@@ -11,12 +11,31 @@ import server.Server;
 import static org.junit.jupiter.api.Assertions.*;
 
 class chessServiceTest {
+    chessService serviceTest;
+    @BeforeEach
+    void reset() {
+         serviceTest = new chessService();
+    }
     @Test
     void clearHandler() {
     }
 
     @Test
-    void registerHandler() {
+    void registerHandler() throws DataAccessException {
+        String user = "urmom";
+        String password = null;
+        String email = "stacysmom8675309@yahoo.com";
+
+        // BAD
+        int actual = serviceTest.registerHandler(user, password, email).getStatus();
+        int expected = 400;
+        assertEquals(expected, actual);
+
+        // GOOD
+        password = "good";
+        actual = serviceTest.registerHandler(user, password, email).getStatus();
+        expected = 200;
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -26,7 +45,6 @@ class chessServiceTest {
         String email = "stacysmom8675309@yahoo.com";
 
         // BAD
-        var serviceTest = new chessService();
         int expected = 401;
         int actual = serviceTest.loginHandler(user, password).getStatus();
 
