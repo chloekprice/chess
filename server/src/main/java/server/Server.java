@@ -105,8 +105,24 @@ public class Server {
     }
     // create a new game
     private Object createGame(Request req, Response res) throws DataAccessException {
-        res.status(200);
-        return "";
+        ResultInfo result = null;
+        try {
+            String authToken = req.headers("authorization");
+
+            // parse request body
+            HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
+            String gameName = paramsMap.get("gameName").toString();
+
+            result = service.createGameHandler(authToken, gameName);
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        } catch (Exception e) {
+            result = new ResultInfo();
+            result.setStatus(400);
+            result.setMessage("Error: bad request");
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        }
     }
     // join an existing game
     private Object joinGame(Request req, Response res) throws DataAccessException {

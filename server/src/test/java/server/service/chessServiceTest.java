@@ -78,4 +78,22 @@ class chessServiceTest {
         actual = serviceTest.logoutHandler(authToken).getStatus();
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void createGameHandler() throws DataAccessException{
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+        String authToken = serviceTest.registerHandler(user, password, email).getAuthData().getAuthToken();
+
+        // BAD
+        int expected = 401;
+        int actual = serviceTest.createGameHandler("beluga", "monopoly").getStatus();
+        assertEquals(expected, actual);
+
+        // GOOD
+        actual = serviceTest.createGameHandler(authToken, "monopoly").getStatus();
+        expected = 200;
+        assertEquals(expected, actual);
+    }
 }

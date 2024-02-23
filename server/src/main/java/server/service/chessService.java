@@ -2,6 +2,7 @@ package server.service;
 
 import dataAccess.*;
 import dataAccess.dataModelClasses.AuthData;
+import dataAccess.dataModelClasses.GameData;
 import dataAccess.dataModelClasses.UserData;
 import server.ResultInfo;
 
@@ -75,7 +76,6 @@ public class chessService {
     }
 
     // logout handler
-
     public ResultInfo logoutHandler(String authToken) throws DataAccessException {
         ResultInfo result = new ResultInfo();
 
@@ -85,6 +85,30 @@ public class chessService {
         } else {
             deleteAuth(authToken);
         }
+        return result;
+    }
+
+    // create game handler
+    public ResultInfo createGameHandler(String authToken, String gameName) throws DataAccessException {
+        ResultInfo result = new ResultInfo();
+        // bad request
+        if (authToken == null || gameName == null) {
+            result.setStatus(400);
+            result.setMessage("Error: bad request");
+            return result;
+        }
+        // unauthorized
+        AuthData authData = getAuth(authToken);
+        if (authData == null) {
+            result.setStatus(401);
+            result.setMessage("Error: unauthorized");
+            return result;
+        }
+        // valid
+        int id = createID();
+        GameData newGame = createGame(gameName, id);
+        result.setGameData(newGame);
+
         return result;
     }
 
@@ -104,5 +128,11 @@ public class chessService {
     }
     private void deleteAuth(String authToken) {
         authDataAccess.delete(authToken);
+    }
+    private int createID() {
+        return ((int)(Math.random() * (10000)));
+    }
+    private GameData createGame(String gameName, int ID) {
+        return gameDataAccess.create(gameName, ID);
     }
 }

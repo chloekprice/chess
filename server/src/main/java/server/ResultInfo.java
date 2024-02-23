@@ -14,6 +14,7 @@ public class ResultInfo {
     private String password;
     private String email;
     private String authToken;
+    private Integer gameID = null;
     public ResultInfo() {
         this.authData = null;
         this.gameData = null;
@@ -31,6 +32,7 @@ public class ResultInfo {
 
     public void setGameData(GameData gameData) {
         this.gameData = gameData;
+        this.gameID = gameData.getGameID();
     }
     public void setUserData(UserData userData) {
         this.userData = userData;
@@ -66,5 +68,8 @@ public class ResultInfo {
 
     public int getStatus() {
         return status;
+    }
+    public int getGameID() {
+        return gameID;
     }
 }
