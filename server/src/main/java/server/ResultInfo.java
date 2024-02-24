@@ -18,6 +18,9 @@ public class ResultInfo {
     private String authToken;
     private Integer gameID = null;
     private HashSet<GameData> games;
+    String gameName;
+    String whiteUsername;
+    String blackUsername;
     public ResultInfo() {
         this.authData = null;
         this.gameData = null;
@@ -36,6 +39,9 @@ public class ResultInfo {
     public void setGameData(GameData gameData) {
         this.gameData = gameData;
         this.gameID = gameData.getGameID();
+        this.gameName = gameData.getName();
+        this.whiteUsername = gameData.getWhiteUsername();
+        this.blackUsername = gameData.getBlackUsername();
     }
     public void setUserData(UserData userData) {
         this.userData = userData;

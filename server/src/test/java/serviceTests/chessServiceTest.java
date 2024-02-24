@@ -3,6 +3,7 @@ package serviceTests;
 import dataAccess.DataAccessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.ResultInfo;
 import service.chessService;
 
 
@@ -114,4 +115,25 @@ class chessServiceTest {
         actual = serviceTest.listGamesHandler("jimmy").getStatus();
         assertEquals(expected, actual);
     }
+    @Test
+    public void joinGameHandler() throws DataAccessException{
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+        String authToken = serviceTest.registerHandler(user, password, email).getAuthData().getAuthToken();
+
+        // BAD
+        int expected = 401;
+        int actual = serviceTest.joinGameHandler("jimmy", "BLACK", 5064).getStatus();
+        assertEquals(expected, actual);
+
+        // GOOD
+        serviceTest.createGameHandler(authToken, "monopoly");
+        ResultInfo test = serviceTest.createGameHandler(authToken, "risk");
+        int gameID = test.getGameID();
+        expected = 200;
+        actual = serviceTest.joinGameHandler(authToken, "BLACK", gameID).getStatus();
+        assertEquals(expected, actual);
+    }
+
 }

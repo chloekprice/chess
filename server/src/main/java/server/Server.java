@@ -128,18 +128,29 @@ public class Server {
     // join an existing game
     private Object joinGame(Request req, Response res) throws DataAccessException {
         ResultInfo result = null;
+        String playerColor = null;
+        String authToken = null;
+        int gameID = 0;
 
         try {
-            String authToken = req.headers("authorization");
+            authToken = req.headers("authorization");
             // parse request body
             HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
-            String playerColor = paramsMap.get("playerColor").toString();
-            int gameID = parseInt(paramsMap.get("gameID").toString());
+            playerColor = paramsMap.get("playerColor").toString();
+            // get int from object
+            String gameString = paramsMap.get("gameID").toString();
+            String gameStringInt = gameString.substring(0, gameString.length() - 2);
+            gameID = parseInt(gameStringInt);
 
             result = service.joinGameHandler(authToken, playerColor, gameID);
             res.status(result.getStatus());
             return new Gson().toJson(result);
         } catch (Exception e) {
+            if (playerColor == null && authToken != null && gameID != 0) {
+                result = service.joinGameHandler(authToken, playerColor, gameID);
+                res.status(result.getStatus());
+                return new Gson().toJson(result);
+            }
             result = new ResultInfo();
             result.setStatus(400);
             result.setMessage("Error: bad request");

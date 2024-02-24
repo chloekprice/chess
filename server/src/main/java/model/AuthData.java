@@ -4,9 +4,9 @@ public class AuthData {
     private final String username;
     private final String authToken;
 
-    public AuthData(String username, String auth_token) {
+    public AuthData(String username, String authToken) {
         this.username = username;
-        this.authToken = auth_token;
+        this.authToken = authToken;
     }
     // empty constructor
     public AuthData() {

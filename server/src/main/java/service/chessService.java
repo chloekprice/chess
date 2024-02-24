@@ -116,6 +116,17 @@ public class chessService {
     // join game handler
     public ResultInfo joinGameHandler(String authToken, String playerColor, int gameID) throws DataAccessException{
         ResultInfo result = new ResultInfo();
+
+        AuthData authData = getAuth(authToken);
+        if (authData == null) {
+            result.setStatus(401);
+            result.setMessage("Error: unauthorized");
+            return result;
+        }
+
+        GameData game = getGame(gameID);
+        game.updateGame(playerColor, authData.getUsername());
+        result.setGameData(game);
         return result;
     }
 
@@ -164,5 +175,8 @@ public class chessService {
     }
     private GameData createGame(String gameName, int ID) {
         return gameDataAccess.create(gameName, ID);
+    }
+    private GameData getGame(int ID) {
+        return gameDataAccess.getGame(ID);
     }
 }
