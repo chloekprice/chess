@@ -1,9 +1,9 @@
-package server.service;
+package service;
 
 import dataAccess.*;
-import dataAccess.dataModelClasses.AuthData;
-import dataAccess.dataModelClasses.GameData;
-import dataAccess.dataModelClasses.UserData;
+import model.AuthData;
+import model.GameData;
+import model.UserData;
 import server.ResultInfo;
 
 

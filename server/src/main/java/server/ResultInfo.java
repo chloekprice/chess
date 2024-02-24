@@ -1,8 +1,8 @@
 package server;
 
-import dataAccess.dataModelClasses.AuthData;
-import dataAccess.dataModelClasses.GameData;
-import dataAccess.dataModelClasses.UserData;
+import model.AuthData;
+import model.GameData;
+import model.UserData;
 
 import java.util.HashSet;
 

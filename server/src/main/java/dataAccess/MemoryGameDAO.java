@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import chess.ChessGame;
-import dataAccess.dataModelClasses.GameData;
+import model.GameData;
 
 public class MemoryGameDAO implements GameDAO {
     final private HashMap<String, GameData> games;

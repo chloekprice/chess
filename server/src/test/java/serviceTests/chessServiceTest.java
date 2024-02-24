@@ -1,14 +1,12 @@
-package server.service;
+package serviceTests;
 
 import dataAccess.DataAccessException;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import passoffTests.obfuscatedTestClasses.TestServerFacade;
-import server.Server;
+import service.chessService;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class chessServiceTest {
     chessService serviceTest;

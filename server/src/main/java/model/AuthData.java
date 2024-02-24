@@ -1,4 +1,4 @@
-package dataAccess.dataModelClasses;
+package model;
 
 public class AuthData {
     private final String username;

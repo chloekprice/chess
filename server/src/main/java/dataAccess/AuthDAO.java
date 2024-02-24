@@ -1,6 +1,6 @@
 package dataAccess;
 
-import dataAccess.dataModelClasses.AuthData;
+import model.AuthData;
 
 public interface AuthDAO {
     void clear();
