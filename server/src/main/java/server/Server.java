@@ -9,6 +9,8 @@ import server.service.chessService;
 
 import java.util.HashMap;
 
+import static java.lang.Integer.parseInt;
+
 public class Server {
     private final chessService service;
     public Server() {
@@ -108,7 +110,6 @@ public class Server {
         ResultInfo result = null;
         try {
             String authToken = req.headers("authorization");
-
             // parse request body
             HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
             String gameName = paramsMap.get("gameName").toString();
@@ -126,17 +127,45 @@ public class Server {
     }
     // join an existing game
     private Object joinGame(Request req, Response res) throws DataAccessException {
-        res.status(200);
-        return "";
+        ResultInfo result = null;
+
+        try {
+            String authToken = req.headers("authorization");
+            // parse request body
+            HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
+            String playerColor = paramsMap.get("playerColor").toString();
+            int gameID = parseInt(paramsMap.get("gameID").toString());
+
+            result = service.joinGameHandler(authToken, playerColor, gameID);
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        } catch (Exception e) {
+            result = new ResultInfo();
+            result.setStatus(400);
+            result.setMessage("Error: bad request");
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        }
     }
     // list all available games
     private Object listGames(Request req, Response res) throws DataAccessException {
-        res.status(200);
-        return "";
+        ResultInfo result = null;
+        try {
+            String authToken = req.headers("authorization");
+
+            result = service.listGamesHandler(authToken);
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        } catch (Exception e) {
+            result = new ResultInfo();
+            result.setStatus(400);
+            result.setMessage("Error: bad request");
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        }
     }
     // clear databases
     private Object clear(Request req, Response res) throws DataAccessException {
-
         service.clearHandler();
         res.status(200);
 

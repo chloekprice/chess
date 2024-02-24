@@ -1,6 +1,7 @@
 package dataAccess;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import chess.ChessGame;
 import dataAccess.dataModelClasses.GameData;
@@ -26,5 +27,11 @@ public class MemoryGameDAO implements GameDAO {
         GameData newGame = new GameData(ID, whiteUserName, blackUserName, newChessGame);
         games.put(gameName, newGame);
         return newGame;
+    }
+    public HashSet<GameData> getGameList() {
+        HashSet<GameData> gameList = new HashSet<GameData>();
+        games.forEach((key, value)
+                -> gameList.add(value));
+        return gameList;
     }
 }

@@ -7,6 +7,7 @@ import dataAccess.dataModelClasses.UserData;
 import server.ResultInfo;
 
 
+import java.util.HashSet;
 import java.util.UUID;
 
 public class chessService {
@@ -108,6 +109,35 @@ public class chessService {
         int id = createID();
         GameData newGame = createGame(gameName, id);
         result.setGameData(newGame);
+
+        return result;
+    }
+
+    // join game handler
+    public ResultInfo joinGameHandler(String authToken, String playerColor, int gameID) throws DataAccessException{
+        ResultInfo result = new ResultInfo();
+        return result;
+    }
+
+    // list all games
+    public ResultInfo listGamesHandler(String authToken) throws DataAccessException {
+        ResultInfo result = new ResultInfo();
+        // bad request
+        if (authToken == null) {
+            result.setStatus(400);
+            result.setMessage("Error: bad request");
+            return result;
+        }
+        // unauthorized
+        AuthData authData = getAuth(authToken);
+        if (authData == null) {
+            result.setStatus(401);
+            result.setMessage("Error: unauthorized");
+            return result;
+        }
+        // valid
+        HashSet<GameData> gameList = gameDataAccess.getGameList();
+        result.setGames(gameList);
 
         return result;
     }

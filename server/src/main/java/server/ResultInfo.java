@@ -4,6 +4,8 @@ import dataAccess.dataModelClasses.AuthData;
 import dataAccess.dataModelClasses.GameData;
 import dataAccess.dataModelClasses.UserData;
 
+import java.util.HashSet;
+
 public class ResultInfo {
     private AuthData authData;
     private GameData gameData;
@@ -15,6 +17,7 @@ public class ResultInfo {
     private String email;
     private String authToken;
     private Integer gameID = null;
+    private HashSet<GameData> games;
     public ResultInfo() {
         this.authData = null;
         this.gameData = null;
@@ -48,6 +51,9 @@ public class ResultInfo {
     public void setStatus(int status_code) {
         this.status = status_code;
     }
+    public HashSet<GameData> getGames() {
+        return games;
+    }
 
     // getters
     public AuthData getAuthData() {
@@ -71,5 +77,8 @@ public class ResultInfo {
     }
     public int getGameID() {
         return gameID;
+    }
+    public void setGames(HashSet<GameData> games) {
+        this.games = games;
     }
 }
