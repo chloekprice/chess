@@ -16,7 +16,20 @@ class chessServiceTest {
          serviceTest = new chessService();
     }
     @Test
-    void clearHandler() {
+    void clearHandler() throws DataAccessException {
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+        int actual;
+        int expected = 401;
+
+        String authToken = serviceTest.registerHandler(user, password, email).getAuthData().getAuthToken();
+        int gameID = serviceTest.createGameHandler(authToken, "space jam").getGameID();
+
+        serviceTest.clearHandler();
+        // GOOD
+        actual = serviceTest.joinGameHandler(authToken, "WHITE", gameID).getStatus();
+        assertEquals(expected, actual);
     }
 
     @Test
