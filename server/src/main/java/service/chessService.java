@@ -125,9 +125,31 @@ public class chessService {
         }
 
         GameData game = getGame(gameID);
-        game.updateGame(playerColor, authData.getUsername());
-        result.setGameData(game);
-        return result;
+        if (playerColor == null) {
+            result.setGameData(game);
+            return result;
+        }
+
+        if (playerColor.equals("BLACK") || playerColor.equals("WHITE")) {
+            if (playerColor.equals("BLACK")) {
+                if (game.getBlackUsername() != null) {
+                    result.setStatus(403);
+                    result.setMessage("Error: already taken");
+                    return result;
+                }
+            } else if (game.getWhiteUsername() != null) {
+                result.setStatus(403);
+                result.setMessage("Error: already taken");
+                return result;
+            }
+            game.updateGame(playerColor, authData.getUsername());
+            result.setGameData(game);
+            return result;
+        } else {
+            result.setStatus(500);
+            result.setMessage("Error: invalid color");
+            return result;
+        }
     }
 
     // list all games

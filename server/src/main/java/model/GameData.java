@@ -9,7 +9,6 @@ public class GameData {
     private  String whiteUsername;
     private  String blackUsername;
     private final ChessGame game;
-    private HashSet<String> watchers;
     private String gameName;
 
     public GameData(int gameID, String whiteUsername, String blackUsername, ChessGame game, String gameName) {
@@ -17,7 +16,6 @@ public class GameData {
         this.whiteUsername = whiteUsername;
         this.blackUsername = blackUsername;
         this.game = game;
-        this.watchers = new HashSet<String>();
         this.gameName = gameName;
     }
     // empty constructor
@@ -33,8 +31,6 @@ public class GameData {
             this.blackUsername = user;
         } else if (color.equals("WHITE")) {
             this.whiteUsername = user;
-        } else {
-            watchers.add(user);
         }
     }
     public int getGameID() {
