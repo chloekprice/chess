@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import dataAccess.*;
 import model.AuthData;
 import spark.*;
-import service.chessService;
+import service.ChessService;
 
 
 import java.util.HashMap;
@@ -12,9 +12,9 @@ import java.util.HashMap;
 import static java.lang.Integer.parseInt;
 
 public class Server {
-    private final chessService service;
+    private final ChessService service;
     public Server() {
-          service = new chessService();
+          service = new ChessService();
     }
 
 

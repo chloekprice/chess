@@ -4,16 +4,16 @@ import dataAccess.DataAccessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.ResultInfo;
-import service.chessService;
+import service.ChessService;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class chessServiceTest {
-    chessService serviceTest;
+    ChessService serviceTest;
     @BeforeEach
     void reset() {
-         serviceTest = new chessService();
+         serviceTest = new ChessService();
     }
     @Test
     void clearHandler() throws DataAccessException {

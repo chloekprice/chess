@@ -10,13 +10,13 @@ import server.ResultInfo;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class chessService {
+public class ChessService {
     private final AuthDAO authDataAccess;
     private final GameDAO gameDataAccess;
     private final UserDAO userDataAccess;
 
     // empty constructor
-    public chessService() {
+    public ChessService() {
         this.authDataAccess = new MemoryAuthDAO();
         this.gameDataAccess = new MemoryGameDAO();
         this.userDataAccess = new MemoryUserDAO();
