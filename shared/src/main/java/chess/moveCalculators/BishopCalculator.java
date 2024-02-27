@@ -51,16 +51,7 @@ public class BishopCalculator {
             if (tempCol < 1) {
                 break;
             }
-            ChessPosition newPosition = new ChessPosition(i, tempCol);
-            ChessMove addMove = new ChessMove(startPosition, newPosition);
-            if (board.getPiece(newPosition) == null) {
-                moves.add(addMove);
-            } else if (board.getPiece(newPosition).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
-                moves.add(addMove);
-                break;
-            } else {
-                break;
-            }
+            if (checkAndAddMove(i, tempCol, moves)) break;
             tempCol -= 1;
         }
         // UP ONE LEFT ONE
@@ -69,24 +60,38 @@ public class BishopCalculator {
             if (tempCol < 1) {
                 break;
             }
-            ChessPosition newPosition = new ChessPosition(i, tempCol);
-            ChessMove addMove = new ChessMove(startPosition, newPosition);
-            if (board.getPiece(newPosition) == null) {
-                moves.add(addMove);
-            } else if (board.getPiece(newPosition).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
-                moves.add(addMove);
-                break;
-            } else {
-                break;
-            }
+            if (checkAndAddMove(i, tempCol, moves)) break;
             tempCol -= 1;
         }
 
         return moves;
     }
 
-    static boolean createNewPosition(ArrayList<ChessMove> moves, int temp_col, int i, ChessPosition startPosition, ChessBoard board) {
-        ChessPosition newPosition = new ChessPosition(i, temp_col);
+    private boolean checkAndAddMove(int i, int tempCol, ArrayList<ChessMove> moves) {
+        createPositionAndMove newMove = getPositionAndMove(i, tempCol);
+        if (board.getPiece(newMove.newPosition()) == null) {
+            moves.add(newMove.addMove());
+        } else if (board.getPiece(newMove.newPosition()).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
+            moves.add(newMove.addMove());
+            return true;
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private createPositionAndMove getPositionAndMove(int i, int tempCol) {
+        ChessPosition newPosition = new ChessPosition(i, tempCol);
+        ChessMove addMove = new ChessMove(startPosition, newPosition);
+        createPositionAndMove newMove = new createPositionAndMove(newPosition, addMove);
+        return newMove;
+    }
+
+    private record createPositionAndMove(ChessPosition newPosition, ChessMove addMove) {
+    }
+
+    static boolean createNewPosition(ArrayList<ChessMove> moves, int tempCol, int i, ChessPosition startPosition, ChessBoard board) {
+        ChessPosition newPosition = new ChessPosition(i, tempCol);
         ChessMove addMove = new ChessMove(startPosition, newPosition);
         if (board.getPiece(newPosition) == null) {
             moves.add(addMove);
@@ -99,10 +104,10 @@ public class BishopCalculator {
         return false;
     }
 
-    private CreateNewMove getNewMove(int i, int temp_col) {
-        ChessPosition new_position = new ChessPosition(i, temp_col);
-        ChessMove add_move = new ChessMove(startPosition, new_position);
-        CreateNewMove newMove = new CreateNewMove(new_position, add_move);
+    private CreateNewMove getNewMove(int i, int tempCol) {
+        ChessPosition newPosition = new ChessPosition(i, tempCol);
+        ChessMove addMove = new ChessMove(startPosition, newPosition);
+        CreateNewMove newMove = new CreateNewMove(newPosition, addMove);
         return newMove;
     }
 
