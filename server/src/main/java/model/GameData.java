@@ -36,19 +36,12 @@ public class GameData {
     public int getGameID() {
         return this.gameID;
     }
-
     public String getWhiteUsername() {
         return this.whiteUsername;
     }
-
     public String getBlackUsername() {
         return this.blackUsername;
     }
-
-    public ChessGame getGame() {
-        return this.game;
-    }
-
     public String getName() {
         return this.gameName;
     }

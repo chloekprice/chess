@@ -57,25 +57,10 @@ public class ResultInfo {
     public void setStatus(int status_code) {
         this.status = status_code;
     }
-    public HashSet<GameData> getGames() {
-        return games;
-    }
 
     // getters
     public AuthData getAuthData() {
         return authData;
-    }
-
-    public GameData getGameData() {
-        return gameData;
-    }
-
-    public UserData getUserData() {
-        return userData;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public int getStatus() {

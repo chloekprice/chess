@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public class chessService {
-    private final MemoryAuthDAO authDataAccess;
-    private final MemoryGameDAO gameDataAccess;
+    private final AuthDAO authDataAccess;
+    private final GameDAO gameDataAccess;
     private final UserDAO userDataAccess;
 
     // empty constructor
@@ -195,10 +195,10 @@ public class chessService {
     private int createID() {
         return ((int)(Math.random() * (10000)));
     }
-    private GameData createGame(String gameName, int ID) {
-        return gameDataAccess.create(gameName, ID);
+    private GameData createGame(String gameName, int id) {
+        return gameDataAccess.create(gameName, id);
     }
-    private GameData getGame(int ID) {
-        return gameDataAccess.getGame(ID);
+    private GameData getGame(int id) {
+        return gameDataAccess.getGame(id);
     }
 }

@@ -12,21 +12,19 @@ public class MemoryGameDAO implements GameDAO {
         games = new HashMap<Integer, GameData>();
     }
     public void clear(){
-        if (games != null) {
-            games.clear();
-        }
+        games.clear();
     }
-    public GameData create(String gameName, int ID) {
-        Integer gameID = ID;
+    public GameData create(String gameName, int id) {
+        Integer gameID = id;
         ChessGame newChessGame = new ChessGame();
-        GameData newGame = new GameData(ID, null, null, newChessGame, gameName);
+        GameData newGame = new GameData(id, null, null, newChessGame, gameName);
         games.put(gameID, newGame);
         return newGame;
     }
-    public GameData create(String gameName, int ID, String whiteUserName, String blackUserName) {
-        Integer gameID = ID;
+    public GameData create(String gameName, int id, String whiteUserName, String blackUserName) {
+        Integer gameID = id;
         ChessGame newChessGame = new ChessGame();
-        GameData newGame = new GameData(ID, whiteUserName, blackUserName, newChessGame, gameName);
+        GameData newGame = new GameData(id, whiteUserName, blackUserName, newChessGame, gameName);
         games.put(gameID, newGame);
         return newGame;
     }
@@ -36,8 +34,8 @@ public class MemoryGameDAO implements GameDAO {
                 -> gameList.add(value));
         return gameList;
     }
-    public GameData getGame(int ID) {
-        Integer gameID = ID;
+    public GameData getGame(int id) {
+        Integer gameID = id;
         return games.getOrDefault(gameID, null);
     }
 }

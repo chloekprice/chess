@@ -63,7 +63,6 @@ public class Server {
     // register new user
     private Object registerUser(Request req, Response res) throws DataAccessException {
         ResultInfo result = null;
-
         HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
         // parse request body
         try {
@@ -184,7 +183,6 @@ public class Server {
     private Object clear(Request req, Response res) throws DataAccessException {
         service.clearHandler();
         res.status(200);
-
         return "";
     }
 }
