@@ -4,99 +4,108 @@ import chess.ChessBoard;
 import chess.ChessMove;
 import chess.ChessPosition;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class BishopCalculator {
     private final ChessBoard board;
-    private final ChessPosition start_position;
+    private final ChessPosition startPosition;
     public BishopCalculator(ChessBoard board, ChessPosition position) {
         this.board = board;
-        this.start_position = position;
+        this.startPosition = position;
     }
     public Collection<ChessMove> getMoves() {
         ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
-        int row = start_position.getRow();
-        int col = start_position.getColumn();
+        int row = startPosition.getRow();
+        int col = startPosition.getColumn();
 
         // UP ONE RIGHT ONE
-        int temp_col = col + 1;
+        int tempCol = col + 1;
         for (int i = (row + 1); i <= 8; i++) {
-            if (temp_col > 8) {
+            if (tempCol > 8) {
                 break;
             }
-            ChessPosition new_position = new ChessPosition(i, temp_col);
-            ChessMove add_move = new ChessMove(start_position, new_position);
-            if (board.getPiece(new_position) == null) {
-                moves.add(add_move);
-            } else if (board.getPiece(new_position).getTeamColor() != board.getPiece(start_position).getTeamColor()) {
-                moves.add(add_move);
+            CreateNewMove newMove = getNewMove(i, tempCol);
+            if (board.getPiece(newMove.newPosition()) == null) {
+                moves.add(newMove.addMove());
+            } else if (board.getPiece(newMove.newPosition()).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
+                moves.add(newMove.addMove());
                 break;
             } else {
                 break;
             }
-//            System.out.printf("%d,%d ", i, temp_col);
-            temp_col += 1;
+            tempCol += 1;
         }
         // DOWN ONE RIGHT ONE
-        temp_col = col + 1;
+        tempCol = col + 1;
         for (int i = (row - 1); i > 0; i--) {
-            if (temp_col > 8) {
+            if (tempCol > 8) {
                 break;
             }
-            ChessPosition new_position = new ChessPosition(i, temp_col);
-            ChessMove add_move = new ChessMove(start_position, new_position);
-            if (board.getPiece(new_position) == null) {
-                moves.add(add_move);
-            } else if (board.getPiece(new_position).getTeamColor() != board.getPiece(start_position).getTeamColor()) {
-                moves.add(add_move);
-                break;
-            } else {
-                break;
-            }
-//            System.out.printf("%d,%d ", i, temp_col);
-            temp_col += 1;
+            if (createNewPosition(moves, tempCol, i, startPosition, board)) break;
+            tempCol += 1;
         }
         // DOWN ONE LEFT ONE
-        temp_col = col - 1;
+        tempCol = col - 1;
         for (int i = (row - 1); i > 0; i --) {
-            if (temp_col < 1) {
+            if (tempCol < 1) {
                 break;
             }
-            ChessPosition new_position = new ChessPosition(i, temp_col);
-            ChessMove add_move = new ChessMove(start_position, new_position);
-            if (board.getPiece(new_position) == null) {
-                moves.add(add_move);
-            } else if (board.getPiece(new_position).getTeamColor() != board.getPiece(start_position).getTeamColor()) {
-                moves.add(add_move);
+            ChessPosition newPosition = new ChessPosition(i, tempCol);
+            ChessMove addMove = new ChessMove(startPosition, newPosition);
+            if (board.getPiece(newPosition) == null) {
+                moves.add(addMove);
+            } else if (board.getPiece(newPosition).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
+                moves.add(addMove);
                 break;
             } else {
                 break;
             }
-//            System.out.printf("%d,%d ", i, temp_col);
-            temp_col -= 1;
+            tempCol -= 1;
         }
         // UP ONE LEFT ONE
-        temp_col = col - 1;
+        tempCol = col - 1;
         for (int i = (row + 1); i <= 8; i++) {
-            if (temp_col < 1) {
+            if (tempCol < 1) {
                 break;
             }
-            ChessPosition new_position = new ChessPosition(i, temp_col);
-            ChessMove add_move = new ChessMove(start_position, new_position);
-            if (board.getPiece(new_position) == null) {
-                moves.add(add_move);
-            } else if (board.getPiece(new_position).getTeamColor() != board.getPiece(start_position).getTeamColor()) {
-                moves.add(add_move);
+            ChessPosition newPosition = new ChessPosition(i, tempCol);
+            ChessMove addMove = new ChessMove(startPosition, newPosition);
+            if (board.getPiece(newPosition) == null) {
+                moves.add(addMove);
+            } else if (board.getPiece(newPosition).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
+                moves.add(addMove);
                 break;
             } else {
                 break;
             }
-//            System.out.printf("%d,%d ", i, temp_col);
-            temp_col -= 1;
+            tempCol -= 1;
         }
 
         return moves;
+    }
+
+    static boolean createNewPosition(ArrayList<ChessMove> moves, int temp_col, int i, ChessPosition startPosition, ChessBoard board) {
+        ChessPosition newPosition = new ChessPosition(i, temp_col);
+        ChessMove addMove = new ChessMove(startPosition, newPosition);
+        if (board.getPiece(newPosition) == null) {
+            moves.add(addMove);
+        } else if (board.getPiece(newPosition).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
+            moves.add(addMove);
+            return true;
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private CreateNewMove getNewMove(int i, int temp_col) {
+        ChessPosition new_position = new ChessPosition(i, temp_col);
+        ChessMove add_move = new ChessMove(startPosition, new_position);
+        CreateNewMove newMove = new CreateNewMove(new_position, add_move);
+        return newMove;
+    }
+
+    private record CreateNewMove(ChessPosition newPosition, ChessMove addMove) {
     }
 }

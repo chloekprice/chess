@@ -3,26 +3,22 @@ package chess.moveCalculators;
 import chess.ChessBoard;
 import chess.ChessPosition;
 import chess.ChessMove;
-import chess.moveCalculators.RookCalculator;
-import chess.moveCalculators.BishopCalculator;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Collection;
 
 
 public class QueenCalculator {
     private final ChessBoard board;
-    private final ChessPosition start_position;
+    private final ChessPosition startPosition;
     public QueenCalculator(ChessBoard board, ChessPosition position) {
         this.board = board;
-        this.start_position = position;
+        this.startPosition = position;
     }
 
     public Collection<ChessMove> getMoves() {
-        BishopCalculator diagonal = new BishopCalculator(board, start_position);
+        BishopCalculator diagonal = new BishopCalculator(board, startPosition);
         Collection<ChessMove> moves = diagonal.getMoves();
-        RookCalculator straight = new RookCalculator(board, start_position);
+        RookCalculator straight = new RookCalculator(board, startPosition);
         moves.addAll(straight.getMoves());
         return moves;
     }
