@@ -33,7 +33,7 @@ class chessServiceTest {
     }
 
     @Test
-    void registerHandler() throws DataAccessException {
+    void negRegisterHandler() throws DataAccessException {
         String user = "urmom";
         String password = null;
         String email = "stacysmom8675309@yahoo.com";
@@ -43,15 +43,23 @@ class chessServiceTest {
         int expected = 400;
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    void posRegisterHandler() throws DataAccessException {
+        String user = "urmom";
+        String password = null;
+        String email = "stacysmom8675309@yahoo.com";
+
         // GOOD
         password = "good";
-        actual = serviceTest.registerHandler(user, password, email).getStatus();
-        expected = 200;
+        int actual = serviceTest.registerHandler(user, password, email).getStatus();
+        int expected = 200;
         assertEquals(expected, actual);
     }
 
     @Test
-    void loginHandler() throws DataAccessException {
+    void negLoginHandler() throws DataAccessException {
         String user = "urmom";
         String password = "ilovemykids!";
         String email = "stacysmom8675309@yahoo.com";
@@ -62,16 +70,23 @@ class chessServiceTest {
 
         assertEquals(expected, actual);
 
+    }
+    @Test
+    void posLoginHandler() throws DataAccessException {
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+
         // GOOD
-        expected = 200;
+        int expected = 200;
         serviceTest.registerHandler(user, password, email);
-        actual = serviceTest.loginHandler(user, password).getStatus();
+        int actual = serviceTest.loginHandler(user, password).getStatus();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void logoutHandler() throws DataAccessException {
+    void negLogoutHandler() throws DataAccessException {
         int expected;
         int actual;
 
@@ -85,6 +100,18 @@ class chessServiceTest {
         actual = serviceTest.logoutHandler("abcdefg").getStatus();
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    void posLogoutHandler() throws DataAccessException {
+        int expected;
+        int actual;
+
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+        String authToken = serviceTest.registerHandler(user, password, email).getAuthData().getAuthToken();
+
         // GOOD
         expected = 200;
         actual = serviceTest.logoutHandler(authToken).getStatus();
@@ -92,7 +119,7 @@ class chessServiceTest {
     }
 
     @Test
-    public void createGameHandler() throws DataAccessException{
+    public void negCreateGameHandler() throws DataAccessException{
         String user = "urmom";
         String password = "ilovemykids!";
         String email = "stacysmom8675309@yahoo.com";
@@ -103,14 +130,24 @@ class chessServiceTest {
         int actual = serviceTest.createGameHandler("beluga", "monopoly").getStatus();
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    public void posCreateGameHandler() throws DataAccessException{
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+        String authToken = serviceTest.registerHandler(user, password, email).getAuthData().getAuthToken();
+
+
         // GOOD
-        actual = serviceTest.createGameHandler(authToken, "monopoly").getStatus();
-        expected = 200;
+        int actual = serviceTest.createGameHandler(authToken, "monopoly").getStatus();
+        int expected = 200;
         assertEquals(expected, actual);
     }
 
     @Test
-    public void listGamesHandler() throws DataAccessException{
+    public void negListGamesHandler() throws DataAccessException{
         String user = "urmom";
         String password = "ilovemykids!";
         String email = "stacysmom8675309@yahoo.com";
@@ -128,8 +165,22 @@ class chessServiceTest {
         actual = serviceTest.listGamesHandler("jimmy").getStatus();
         assertEquals(expected, actual);
     }
+
     @Test
-    public void joinGameHandler() throws DataAccessException{
+    public void posListGamesHandler() throws DataAccessException{
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+        String authToken = serviceTest.registerHandler(user, password, email).getAuthData().getAuthToken();
+
+        // GOOD- empty list
+        int expected = 200;
+        int actual = serviceTest.listGamesHandler(authToken).getStatus();
+        assertEquals(expected, actual);
+
+    }
+    @Test
+    public void negJoinGameHandler() throws DataAccessException{
         String user = "urmom";
         String password = "ilovemykids!";
         String email = "stacysmom8675309@yahoo.com";
@@ -139,13 +190,22 @@ class chessServiceTest {
         int expected = 401;
         int actual = serviceTest.joinGameHandler("jimmy", "BLACK", 5064).getStatus();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void posJoinGameHandler() throws DataAccessException{
+        String user = "urmom";
+        String password = "ilovemykids!";
+        String email = "stacysmom8675309@yahoo.com";
+        String authToken = serviceTest.registerHandler(user, password, email).getAuthData().getAuthToken();
+
 
         // GOOD
         serviceTest.createGameHandler(authToken, "monopoly");
         ResultInfo test = serviceTest.createGameHandler(authToken, "risk");
         int gameID = test.getGameID();
-        expected = 200;
-        actual = serviceTest.joinGameHandler(authToken, "BLACK", gameID).getStatus();
+        int expected = 200;
+        int actual = serviceTest.joinGameHandler(authToken, "BLACK", gameID).getStatus();
         assertEquals(expected, actual);
     }
 
