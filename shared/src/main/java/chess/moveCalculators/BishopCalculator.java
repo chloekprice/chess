@@ -68,7 +68,7 @@ public class BishopCalculator {
     }
 
     private boolean checkAndAddMove(int i, int tempCol, ArrayList<ChessMove> moves) {
-        createPositionAndMove newMove = getPositionAndMove(i, tempCol);
+        CreatePositionAndMove newMove = getPositionAndMove(i, tempCol);
         if (board.getPiece(newMove.newPosition()) == null) {
             moves.add(newMove.addMove());
         } else if (board.getPiece(newMove.newPosition()).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
@@ -80,14 +80,14 @@ public class BishopCalculator {
         return false;
     }
 
-    private createPositionAndMove getPositionAndMove(int i, int tempCol) {
+    private CreatePositionAndMove getPositionAndMove(int i, int tempCol) {
         ChessPosition newPosition = new ChessPosition(i, tempCol);
         ChessMove addMove = new ChessMove(startPosition, newPosition);
-        createPositionAndMove newMove = new createPositionAndMove(newPosition, addMove);
+        CreatePositionAndMove newMove = new CreatePositionAndMove(newPosition, addMove);
         return newMove;
     }
 
-    private record createPositionAndMove(ChessPosition newPosition, ChessMove addMove) {
+    private record CreatePositionAndMove(ChessPosition newPosition, ChessMove addMove) {
     }
 
     static boolean createNewPosition(ArrayList<ChessMove> moves, int tempCol, int i, ChessPosition startPosition, ChessBoard board) {
