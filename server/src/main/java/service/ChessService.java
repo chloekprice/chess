@@ -7,19 +7,28 @@ import model.UserData;
 import server.ResultInfo;
 
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.UUID;
 
 public class ChessService {
-    private final AuthDAO authDataAccess;
-    private final GameDAO gameDataAccess;
-    private final UserDAO userDataAccess;
+    private AuthDAO authDataAccess;
+    private GameDAO gameDataAccess;
+    private UserDAO userDataAccess;
 
     // empty constructor
     public ChessService() {
-        this.authDataAccess = new MemoryAuthDAO();
-        this.gameDataAccess = new MemoryGameDAO();
-        this.userDataAccess = new MemoryUserDAO();
+        try {
+            this.configureDatabase();
+            this.authDataAccess = new MySQLAuthDAO();
+            this.gameDataAccess = new MySQLGameDAO();
+            this.userDataAccess = new MySQLUserDAO();
+        } catch (Exception e) {
+            System.out.println("database could not connect");
+            this.authDataAccess = new MemoryAuthDAO();
+            this.gameDataAccess = new MemoryGameDAO();
+            this.userDataAccess = new MemoryUserDAO();
+        }
     }
 
     // clear handler
@@ -201,4 +210,55 @@ public class ChessService {
     private GameData getGame(int id) {
         return gameDataAccess.getGame(id);
     }
+
+    // configure database
+    private void configureDatabase() throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var conn = DatabaseManager.getConnection()) {
+            for (var statement : instantiateTables) {
+                try (var preparedStatement = conn.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
+        }
+    }
+
+    private final String[] instantiateTables = {
+//            """
+//            CREATE TABLE IF NOT EXISTS user (
+//            `id` int NOT NULL AUTO_INCREMENT,
+//            )
+//            """
+//            """
+//            CREATE TABLE IF NOT EXISTS auth (
+//            `id` int not null primary key auto_increment,
+//            `username` varchar(100) not null,
+//            `authToken` varchar(100) not null
+//            )
+//    CREATE TABLE IF NOT EXISTS game (
+//            `id` int not null primary key auto_increment,
+//            `gameID` int not null,
+//            `whiteUsername` varchar(100),
+//            `blackUsername` varchar(100),
+//            `gameName` varchar(100) not null,
+//    foreign key(`whiteUsername`) references user(`username`),
+//    foreign key(`blackUsername`) references user(`username`)
+//            )
+//            """
+
+            """
+            CREATE TABLE IF NOT EXISTS  users (
+              `id` int NOT NULL AUTO_INCREMENT,
+              `username` varchar(256) NOT NULL,
+              `email` varchar(256) NOT NULL,
+              `password` varchar(256) NOT NULL,
+              PRIMARY KEY (`id`),
+              INDEX(username),
+              INDEX(password)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """
+    };
 }
+
