@@ -267,6 +267,19 @@ public class ChessService {
                 INDEX(username),
                 INDEX(authToken)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS game (
+                `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                `gameID` int not null,
+                `whiteUsername` varchar(256),
+                `blackUsername` varchar(246),
+                `gameName` varchar(256) not null,
+                INDEX(gameID),
+                INDEX(whiteUsername),
+                INDEX(blackUsername),
+                INDEX(gameName)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """
     };
 }
