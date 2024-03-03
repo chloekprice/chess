@@ -32,10 +32,12 @@ public class ChessService {
     }
 
     // clear handler
-    public void clearHandler() throws DataAccessException {
+    public ResultInfo clearHandler() throws DataAccessException {
         authDataAccess.clear();
         gameDataAccess.clear();
         userDataAccess.clear();
+        ResultInfo result = new ResultInfo();
+        return result;
     }
 
     // register handler
@@ -226,28 +228,6 @@ public class ChessService {
     }
 
     private final String[] instantiateTables = {
-//            """
-//            CREATE TABLE IF NOT EXISTS user (
-//            `id` int NOT NULL AUTO_INCREMENT,
-//            )
-//            """
-//            """
-//            CREATE TABLE IF NOT EXISTS auth (
-//            `id` int not null primary key auto_increment,
-//            `username` varchar(100) not null,
-//            `authToken` varchar(100) not null
-//            )
-//    CREATE TABLE IF NOT EXISTS game (
-//            `id` int not null primary key auto_increment,
-//            `gameID` int not null,
-//            `whiteUsername` varchar(100),
-//            `blackUsername` varchar(100),
-//            `gameName` varchar(100) not null,
-//    foreign key(`whiteUsername`) references user(`username`),
-//    foreign key(`blackUsername`) references user(`username`)
-//            )
-//            """
-
             """
             CREATE TABLE IF NOT EXISTS  users (
               `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -269,7 +249,7 @@ public class ChessService {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """,
             """
-            CREATE TABLE IF NOT EXISTS game (
+            CREATE TABLE IF NOT EXISTS games (
                 `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
                 `gameID` int not null,
                 `whiteUsername` varchar(256),

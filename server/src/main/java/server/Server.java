@@ -182,8 +182,8 @@ public class Server {
     }
     // clear databases
     private Object clear(Request req, Response res) throws DataAccessException {
-        service.clearHandler();
-        res.status(200);
-        return "";
+        ResultInfo result = service.clearHandler();
+        res.status(result.getStatus());
+        return new Gson().toJson(result);
     }
 }
