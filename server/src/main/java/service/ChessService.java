@@ -37,6 +37,7 @@ public class ChessService {
         gameDataAccess.clear();
         userDataAccess.clear();
         ResultInfo result = new ResultInfo();
+        this.configureDatabase();
         return result;
     }
 
@@ -190,7 +191,7 @@ public class ChessService {
     private UserData getUser(String username) {
         return userDataAccess.getUser(username);
     }
-    private UserData createUser(String username, String password, String email) {
+    private UserData createUser(String username, String password, String email) throws DataAccessException {
         return userDataAccess.insertUser(username, password, email);
     }
     private AuthData createAuth(String username) {

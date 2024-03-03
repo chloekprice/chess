@@ -22,8 +22,16 @@ public class MySQLUserDAO implements UserDAO {
     }
 
     @Override
-    public UserData insertUser(String username, String password, String email) {
-        return null;
+    public UserData insertUser(String username, String password, String email) throws DataAccessException {
+        UserData userData = new UserData(username, password, email);
+
+        final String[] addUserDatabase = {
+            "INSERT INTO users (username, password, email) VALUES ('" + username + "', '" + password + "', '" + email + "');"
+        };
+
+        executeStatement(addUserDatabase);
+
+        return userData;
     }
 
     private static void executeStatement(String[] clearUserDatabase) throws DataAccessException {
