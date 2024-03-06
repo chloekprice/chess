@@ -15,12 +15,12 @@ public class MemoryAuthDAO implements AuthDAO {
         }
     }
     public AuthData insertAuth(String username, String authToken) {
-        AuthData auth_data = new AuthData(username, authToken);
+        AuthData authData = new AuthData(username, authToken);
         if (auth == null) {
             auth = new HashMap<String, AuthData>();
         }
-        auth.put(authToken, auth_data);
-        return auth_data;
+        auth.put(authToken, authData);
+        return authData;
     }
     public AuthData getAuth(String authToken) {
         return auth.getOrDefault(authToken, null);

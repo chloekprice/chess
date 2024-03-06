@@ -33,9 +33,17 @@ class MySQLUserDAOTest {
     }
 
     @Test
-    void insertUser() throws DataAccessException {
+    void posInsertUser() throws DataAccessException {
         expected = 200;
         actual = serviceTest.registerHandler(user, password, email).getStatus();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void negInsertUser() throws DataAccessException {
+        expected = 403;
+        serviceTest.registerHandler(user, password, email);
+        actual = serviceTest.registerHandler(user, "password", "email@email.com").getStatus();
         assertEquals(expected, actual);
     }
 }

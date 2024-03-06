@@ -1,7 +1,10 @@
 package dataAccess;
 
+import model.AuthData;
 import model.UserData;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MySQLUserDAO implements UserDAO {
@@ -18,7 +21,12 @@ public class MySQLUserDAO implements UserDAO {
 
     @Override
     public UserData getUser(String username) {
-        return null;
+        String selectAuthDatabase = "SELECT email, password FROM users WHERE username = ?;";
+        try {
+            return executeSelectStatement(selectAuthDatabase, username);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -44,5 +52,26 @@ public class MySQLUserDAO implements UserDAO {
         } catch (SQLException ex) {
             throw new DataAccessException(String.format("Unable to clear user: %s", ex.getMessage()));
         }
+    }
+
+    private UserData executeSelectStatement(String sql, String username) throws DataAccessException {
+        try(PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, username);
+
+            try (var rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return readUser(rs, username);
+                }
+            }
+        } catch(SQLException ex) {
+            return null;
+        }
+        return null;
+    }
+
+    private UserData readUser(ResultSet rs, String username) throws SQLException {
+        var email = rs.getString("email");
+        var password = rs.getString("password");
+        return new UserData(username, password, email);
     }
 }
