@@ -43,13 +43,21 @@ class MySQLUserDAOTest {
     }
 
     @Test
-    void posInsertUser() throws DataAccessException {
+    void negGetUser() throws DataAccessException {
+        UserData actual = test.getUser(user);
+        assertEquals(null, actual);
+    }
 
+    @Test
+    void posInsertUser() throws DataAccessException {
+        UserData actual = test.insertUser(user, password, email);
+        assertEquals(new UserData(user, password, email), actual);
     }
 
     @Test
     void negInsertUser() throws DataAccessException {
-
+        UserData actual = test.insertUser(user, null, email);
+        assertEquals(null, actual);
     }
 
 

@@ -33,6 +33,10 @@ public class MySQLUserDAO implements UserDAO {
     public UserData insertUser(String username, String password, String email) throws DataAccessException {
         UserData userData = new UserData(username, password, email);
 
+        if (username == null || password == null || email == null) {
+            return null;
+        }
+
         final String[] addUserDatabase = {
             "INSERT INTO users (username, password, email) VALUES ('" + username + "', '" + password + "', '" + email + "');"
         };
