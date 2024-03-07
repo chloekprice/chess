@@ -20,6 +20,10 @@ public class MySQLAuthDAO implements AuthDAO {
 
     @Override
     public AuthData insertAuth(String username, String authToken) {
+        if (username==null || authToken==null) {
+            return null;
+        }
+
         String insertAuthDatabase = "INSERT INTO auth (username, authToken) VALUES (?, ?);";
         try {
             return executeInsertStatement(insertAuthDatabase, username, authToken);
@@ -30,12 +34,17 @@ public class MySQLAuthDAO implements AuthDAO {
 
     @Override
     public void delete(String authToken) {
-
+        String deleteAuthDatabase = "DELETE FROM auth WHERE authToken = ?";
+        try {
+            executeDeleteStatement(deleteAuthDatabase, authToken);
+        } catch (Exception e) {
+            System.out.println("cannot delete");
+        }
     }
 
     @Override
     public AuthData getAuth(String authToken) {
-        String selectAuthDatabase = "SELECT username FROM auth WHERE authToken = ?);";
+        String selectAuthDatabase = "SELECT username FROM auth WHERE authToken = ?;";
         try {
             return executeSelectStatement(selectAuthDatabase, authToken);
         } catch (Exception e) {
@@ -82,6 +91,19 @@ public class MySQLAuthDAO implements AuthDAO {
             return null;
         }
         return null;
+    }
+    private void executeDeleteStatement(String sql, String authToken) throws DataAccessException {
+        try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, authToken);
+
+            if (stmt.executeUpdate() == 1) {
+                return;
+            } else {
+                return;
+            }
+        } catch (SQLException ex) {
+            return;
+        }
     }
 
     private String readAuth(ResultSet rs) throws SQLException {
