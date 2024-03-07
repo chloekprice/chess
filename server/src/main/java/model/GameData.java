@@ -45,4 +45,36 @@ public class GameData {
     public String getName() {
         return this.gameName;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) { return false;}
+        if (o == this) { return true;}
+        if (this.getClass() != o.getClass()) { return false;}
+        GameData other = (GameData) o;
+        if (other.whiteUsername == null && this.whiteUsername == null){
+            if (this.blackUsername == null && other.blackUsername == null) {
+                return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName()));
+            }
+            return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName())  && other.getWhiteUsername().equals(this.blackUsername));
+        } else if (other.whiteUsername != null && this.whiteUsername != null && this.blackUsername != null && other.blackUsername != null) {
+            return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName()) && other.whiteUsername.equals(this.whiteUsername) && other.getWhiteUsername().equals(this.blackUsername));
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.blackUsername != null && this.whiteUsername != null) {
+            return (this.whiteUsername.hashCode() * this.blackUsername.hashCode() * this.gameName.hashCode() * gameID);
+        } else if (this.blackUsername != null) {
+            return (this.blackUsername.hashCode() * this.gameName.hashCode() * gameID);
+
+        } else if (this.whiteUsername != null) {
+            return (this.whiteUsername.hashCode()  * this.gameName.hashCode() * gameID);
+
+        }
+        return (this.gameName.hashCode() * gameID);
+    }
 }
