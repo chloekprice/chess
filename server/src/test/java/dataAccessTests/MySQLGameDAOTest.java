@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import service.ChessService;
 
 import java.sql.SQLException;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,16 +48,34 @@ class MySQLGameDAOTest {
 
     @Test
     void negCreate() {
-        GameData actual = test.create(null, gameID, userWhite, userBlack);
+        GameData actual = test.create(null, gameID);
+        assertNull(actual);
+    }
+
+    @Test
+    void posUpdateGame(){
+        test.create(gameName, gameID);
+        GameData actual = test.update(gameID, "BLACK", userBlack);
+        assertEquals(new GameData(gameID, null, userBlack, null, gameName), actual);
+    }
+    @Test
+    void negUpdateGame() {
+        test.create(gameName, gameID);
+        GameData actual = test.update(2291, "BLACK", userBlack);
         assertNull(actual);
     }
 
 
     @Test
     void posGetGameList() {
+        test.create(gameName, gameID);
+        HashSet<GameData> actual = test.getGameList();
+        assertNotNull(actual);
     }
     @Test
     void negGetGameList() {
+        int actual = test.getGameList().size();
+        assertEquals(0, actual);
     }
 
     @Test
@@ -67,6 +86,9 @@ class MySQLGameDAOTest {
     }
     @Test
     void negGetGame() {
+        test.create(gameName, gameID);
+        GameData actual = test.getGame(4567);
+        assertNull(actual);
     }
 
 

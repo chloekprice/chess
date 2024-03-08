@@ -21,7 +21,7 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public GameData create(String gameName, int id) {
-        if (gameName==null || id ==0) {
+        if (gameName==null) {
             return null;
         }
 
@@ -34,27 +34,35 @@ public class MySQLGameDAO implements GameDAO {
     }
 
     @Override
-    public GameData create(String gameName, int id, String whiteUsername, String blackUsername) {
-        if (gameName==null || id ==0) {
+    public GameData update(int id, String color, String user) {
+        String updateGameDatabase;
+        if (color.equals("BLACK")) {
+            updateGameDatabase = "UPDATE games SET blackUsername=? WHERE gameID=?;";
+        } else {
+            updateGameDatabase = "UPDATE games SET whiteUsername=? WHERE gameID=?;";
+        }
+        try {
+            executeUpdateStatement(updateGameDatabase, user, id);
+            return getGame(id);
+        } catch (Exception e) {
             return null;
         }
+    }
 
-        String insertAuthDatabase = "INSERT INTO games (gameName, whiteUsername, blackUsername, gameID) VALUES (?, ?, ?, ?);";
+
+    @Override
+    public HashSet<GameData> getGameList() {
+        String selectTableDatabase = "SELECT gameID, whiteUsername, blackUsername, gameName FROM games;";
         try {
-            return executeFullInsertStatement(insertAuthDatabase, gameName, whiteUsername, blackUsername, id);
+            return executeListStatement(selectTableDatabase);
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    public HashSet<GameData> getGameList() {
-        return null;
-    }
-
-    @Override
     public GameData getGame(int id) {
-        String selectAuthDatabase = "SELECT (whiteUsername, blackUsername, gameName) FROM games WHERE gameID = ?;";
+        String selectAuthDatabase = "SELECT whiteUsername, blackUsername, gameName FROM games WHERE gameID = ?;";
         try {
             return executeSelectStatement(selectAuthDatabase, id);
         } catch (Exception e) {
@@ -88,23 +96,20 @@ public class MySQLGameDAO implements GameDAO {
             return null;
         }
     }
-    private GameData executeFullInsertStatement(String sql, String gameName, String whiteUser, String blackUser, int gameID) throws DataAccessException {
+
+    private void executeUpdateStatement(String sql, String user, int gameID) throws DataAccessException {
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, gameName);
-            stmt.setString(2, whiteUser);
-            stmt.setString(3, blackUser);
-            stmt.setInt(4, gameID);
+            stmt.setString(1, user);
+            stmt.setInt(2, gameID);
 
             if (stmt.executeUpdate() == 1) {
-                return new GameData(gameID, whiteUser, blackUser, null, gameName);
-            } else {
-                return null;
+                return;
             }
         } catch (SQLException ex) {
-            return null;
+            return;
         }
-
     }
+
     private GameData executeSelectStatement(String sql, int gameID) throws DataAccessException {
         try(PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, gameID);
@@ -119,15 +124,30 @@ public class MySQLGameDAO implements GameDAO {
         }
         return null;
     }
-    private GameData readGame(ResultSet rs, int id) throws SQLException {
-        if (true) {
-            String white = rs.getString("whiteUsername");
-            String black = rs.getString("blackUsername");
-            String gameName = rs.getString("gameName");
-            return new GameData(id, white, black, null, gameName);
-        } else {
-            String gameName = rs.getString("gameName");
-            return new GameData(id, null, null, null, gameName);
+    private HashSet<GameData> executeListStatement(String sql) throws DataAccessException {
+        HashSet<GameData> gamesList = new HashSet<GameData>();
+        try(PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
+            try (var rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    gamesList.add(readList(rs));
+                }
+                return gamesList;
+            }
+        } catch(SQLException ex) {
+            return null;
         }
+    }
+    private GameData readGame(ResultSet rs, int id) throws SQLException {
+        String gameName = rs.getString("gameName");
+        String black = rs.getString("blackUsername");
+        String white = rs.getString("whiteUsername");
+        return new GameData(id, white, black, null, gameName);
+    }
+    private GameData readList(ResultSet rs) throws SQLException {
+        int id = rs.getInt("gameID");
+        String gameName = rs.getString("gameName");
+        String black = rs.getString("blackUsername");
+        String white = rs.getString("whiteUsername");
+        return new GameData(id, white, black, null, gameName);
     }
 }

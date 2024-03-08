@@ -21,13 +21,14 @@ public class MemoryGameDAO implements GameDAO {
         games.put(gameID, newGame);
         return newGame;
     }
-    public GameData create(String gameName, int id, String whiteUserName, String blackUserName) {
-        Integer gameID = id;
-        ChessGame newChessGame = new ChessGame();
-        GameData newGame = new GameData(id, whiteUserName, blackUserName, newChessGame, gameName);
-        games.put(gameID, newGame);
-        return newGame;
+
+    @Override
+    public GameData update(int id, String color, String user) {
+        GameData updateGame = games.get(id);
+        updateGame.updateGame(color, user);
+        return updateGame;
     }
+
     public HashSet<GameData> getGameList() {
         HashSet<GameData> gameList = new HashSet<GameData>();
         games.forEach((key, value)

@@ -56,10 +56,13 @@ public class GameData {
         if (other.whiteUsername == null && this.whiteUsername == null){
             if (this.blackUsername == null && other.blackUsername == null) {
                 return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName()));
+            } else if (this.blackUsername != null && other.blackUsername != null) {
+                return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName()) && other.getBlackUsername().equals(this.blackUsername));
             }
-            return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName())  && other.getWhiteUsername().equals(this.blackUsername));
         } else if (other.whiteUsername != null && this.whiteUsername != null && this.blackUsername != null && other.blackUsername != null) {
-            return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName()) && other.whiteUsername.equals(this.whiteUsername) && other.getWhiteUsername().equals(this.blackUsername));
+            return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName()) && other.whiteUsername.equals(this.whiteUsername) && other.getBlackUsername().equals(this.blackUsername));
+        } else if (other.whiteUsername != null && this.whiteUsername != null) {
+            return (other.getGameID() == this.getGameID() && other.getName().equals(this.getName()) && other.whiteUsername.equals(this.whiteUsername) );
         }
         return false;
     }
@@ -70,10 +73,8 @@ public class GameData {
             return (this.whiteUsername.hashCode() * this.blackUsername.hashCode() * this.gameName.hashCode() * gameID);
         } else if (this.blackUsername != null) {
             return (this.blackUsername.hashCode() * this.gameName.hashCode() * gameID);
-
         } else if (this.whiteUsername != null) {
             return (this.whiteUsername.hashCode()  * this.gameName.hashCode() * gameID);
-
         }
         return (this.gameName.hashCode() * gameID);
     }

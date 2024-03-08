@@ -154,7 +154,7 @@ public class ChessService {
                 result.setMessage("Error: already taken");
                 return result;
             }
-            game.updateGame(playerColor, authData.getUsername());
+            gameDataAccess.update(gameID,playerColor, authData.getUsername());
             result.setGameData(game);
             return result;
         } else {
