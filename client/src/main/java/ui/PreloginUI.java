@@ -32,7 +32,7 @@ public class PreloginUI {
                         var email = scanner.next();
 
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.printf("is %s, %s, %s correct?\n", username, password, email);
+                        System.out.println(client.register(username, password, email));
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println("Please provide all of required information.");
@@ -43,8 +43,10 @@ public class PreloginUI {
                         var username = scanner.next();
                         var password = scanner.next();
 
-                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.printf("%s, %s is now logged in\n", username, password);
+//                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+//                        System.out.printf("%s, %s is now logged in\n", username, password);
+
+                        client.setState(StateOfSystem.SIGNEDIN);
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println("Please provide all of required information.");

@@ -1,4 +1,3 @@
-import chess.*;
 import ui.ChessClient;
 import ui.PreloginUI;
 import ui.StateOfSystem;

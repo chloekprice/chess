@@ -1,6 +1,8 @@
 package ui;
 
 import com.google.gson.Gson;
+import exception.ResponseException;
+import server.ResultInfo;
 
 import java.io.*;
 import java.net.*;
@@ -13,30 +15,26 @@ public class ServerFacade {
         serverUrl = url;
     }
 
+    public ResultInfo registerUser(String username, String password, String email) throws ResponseException {
+        var path = "/user";
+        return this.makeRequest("POST", path, new User(username, password, email));
+    }
 
-//    public Pet[] listPets() throws Exception {
-//        var path = "/pet";
-//        record listPetResponse(Pet[] pet) {
-//        }
-//        var response = this.makeRequest("GET", path, null, listPetResponse.class);
-//        return response.pet();
-//    }
+    private <T> T makeRequest(String method, String path, Object request) throws ResponseException {
+        try {
+            URL url = (new URI(serverUrl + path)).toURL();
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod(method);
+            http.setDoOutput(true);
 
-//    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
-//        try {
-//            URL url = (new URI(serverUrl + path)).toURL();
-//            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-//            http.setRequestMethod(method);
-//            http.setDoOutput(true);
-//
-//            writeBody(request, http);
-//            http.connect();
-//            throwIfNotSuccessful(http);
-//            return readBody(http, responseClass);
-//        } catch (Exception ex) {
-//            throw new ResponseException(500, ex.getMessage());
-//        }
-//    }
+            writeBody(request, http);
+            http.connect();
+            throwIfNotSuccessful(http);
+            return readBody(http, (Class<T>) ResultInfo.class);
+        } catch (Exception ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
 
 
     private static void writeBody(Object request, HttpURLConnection http) throws IOException {
@@ -49,12 +47,12 @@ public class ServerFacade {
         }
     }
 
-//    private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
-//        var status = http.getResponseCode();
-//        if (!isSuccessful(status)) {
-//            throw new ResponseException(status, "failure: " + status);
-//        }
-//    }
+    private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
+        var status = http.getResponseCode();
+        if (!isSuccessful(status)) {
+            throw new ResponseException(status, "failure: " + status);
+        }
+    }
 
     private static <T> T readBody(HttpURLConnection http, Class<T> responseClass) throws IOException {
         T response = null;

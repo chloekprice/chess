@@ -7,7 +7,6 @@ import spark.*;
 import service.ChessService;
 
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import static java.lang.Integer.parseInt;
