@@ -6,36 +6,95 @@ import java.util.Scanner;
 import static ui.EscapeSequences.*;
 
 public class PreloginUI {
+    ChessClient client;
+    public PreloginUI(ChessClient client) {
+        this.client = client;
 
-    public PreloginUI() {
         System.out.print(SET_TEXT_COLOR_BLUE);
         System.out.print(SET_TEXT_BOLD);
         System.out.println("♕ Welcome to 240 Chess! ♕");
-        System.out.print(SET_TEXT_COLOR_WHITE);
-        System.out.println("Please type \"Help\" to begin.");
+        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+        System.out.println("Please type \"help\" to begin.");
     }
 
     public void run() {
+        inputIndicator();
         Scanner scanner = new Scanner(System.in);
         var result = "";
-        while (!result.equals("quit")) {
-            printPrompt();
-            String line = scanner.nextLine();
+        if (scanner.hasNext()) {
+            result = scanner.next();
+            switch (result) {
+                case "help" -> printPrompt();
+                case "register" -> {
+                    try {
+                        var username = scanner.next();
+                        var password = scanner.next();
+                        var email = scanner.next();
 
-            try {
-//                result = client.eval(line);
-//                System.out.print(BLUE + result);
-            } catch (Throwable e) {
-                var msg = e.toString();
-                System.out.print(msg);
+                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                        System.out.printf("is %s, %s, %s correct?\n", username, password, email);
+                    } catch (Exception e) {
+                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                        System.out.println("Please provide all of required information.");
+                    }
+                }
+                case "login" -> {
+                    try {
+                        var username = scanner.next();
+                        var password = scanner.next();
+
+                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                        System.out.printf("%s, %s is now logged in\n", username, password);
+                    } catch (Exception e) {
+                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                        System.out.println("Please provide all of required information.");
+                    }
+                }
+                case "quit" -> {
+                    client.setState(StateOfSystem.QUIT);
+                    System.out.println(SET_TEXT_COLOR_RED);
+                    System.out.print("bye bye bye- bye! bye!");
+                }
+                default -> {
+                    System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                    System.out.println("Sorry, that was not valid. Try typing \"help\".");
+                    inputIndicator();
+                }
             }
         }
-        System.out.println();
     }
 
 
     private void printPrompt() {
-//        System.out.print("\n" + RESET + ">>> " + GREEN);
+        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_BOLD);
+        System.out.print("   register <username> <password> <email> ");
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
+        System.out.println("- to create an account");
+
+        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_BOLD);
+        System.out.print("   login <username> <password> ");
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
+        System.out.println("- to play chess");
+
+        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_BOLD);
+        System.out.print("   quit ");
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
+        System.out.println("- to stop playing chess");
+
+        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_BOLD);
+        System.out.print("   help ");
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
+        System.out.println("- to get a list of possible commands");
+    }
+
+    private void inputIndicator() {
+        System.out.println();
+        System.out.print(SET_TEXT_COLOR_BLACK);
+        System.out.print("[LOGGED OUT] >>> ");
     }
 
 }

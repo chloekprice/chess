@@ -2,6 +2,8 @@ package ui;
 
 public enum StateOfSystem {
     SIGNEDOUT,
-    SIGNEDIN
+    SIGNEDIN,
+    GAMEPLAY,
+    QUIT
 }
 
