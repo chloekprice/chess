@@ -53,6 +53,9 @@ public class ResultInfo {
     public void setMessage(String message) {
         this.message = message;
     }
+    public String getMessage() {
+        return this.message;
+    }
 
     public void setStatus(int status_code) {
         this.status = status_code;

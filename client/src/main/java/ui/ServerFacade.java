@@ -52,6 +52,16 @@ public class ServerFacade {
         }
     }
 
+//    private static void writeHeader(String auth, HttpURLConnection http) throws IOException {
+//        if (auth != null) {
+//            http.he
+//            String reqData = new Gson().toJson(request);
+//            try (OutputStream reqBody = http.getOutputStream()) {
+//                reqBody.write(reqData.getBytes());
+//            }
+//        }
+//    }
+
     private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
         var status = http.getResponseCode();
         if (!isSuccessful(status)) {

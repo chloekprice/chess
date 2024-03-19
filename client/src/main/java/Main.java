@@ -21,8 +21,8 @@ public class Main {
                     return;
                 }
             }
+            PostloginUI doingStuff = new PostloginUI(client);
             while (client.getState() == StateOfSystem.SIGNEDIN) {
-                PostloginUI doingStuff = new PostloginUI(client);
                 doingStuff.run();
             }
             if (client.getState() == StateOfSystem.QUIT) {

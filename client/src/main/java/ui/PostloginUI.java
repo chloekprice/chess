@@ -39,9 +39,6 @@ public class PostloginUI {
                         var username = scanner.next();
                         var password = scanner.next();
 
-//                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-//                        System.out.printf("%s, %s is now logged in\n", username, password);
-
                         client.setState(StateOfSystem.SIGNEDIN);
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
@@ -71,21 +68,33 @@ public class PostloginUI {
     private void printPrompt() {
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(SET_TEXT_BOLD);
-        System.out.print("   register <username> <password> <email> ");
+        System.out.print("   create <name> ");
         System.out.print(SET_TEXT_COLOR_MAGENTA);
-        System.out.println("- to create an account");
+        System.out.println("- to create a new game");
 
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(SET_TEXT_BOLD);
-        System.out.print("   login <username> <password> ");
+        System.out.print("   list ");
         System.out.print(SET_TEXT_COLOR_MAGENTA);
-        System.out.println("- to play chess");
+        System.out.println("- to get list of current games");
+
+        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_BOLD);
+        System.out.print("   observe <id> ");
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
+        System.out.println("- to watch a game");
+
+        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_BOLD);
+        System.out.print("   logout ");
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
+        System.out.println("- to end session");
 
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(SET_TEXT_BOLD);
         System.out.print("   quit ");
         System.out.print(SET_TEXT_COLOR_MAGENTA);
-        System.out.println("- to stop playing chess");
+        System.out.println("- to end playing chess");
 
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(SET_TEXT_BOLD);
@@ -97,6 +106,8 @@ public class PostloginUI {
     private void inputIndicator() {
         System.out.println();
         System.out.print(SET_TEXT_COLOR_BLACK);
-        System.out.print("[LOGGED OUT] >>> ");
+        System.out.print("[LOGGED IN AS ");
+        System.out.print(client.getVisitorName());
+        System.out.print("] >>> ");
     }
 }

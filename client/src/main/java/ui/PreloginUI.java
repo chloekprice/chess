@@ -35,7 +35,7 @@ public class PreloginUI {
                         System.out.println(client.register(username, password, email));
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println("Please provide all of required information.");
+                        System.out.println(e);
                     }
                 }
                 case "login" -> {
@@ -47,7 +47,7 @@ public class PreloginUI {
                         System.out.println(client.signIn(username, password));
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println("Please provide all of required information.");
+                        System.out.println(e);
                     }
                 }
                 case "quit" -> {
