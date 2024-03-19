@@ -29,8 +29,12 @@ public class ChessClient {
         ResultInfo result = new ResultInfo();
         try {
             result = server.registerUser(username,password,email);
-            setState(StateOfSystem.SIGNEDIN);
-            return "logged in as " + username;
+            if (result.getStatus() == 200) {
+                setState(StateOfSystem.SIGNEDIN);
+                return "logged in as " + username;
+            } else {
+                return ("Error: " + result.getStatus());
+            }
         } catch (Exception e) {
             throw new ResponseException(result.getStatus(), "Error: bad request");
         }
