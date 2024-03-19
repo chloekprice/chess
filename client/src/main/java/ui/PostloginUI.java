@@ -1,20 +1,16 @@
 package ui;
 
-
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
-public class PreloginUI {
+public class PostloginUI {
     ChessClient client;
-    public PreloginUI(ChessClient client) {
+    public PostloginUI(ChessClient client) {
         this.client = client;
 
-        System.out.print(SET_TEXT_COLOR_BLUE);
-        System.out.print(SET_TEXT_BOLD);
-        System.out.println("♕ Welcome to 240 Chess! ♕");
         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-        System.out.println("Please type \"help\" to begin.");
+        System.out.println("Please type \"help\" to see options.");
     }
 
     public void run() {
@@ -25,30 +21,37 @@ public class PreloginUI {
             result = scanner.next();
             switch (result) {
                 case "help" -> printPrompt();
-                case "register" -> {
+                case "logout" -> {
                     try {
                         var username = scanner.next();
                         var password = scanner.next();
                         var email = scanner.next();
 
-                        System.out.print(SET_TEXT_COLOR_BLUE);
+                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println(client.register(username, password, email));
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println("Please provide all of required information.");
                     }
                 }
-                case "login" -> {
+                case "create" -> {
                     try {
                         var username = scanner.next();
                         var password = scanner.next();
 
-                        System.out.print(SET_TEXT_COLOR_BLUE);
-                        System.out.println(client.signIn(username, password));
+//                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+//                        System.out.printf("%s, %s is now logged in\n", username, password);
+
+                        client.setState(StateOfSystem.SIGNEDIN);
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println("Please provide all of required information.");
                     }
+                }
+                case "join" -> {
+                    client.setState(StateOfSystem.QUIT);
+                    System.out.println(SET_TEXT_COLOR_RED);
+                    System.out.print("bye bye bye- bye! bye!");
                 }
                 case "quit" -> {
                     client.setState(StateOfSystem.QUIT);
@@ -96,5 +99,4 @@ public class PreloginUI {
         System.out.print(SET_TEXT_COLOR_BLACK);
         System.out.print("[LOGGED OUT] >>> ");
     }
-
 }

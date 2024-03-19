@@ -1,4 +1,5 @@
 import ui.ChessClient;
+import ui.PostloginUI;
 import ui.PreloginUI;
 import ui.StateOfSystem;
 
@@ -21,8 +22,8 @@ public class Main {
                 }
             }
             while (client.getState() == StateOfSystem.SIGNEDIN) {
-                // TO-DO
-                int x = 0;
+                PostloginUI doingStuff = new PostloginUI(client);
+                doingStuff.run();
             }
             if (client.getState() == StateOfSystem.QUIT) {
                 return;

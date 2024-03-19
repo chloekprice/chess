@@ -39,28 +39,21 @@ public class ChessClient {
             throw new ResponseException(result.getStatus(), "Error: bad request");
         }
     }
-//    public String signIn(String... params) throws ResponseException {
-//        if (params.length >= 1) {
-//            state = State.SIGNEDIN;
-//            visitorName = String.join("-", params);
-//            ws = new WebSocketFacade(serverUrl, notificationHandler);
-//            ws.enterPetShop(visitorName);
-//            return String.format("You signed in as %s.", visitorName);
-//        }
-//        throw new ResponseException(400, "Expected: <yourname>");
-//    }
-//
-//    public String rescuePet(String... params) throws ResponseException {
-//        assertSignedIn();
-//        if (params.length >= 2) {
-//            var name = params[0];
-//            var type = PetType.valueOf(params[1].toUpperCase());
-//            var pet = new Pet(0, name, type);
-//            pet = server.addPet(pet);
-//            return String.format("You rescued %s. Assigned ID: %d", pet.name(), pet.id());
-//        }
-//        throw new ResponseException(400, "Expected: <name> <CAT|DOG|FROG>");
-//    }
+    public String signIn(String username, String password) throws ResponseException {
+        ResultInfo result = new ResultInfo();
+        try {
+            result = server.loginUser(username, password);
+            if (result.getStatus() == 200) {
+                setState(StateOfSystem.SIGNEDIN);
+                return "logged in as " + username;
+            } else {
+                return ("Error: " + result.getStatus());
+            }
+        } catch (Exception e) {
+            throw new ResponseException(result.getStatus(), "Error: bad request");
+        }
+    }
+
 //
 //    public String listPets() throws ResponseException {
 //        assertSignedIn();
