@@ -10,6 +10,7 @@ import java.net.*;
 public class ServerFacade {
 
     private final String serverUrl;
+    private String authToken;
 
     public ServerFacade(String url) {
         serverUrl = url;
@@ -25,14 +26,23 @@ public class ServerFacade {
         return this.makeRequest("POST", path, new User(username, password));
     }
 
+    public ResultInfo logoutUser(String authToken) throws ResponseException{
+        var path = "/session";
+        this.authToken = authToken;
+        return this.makeRequest("DELETE", path, null);
+    }
+
     private <T> T makeRequest(String method, String path, Object request) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
+            http.addRequestProperty("authorization", authToken);
 
-            writeBody(request, http);
+            if (request != null) {
+                writeBody(request, http);
+            }
             http.connect();
             throwIfNotSuccessful(http);
             return readBody(http, (Class<T>) ResultInfo.class);
@@ -51,16 +61,6 @@ public class ServerFacade {
             }
         }
     }
-
-//    private static void writeHeader(String auth, HttpURLConnection http) throws IOException {
-//        if (auth != null) {
-//            http.he
-//            String reqData = new Gson().toJson(request);
-//            try (OutputStream reqBody = http.getOutputStream()) {
-//                reqBody.write(reqData.getBytes());
-//            }
-//        }
-//    }
 
     private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
         var status = http.getResponseCode();

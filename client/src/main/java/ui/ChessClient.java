@@ -62,22 +62,22 @@ public class ChessClient {
             throw new ResponseException(result.getStatus(), result.getMessage());
         }
     }
-//    public String logout() throws ResponseException {
-//        ResultInfo result = new ResultInfo();
-//        try {
-//            result = server.logoutUser(authToken);
-//            if (result.getStatus() == 200) {
-//                this.authToken = null;
-//                setState(StateOfSystem.SIGNEDOUT);
-//                String user = this.visitorName;
-//                this.visitorName = null;
-//                return "logged out " + user;
-//            } else {
-//                return (result.getStatus() + ": " + result.getMessage());
-//            }
-//        } catch (Exception e) {
-//            throw new ResponseException(result.getStatus(), result.getMessage());
-//        }
-//    }
+    public String logout() throws ResponseException {
+        ResultInfo result = new ResultInfo();
+        try {
+            result = server.logoutUser(authToken);
+            if (result.getStatus() == 200) {
+                this.authToken = null;
+                setState(StateOfSystem.SIGNEDOUT);
+                String user = this.visitorName;
+                this.visitorName = null;
+                return "logged out " + user + "\n";
+            } else {
+                return (result.getStatus() + ": " + result.getMessage());
+            }
+        } catch (Exception e) {
+            throw new ResponseException(result.getStatus(), result.getMessage());
+        }
+    }
 
 }

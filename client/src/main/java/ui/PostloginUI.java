@@ -23,12 +23,8 @@ public class PostloginUI {
                 case "help" -> printPrompt();
                 case "logout" -> {
                     try {
-                        var username = scanner.next();
-                        var password = scanner.next();
-                        var email = scanner.next();
-
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println(client.register(username, password, email));
+                        System.out.println(client.logout());
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println("Please provide all of required information.");
