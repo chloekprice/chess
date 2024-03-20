@@ -84,11 +84,7 @@ public class ChessClient {
         try {
             result = server.create(gameName, authToken);
             if (result.getStatus() == 200) {
-                this.authToken = null;
-                setState(StateOfSystem.SIGNEDOUT);
-                String user = this.visitorName;
-                this.visitorName = null;
-                return "logged out " + user + "\n";
+                return "the chess game, " + result.getGameName() + ", has been created\n";
             } else {
                 return (result.getStatus() + ": " + result.getMessage());
             }

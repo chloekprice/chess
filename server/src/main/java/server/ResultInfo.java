@@ -57,6 +57,9 @@ public class ResultInfo {
         return this.message;
     }
 
+    public String getGameName() {
+        return this.gameName;
+    }
     public void setStatus(int status_code) {
         this.status = status_code;
     }

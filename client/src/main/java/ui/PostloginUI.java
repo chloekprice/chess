@@ -32,10 +32,10 @@ public class PostloginUI {
                 }
                 case "create" -> {
                     try {
-                        var username = scanner.next();
-                        var password = scanner.next();
+                        var gameName = scanner.next();
 
-                        client.setState(StateOfSystem.SIGNEDIN);
+                        System.out.print(SET_TEXT_COLOR_BLUE);
+                        System.out.println(client.createGame(gameName));
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println("Please provide all of required information.");
