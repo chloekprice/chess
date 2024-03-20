@@ -41,6 +41,16 @@ public class PostloginUI {
                         System.out.println("Please provide all of required information.");
                     }
                 }
+                case "observe" -> {
+                    client.setState(StateOfSystem.QUIT);
+                    System.out.println(SET_TEXT_COLOR_RED);
+                    System.out.print("bye bye bye- bye! bye!");
+                }
+                case "list" -> {
+                    client.setState(StateOfSystem.QUIT);
+                    System.out.println(SET_TEXT_COLOR_RED);
+                    System.out.print("bye bye bye- bye! bye!");
+                }
                 case "join" -> {
                     client.setState(StateOfSystem.QUIT);
                     System.out.println(SET_TEXT_COLOR_RED);
@@ -62,6 +72,7 @@ public class PostloginUI {
 
 
     private void printPrompt() {
+        System.out.println();
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(SET_TEXT_BOLD);
         System.out.print("   create <name> ");
@@ -73,6 +84,12 @@ public class PostloginUI {
         System.out.print("   list ");
         System.out.print(SET_TEXT_COLOR_MAGENTA);
         System.out.println("- to get list of current games");
+
+        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_BOLD);
+        System.out.print("   join <id> <BLACK|WHITE|empty> ");
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
+        System.out.println("- to enter a chess match");
 
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(SET_TEXT_BOLD);

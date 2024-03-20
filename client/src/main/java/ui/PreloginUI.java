@@ -66,6 +66,7 @@ public class PreloginUI {
 
 
     private void printPrompt() {
+        System.out.println();
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(SET_TEXT_BOLD);
         System.out.print("   register <username> <password> <email> ");
