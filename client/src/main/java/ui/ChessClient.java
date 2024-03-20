@@ -79,5 +79,22 @@ public class ChessClient {
             throw new ResponseException(result.getStatus(), result.getMessage());
         }
     }
+    public String createGame(String gameName) throws ResponseException {
+        ResultInfo result = new ResultInfo();
+        try {
+            result = server.create(gameName, authToken);
+            if (result.getStatus() == 200) {
+                this.authToken = null;
+                setState(StateOfSystem.SIGNEDOUT);
+                String user = this.visitorName;
+                this.visitorName = null;
+                return "logged out " + user + "\n";
+            } else {
+                return (result.getStatus() + ": " + result.getMessage());
+            }
+        } catch (Exception e) {
+            throw new ResponseException(result.getStatus(), result.getMessage());
+        }
+    }
 
 }

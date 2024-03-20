@@ -31,6 +31,11 @@ public class ServerFacade {
         this.authToken = authToken;
         return this.makeRequest("DELETE", path, null);
     }
+    public ResultInfo create(String gameName, String authToken) throws ResponseException{
+        var path = "/session";
+        this.authToken = authToken;
+        return this.makeRequest("DELETE", path, null);
+    }
 
     private <T> T makeRequest(String method, String path, Object request) throws ResponseException {
         try {
