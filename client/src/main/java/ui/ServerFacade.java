@@ -36,6 +36,16 @@ public class ServerFacade {
         this.authToken = authToken;
         return this.makeRequest("POST", path, new Game(gameName));
     }
+    public ResultInfo list(String authToken) throws ResponseException{
+        var path = "/game";
+        this.authToken = authToken;
+        return this.makeRequest("GET", path, null);
+    }
+    public ResultInfo join(int gameID, String playerColor, String authToken) throws ResponseException{
+        var path = "/game";
+        this.authToken = authToken;
+        return this.makeRequest("PUT", path, new Game(null, gameID, playerColor));
+    }
 
     private <T> T makeRequest(String method, String path, Object request) throws ResponseException {
         try {

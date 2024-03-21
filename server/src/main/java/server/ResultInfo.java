@@ -53,13 +53,10 @@ public class ResultInfo {
     public void setMessage(String message) {
         this.message = message;
     }
-    public String getMessage() {
-        return this.message;
+    public void setGames(HashSet<GameData> games) {
+        this.games = games;
     }
 
-    public String getGameName() {
-        return this.gameName;
-    }
     public void setStatus(int status_code) {
         this.status = status_code;
     }
@@ -75,7 +72,13 @@ public class ResultInfo {
     public int getGameID() {
         return gameID;
     }
-    public void setGames(HashSet<GameData> games) {
-        this.games = games;
+    public String getGameName() {
+        return this.gameName;
+    }
+    public String getMessage() {
+        return this.message;
+    }
+    public HashSet<GameData> getGamesList(){
+        return this.games;
     }
 }

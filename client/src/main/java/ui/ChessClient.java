@@ -1,6 +1,7 @@
 package ui;
 
 import exception.ResponseException;
+import model.GameData;
 import server.ResultInfo;
 
 
@@ -85,6 +86,62 @@ public class ChessClient {
             result = server.create(gameName, authToken);
             if (result.getStatus() == 200) {
                 return "the chess game, " + result.getGameName() + ", has been created\n";
+            } else {
+                return (result.getStatus() + ": " + result.getMessage());
+            }
+        } catch (Exception e) {
+            throw new ResponseException(result.getStatus(), result.getMessage());
+        }
+    }
+    public String listGames() throws ResponseException {
+        ResultInfo result = new ResultInfo();
+        try {
+            result = server.list(authToken);
+            if (result.getStatus() == 200) {
+                StringBuilder games;
+                int num = 1;
+                games = new StringBuilder("\n");
+
+                for (GameData game : result.getGamesList()) {
+                    games.append(num);
+                    games.append(". ");
+                    games.append(game.getGameID()).append(": ").append(game.getName()).append("-- ");
+                    games.append("WHITE USER: ").append(game.getWhiteUsername()).append(" ");
+                    games.append("BLACK USER: ").append(game.getBlackUsername()).append(" ");
+                    games.append("\n");
+
+                    num += 1;
+                }
+                return String.valueOf(games);
+            } else {
+                return (result.getStatus() + ": " + result.getMessage());
+            }
+        } catch (Exception e) {
+            throw new ResponseException(result.getStatus(), result.getMessage());
+        }
+    }
+    public String joinGame(int gameID, String playerColor) throws ResponseException {
+        ResultInfo result = new ResultInfo();
+        try {
+            if (playerColor == null) {
+                return observeGame(gameID);
+            }
+            result = server.join(gameID, playerColor, authToken);
+            if (result.getStatus() == 200) {
+                return "you have joined " + result.getGameName() + "\n";
+            } else {
+                return (result.getStatus() + ": " + result.getMessage());
+            }
+        } catch (Exception e) {
+            throw new ResponseException(result.getStatus(), result.getMessage());
+        }
+    }
+    public String observeGame(int gameID) throws ResponseException {
+        ResultInfo result = new ResultInfo();
+        try {
+            result = server.join(gameID, null, authToken);
+            if (result.getStatus() == 200) {
+                return "now observing " + result.getGameName() + "\n";
             } else {
                 return (result.getStatus() + ": " + result.getMessage());
             }

@@ -31,6 +31,7 @@ public class PreloginUI {
                         var password = scanner.next();
                         var email = scanner.next();
 
+                        System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println(client.register(username, password, email));
                     } catch (Exception e) {
@@ -43,6 +44,7 @@ public class PreloginUI {
                         var username = scanner.next();
                         var password = scanner.next();
 
+                        System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println(client.signIn(username, password));
                     } catch (Exception e) {
@@ -51,14 +53,15 @@ public class PreloginUI {
                     }
                 }
                 case "quit" -> {
-                    client.setState(StateOfSystem.QUIT);
+                    System.out.println();
                     System.out.println(SET_TEXT_COLOR_RED);
                     System.out.print("bye bye bye- bye! bye!");
+                    client.setState(StateOfSystem.QUIT);
                 }
                 default -> {
+                    System.out.println();
                     System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                     System.out.println("Sorry, that was not valid. Try typing \"help\".");
-                    inputIndicator();
                 }
             }
         }

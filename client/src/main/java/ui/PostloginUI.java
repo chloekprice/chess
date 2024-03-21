@@ -2,6 +2,7 @@ package ui;
 
 import java.util.Scanner;
 
+import static java.lang.Integer.parseInt;
 import static ui.EscapeSequences.*;
 
 public class PostloginUI {
@@ -23,6 +24,7 @@ public class PostloginUI {
                 case "help" -> printPrompt();
                 case "logout" -> {
                     try {
+                        System.out.println();
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println(client.logout());
                     } catch (Exception e) {
@@ -34,6 +36,7 @@ public class PostloginUI {
                     try {
                         var gameName = scanner.next();
 
+                        System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println(client.createGame(gameName));
                     } catch (Exception e) {
@@ -42,26 +45,49 @@ public class PostloginUI {
                     }
                 }
                 case "observe" -> {
-                    client.setState(StateOfSystem.QUIT);
-                    System.out.println(SET_TEXT_COLOR_RED);
-                    System.out.print("bye bye bye- bye! bye!");
+                    int gameID = parseInt(scanner.next());
+                    try {
+                        System.out.println();
+                        System.out.print(SET_TEXT_COLOR_RED);
+                        System.out.println(client.observeGame(gameID));
+                        client.setState(StateOfSystem.GAMEPLAY);
+                    } catch (Exception e) {
+                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                        System.out.println("Please provide all of required information.");
+                    }
                 }
                 case "list" -> {
-                    client.setState(StateOfSystem.QUIT);
-                    System.out.println(SET_TEXT_COLOR_RED);
-                    System.out.print("bye bye bye- bye! bye!");
+                    try {
+                        System.out.println();
+                        System.out.print(SET_TEXT_COLOR_BLUE);
+                        System.out.println("here is the list of current chess games:");
+                        System.out.print(SET_TEXT_COLOR_WHITE);
+                        System.out.println(client.listGames());
+                    } catch (Exception e) {
+                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                        System.out.println("Please provide all of required information.");
+                    }
                 }
                 case "join" -> {
-                    client.setState(StateOfSystem.QUIT);
-                    System.out.println(SET_TEXT_COLOR_RED);
-                    System.out.print("bye bye bye- bye! bye!");
-                }
-                case "quit" -> {
-                    client.setState(StateOfSystem.QUIT);
-                    System.out.println(SET_TEXT_COLOR_RED);
-                    System.out.print("bye bye bye- bye! bye!");
+
+                    int gameID = parseInt(scanner.next());
+                    String playerColor = null;
+                    if (scanner.hasNext()) {
+                        playerColor = scanner.next();
+                    }
+
+                    try {
+                        System.out.println();
+                        System.out.print(SET_TEXT_COLOR_BLUE);
+                        System.out.println(client.joinGame(gameID, playerColor));
+                        client.setState(StateOfSystem.GAMEPLAY);
+                    } catch (Exception e) {
+                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                        System.out.println("Please provide all of required information.");
+                    }
                 }
                 default -> {
+                    System.out.println();
                     System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                     System.out.println("Sorry, that was not valid. Try typing \"help\".");
                     inputIndicator();
