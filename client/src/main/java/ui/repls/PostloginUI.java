@@ -132,11 +132,6 @@ public class PostloginUI {
         System.out.print(SET_TEXT_COLOR_MAGENTA);
         System.out.println("- to end session");
 
-        System.out.print(SET_TEXT_COLOR_WHITE);
-        System.out.print(SET_TEXT_BOLD);
-        System.out.print("   quit ");
-        System.out.print(SET_TEXT_COLOR_MAGENTA);
-        System.out.println("- to end playing chess");
 
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(SET_TEXT_BOLD);

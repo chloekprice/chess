@@ -98,9 +98,9 @@ public class ChessClient {
         try {
             result = server.list(authToken);
             if (result.getStatus() == 200) {
-                StringBuilder games;
+
+                StringBuilder games = new StringBuilder("\n");
                 int num = 1;
-                games = new StringBuilder("\n");
 
                 for (GameData game : result.getGamesList()) {
                     games.append(num);
@@ -128,7 +128,7 @@ public class ChessClient {
             }
             result = server.join(gameID, playerColor, authToken);
             if (result.getStatus() == 200) {
-                return "you have joined " + result.getGameName() + "\n";
+                return "joining " + result.getGameName() + "...\n";
             } else {
                 return (result.getStatus() + ": " + result.getMessage());
             }
@@ -141,7 +141,7 @@ public class ChessClient {
         try {
             result = server.join(gameID, null, authToken);
             if (result.getStatus() == 200) {
-                return "now observing " + result.getGameName() + "\n";
+                return "now observing " + result.getGameName() + "...\n";
             } else {
                 return (result.getStatus() + ": " + result.getMessage());
             }
