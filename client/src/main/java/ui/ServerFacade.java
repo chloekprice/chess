@@ -3,6 +3,8 @@ package ui;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import server.ResultInfo;
+import ui.requestBody.Game;
+import ui.requestBody.User;
 
 import java.io.*;
 import java.net.*;

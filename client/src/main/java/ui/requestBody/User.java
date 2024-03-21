@@ -1,4 +1,4 @@
-package ui;
+package ui.requestBody;
 
 import com.google.gson.Gson;
 

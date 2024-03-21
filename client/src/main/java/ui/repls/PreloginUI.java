@@ -1,5 +1,8 @@
-package ui;
+package ui.repls;
 
+
+import ui.ChessClient;
+import ui.StateOfSystem;
 
 import java.util.Scanner;
 

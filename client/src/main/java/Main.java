@@ -1,6 +1,6 @@
 import ui.ChessClient;
-import ui.PostloginUI;
-import ui.PreloginUI;
+import ui.repls.PostloginUI;
+import ui.repls.PreloginUI;
 import ui.StateOfSystem;
 
 public class Main {
