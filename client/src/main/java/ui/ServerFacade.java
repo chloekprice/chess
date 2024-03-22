@@ -49,6 +49,11 @@ public class ServerFacade {
         this.authToken = authToken;
         return this.makeRequest("PUT", path, new Game(null, gameID, playerColor));
     }
+    public ResultInfo clear() throws ResponseException{
+        var path = "/db";
+        this.authToken = authToken;
+        return this.makeRequest("DELETE", path, null);
+    }
 
     private <T> T makeRequest(String method, String path, Object request) throws ResponseException {
         try {
