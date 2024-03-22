@@ -164,9 +164,9 @@ public class GamePlayUI {
         chessBoard.append(SET_BG_COLOR_DARK_GREY);
         chessBoard.append(" B ");
         chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-        chessBoard.append(" Q ");
+        chessBoard.append(" K ");
         chessBoard.append(SET_BG_COLOR_DARK_GREY);
-        chessBoard.append(" k ");
+        chessBoard.append(" Q ");
         chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
         chessBoard.append(" B ");
         chessBoard.append(SET_BG_COLOR_DARK_GREY);
@@ -257,9 +257,9 @@ public class GamePlayUI {
         chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
         chessBoard.append(" b ");
         chessBoard.append(SET_BG_COLOR_DARK_GREY);
-        chessBoard.append(" q ");
-        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
         chessBoard.append(" k ");
+        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
+        chessBoard.append(" q ");
         chessBoard.append(SET_BG_COLOR_DARK_GREY);
         chessBoard.append(" b ");
         chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
