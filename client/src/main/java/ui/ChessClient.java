@@ -11,6 +11,7 @@ public class ChessClient {
     private String authToken = null;
     private final String serverUrl;
     private StateOfSystem state;
+    private ResultInfo data = new ResultInfo();
 
     public ChessClient(String serverUrl) {
         this.server = new ServerFacade(serverUrl);
@@ -30,43 +31,48 @@ public class ChessClient {
         return visitorName;
     }
 
-
+    public ResultInfo getData() {
+        return this.data;
+    }
     public String register(String username, String password, String email) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
             result = server.registerUser(username,password,email);
+            this.data = result;
             if (result.getStatus() == 200) {
                 this.visitorName = username;
                 this.authToken = result.getAuthData().getAuthToken();
                 setState(StateOfSystem.SIGNEDIN);
                 return "logged in as " + username + "\n";
             } else {
-                return (result.getStatus() + ": " + result.getMessage());
+                return (data.getStatus() + ": " + data.getMessage());
             }
         } catch (Exception e) {
-            throw new ResponseException(result.getStatus(), result.getMessage());
+            throw new ResponseException(500, e.getMessage());
         }
     }
     public String signIn(String username, String password) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
             result = server.loginUser(username, password);
+            this.data = result;
             if (result.getStatus() == 200) {
                 this.visitorName = username;
                 this.authToken = result.getAuthData().getAuthToken();
                 setState(StateOfSystem.SIGNEDIN);
                 return "logged in as " + username;
             } else {
-                return (result.getStatus() + ": " + result.getMessage());
+                return (data.getStatus() + ": " + data.getMessage());
             }
         } catch (Exception e) {
-            throw new ResponseException(result.getStatus(), result.getMessage());
+            throw new ResponseException(500, e.getMessage());
         }
     }
     public String logout() throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
             result = server.logoutUser(authToken);
+            this.data = result;
             if (result.getStatus() == 200) {
                 this.authToken = null;
                 setState(StateOfSystem.SIGNEDOUT);
@@ -74,29 +80,31 @@ public class ChessClient {
                 this.visitorName = null;
                 return "logged out " + user + "\n";
             } else {
-                return (result.getStatus() + ": " + result.getMessage());
+                return (data.getStatus() + ": " + data.getMessage());
             }
         } catch (Exception e) {
-            throw new ResponseException(result.getStatus(), result.getMessage());
+            throw new ResponseException(500, e.getMessage());
         }
     }
     public String createGame(String gameName) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
             result = server.create(gameName, authToken);
+            this.data = result;
             if (result.getStatus() == 200) {
                 return "the chess game, " + result.getGameName() + ", has been created\n";
             } else {
-                return (result.getStatus() + ": " + result.getMessage());
+                return (data.getStatus() + ": " + data.getMessage());
             }
         } catch (Exception e) {
-            throw new ResponseException(result.getStatus(), result.getMessage());
+            throw new ResponseException(500, e.getMessage());
         }
     }
     public String listGames() throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
             result = server.list(authToken);
+            this.data = result;
             if (result.getStatus() == 200) {
 
                 StringBuilder games = new StringBuilder("\n");
@@ -114,10 +122,10 @@ public class ChessClient {
                 }
                 return String.valueOf(games);
             } else {
-                return (result.getStatus() + ": " + result.getMessage());
+                return (data.getStatus() + ": " + data.getMessage());
             }
         } catch (Exception e) {
-            throw new ResponseException(result.getStatus(), result.getMessage());
+            throw new ResponseException(500, e.getMessage());
         }
     }
     public String joinGame(int gameID, String playerColor) throws ResponseException {
@@ -127,26 +135,28 @@ public class ChessClient {
                 return observeGame(gameID);
             }
             result = server.join(gameID, playerColor, authToken);
+            this.data = result;
             if (result.getStatus() == 200) {
                 return "joining " + result.getGameName() + "...\n";
             } else {
-                return (result.getStatus() + ": " + result.getMessage());
+                return (data.getStatus() + ": " + data.getMessage());
             }
         } catch (Exception e) {
-            throw new ResponseException(result.getStatus(), result.getMessage());
+            throw new ResponseException(500, e.getMessage());
         }
     }
     public String observeGame(int gameID) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
             result = server.join(gameID, null, authToken);
+            this.data = result;
             if (result.getStatus() == 200) {
                 return "now observing " + result.getGameName() + "...\n";
             } else {
-                return (result.getStatus() + ": " + result.getMessage());
+                return (data.getStatus() + ": " + data.getMessage());
             }
         } catch (Exception e) {
-            throw new ResponseException(result.getStatus(), result.getMessage());
+            throw new ResponseException(500, e.getMessage());
         }
     }
 

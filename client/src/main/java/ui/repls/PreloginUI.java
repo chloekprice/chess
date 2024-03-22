@@ -1,6 +1,7 @@
 package ui.repls;
 
 
+import server.ResultInfo;
 import ui.ChessClient;
 import ui.StateOfSystem;
 
@@ -23,10 +24,10 @@ public class PreloginUI {
     public void run() {
         inputIndicator();
         Scanner scanner = new Scanner(System.in);
-        var result = "";
+        var input = "";
         if (scanner.hasNext()) {
-            result = scanner.next();
-            switch (result) {
+            input = scanner.next();
+            switch (input) {
                 case "help" -> printPrompt();
                 case "register" -> {
                     try {
@@ -38,8 +39,8 @@ public class PreloginUI {
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println(client.register(username, password, email));
                     } catch (Exception e) {
-                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println(e);
+                        System.out.print(SET_TEXT_COLOR_RED);
+                        System.out.println(e.getMessage());
                     }
                 }
                 case "login" -> {
@@ -51,8 +52,8 @@ public class PreloginUI {
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println(client.signIn(username, password));
                     } catch (Exception e) {
-                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println(e);
+                        System.out.print(SET_TEXT_COLOR_RED);
+                        System.out.println(e.getMessage());
                     }
                 }
                 case "quit" -> {

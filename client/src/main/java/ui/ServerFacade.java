@@ -25,7 +25,8 @@ public class ServerFacade {
 
     public ResultInfo loginUser(String username, String password) throws ResponseException{
         var path = "/session";
-        return this.makeRequest("POST", path, new User(username, password));
+        ResultInfo test = this.makeRequest("POST", path, new User(username, password));
+        return test;
     }
 
     public ResultInfo logoutUser(String authToken) throws ResponseException{
@@ -82,7 +83,15 @@ public class ServerFacade {
     private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
         var status = http.getResponseCode();
         if (!isSuccessful(status)) {
-            throw new ResponseException(status, "failure: " + status);
+            if (status == 400) {
+                throw new ResponseException(status, "Error " + status + ": bad request");
+            } else if (status == 401) {
+                throw new ResponseException(status, "Error " + status + ": unauthorized");
+            } else if (status == 403) {
+                throw new ResponseException(status, "Error " + status + ": already taken");
+            } else if (status == 500) {
+                throw new ResponseException(status, "Error " + status + ": something went wrong");
+            }
         }
     }
 

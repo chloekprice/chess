@@ -55,13 +55,13 @@ public class Server {
     }
 
     // test
-    private Object test(Request req, Response res) throws DataAccessException {
+    private Object test(Request req, Response res)  {
         res.status(200);
         return "CS 240 Chess Server Web API";
     }
 
     // register new user
-    private Object registerUser(Request req, Response res) throws DataAccessException {
+    private Object registerUser(Request req, Response res)  {
         ResultInfo result = null;
         HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
         // parse request body
@@ -82,18 +82,25 @@ public class Server {
         }
     }
     // login to existing user
-    private Object login(Request req, Response res) throws DataAccessException {
+    private Object login(Request req, Response res)  {
         HashMap<String, Object> paramsMap = new Gson().fromJson(req.body(), HashMap.class);
         ResultInfo result = null;
         AuthData authData = null;
+        try {
+            // parse request body
+            String username = paramsMap.get("username").toString();
+            String password = paramsMap.get("password").toString();
 
-        // parse request body
-        String username = paramsMap.get("username").toString();
-        String password = paramsMap.get("password").toString();
-
-        result = service.loginHandler(username, password);
-        res.status(result.getStatus());
-        return new Gson().toJson(result);
+            result = service.loginHandler(username, password);
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        } catch (Exception e) {
+            result = new ResultInfo();
+            result.setStatus(400);
+            result.setMessage("Error: bad request");
+            res.status(result.getStatus());
+            return new Gson().toJson(result);
+        }
     }
     // logout of account
     private Object logout(Request req, Response res) throws DataAccessException {
@@ -105,7 +112,7 @@ public class Server {
         return new Gson().toJson(result);
     }
     // create a new game
-    private Object createGame(Request req, Response res) throws DataAccessException {
+    private Object createGame(Request req, Response res) {
         ResultInfo result = null;
         try {
             String authToken = req.headers("authorization");
@@ -125,7 +132,7 @@ public class Server {
         }
     }
     // join an existing game
-    private Object joinGame(Request req, Response res) throws DataAccessException {
+    private Object joinGame(Request req, Response res)  {
         ResultInfo result = null;
         String playerColor = null;
         String authToken = null;
@@ -163,7 +170,7 @@ public class Server {
         }
     }
     // list all available games
-    private Object listGames(Request req, Response res) throws DataAccessException {
+    private Object listGames(Request req, Response res) {
         ResultInfo result = null;
         try {
             String authToken = req.headers("authorization");

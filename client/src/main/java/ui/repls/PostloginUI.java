@@ -31,8 +31,8 @@ public class PostloginUI {
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
                         System.out.println(client.logout());
                     } catch (Exception e) {
-                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println("Please provide all of required information.");
+                        System.out.print(SET_TEXT_COLOR_RED);
+                        System.out.println(e.getMessage());
                     }
                 }
                 case "create" -> {
@@ -43,8 +43,8 @@ public class PostloginUI {
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println(client.createGame(gameName));
                     } catch (Exception e) {
-                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println("Please provide all of required information.");
+                        System.out.print(SET_TEXT_COLOR_RED);
+                        System.out.println(e.getMessage());
                     }
                 }
                 case "observe" -> {
@@ -55,8 +55,8 @@ public class PostloginUI {
                         System.out.println(client.observeGame(gameID));
                         client.setState(StateOfSystem.GAMEPLAY);
                     } catch (Exception e) {
-                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println("Please provide all of required information.");
+                        System.out.print(SET_TEXT_COLOR_RED);
+                        System.out.println(e.getMessage());
                     }
                 }
                 case "list" -> {
@@ -67,8 +67,8 @@ public class PostloginUI {
                         System.out.print(SET_TEXT_COLOR_WHITE);
                         System.out.println(client.listGames());
                     } catch (Exception e) {
-                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println("Please provide all of required information.");
+                        System.out.print(SET_TEXT_COLOR_RED);
+                        System.out.println(e.getMessage());
                     }
                 }
                 case "join" -> {
@@ -85,15 +85,14 @@ public class PostloginUI {
                         System.out.println(client.joinGame(gameID, playerColor));
                         client.setState(StateOfSystem.GAMEPLAY);
                     } catch (Exception e) {
-                        System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println("Please provide all of required information.");
+                        System.out.print(SET_TEXT_COLOR_RED);
+                        System.out.println(e.getMessage());
                     }
                 }
                 default -> {
                     System.out.println();
-                    System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
+                    System.out.print(SET_TEXT_COLOR_RED);
                     System.out.println("Sorry, that was not valid. Try typing \"help\".");
-                    inputIndicator();
                 }
             }
         }

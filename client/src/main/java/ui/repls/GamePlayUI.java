@@ -16,6 +16,7 @@ public class GamePlayUI {
 
     }
     public void printBoard() {
+        System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(whitePOV());
         System.out.println(RESET_BG_COLOR);
         System.out.print(SET_BG_COLOR_BLACK);
