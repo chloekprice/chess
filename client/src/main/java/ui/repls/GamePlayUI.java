@@ -19,10 +19,10 @@ public class GamePlayUI {
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(whitePOV());
         System.out.println(RESET_BG_COLOR);
-        System.out.print(SET_BG_COLOR_BLACK);
         System.out.println("                              ");
         System.out.println(RESET_BG_COLOR);
         System.out.println(blackPOV());
+        System.out.print(RESET_BG_COLOR);
     }
     private String whitePOV() {
         StringBuilder chessBoard = new StringBuilder();
