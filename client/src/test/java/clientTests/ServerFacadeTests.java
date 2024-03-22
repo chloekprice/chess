@@ -110,5 +110,46 @@ public class ServerFacadeTests {
             Assertions.assertNotNull(e);
         }
     }
+    @Test
+    public void posList() throws ResponseException {
+        String authToken = facade.registerUser(user1, pass1, email1).getAuthData().getAuthToken();
+        facade.create(game1, authToken);
+        facade.create(game2, authToken);
+        actual = facade.list(authToken).getStatus();
+        expected = 200;
+        Assertions.assertEquals(actual, expected);
+    }
+
+    @Test
+    public void negList() throws ResponseException {
+        try {
+            facade.list("authToken");
+        } catch (Exception e) {
+            Assertions.assertNotNull(e);
+        }
+    }
+    @Test
+    public void posJoin() throws ResponseException {
+        String authToken = facade.registerUser(user1, pass1, email1).getAuthData().getAuthToken();
+        facade.create(game1, authToken);
+        int game = facade.create(game2, authToken).getGameID();
+        actual = facade.join(game, "WHITE", authToken).getStatus();
+        expected = 200;
+        Assertions.assertEquals(actual, expected);
+    }
+
+    @Test
+    public void negJoin() throws ResponseException {
+        try {
+            String authToken = facade.registerUser(user1, pass1, email1).getAuthData().getAuthToken();
+            facade.create(game1, authToken);
+            int game = facade.create(game2, authToken).getGameID();
+            facade.join(game, "WHITE", authToken);
+            authToken = facade.registerUser(user2, pass2, email2).getAuthData().getAuthToken();
+            facade.join(game, "WHITE", authToken);
+        } catch (Exception e) {
+            Assertions.assertNotNull(e);
+        }
+    }
 
 }
