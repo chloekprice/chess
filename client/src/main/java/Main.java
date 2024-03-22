@@ -28,6 +28,7 @@ public class Main {
             }
             if (client.getState() == StateOfSystem.GAMEPLAY) {
                 GamePlayUI playingDaGame = new GamePlayUI(client);
+                client.setState(StateOfSystem.QUIT);
                 while (client.getState() == StateOfSystem.GAMEPLAY) {
                     playingDaGame.run();
                 }
