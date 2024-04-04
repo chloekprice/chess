@@ -1,5 +1,7 @@
 package server;
 
+import chess.ChessBoard;
+import chess.ChessGame;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
@@ -18,9 +20,10 @@ public class ResultInfo {
     private String authToken;
     private Integer gameID = null;
     private HashSet<GameData> games;
-    String gameName;
-    String whiteUsername;
-    String blackUsername;
+    private String gameName;
+    private String whiteUsername;
+    private String blackUsername;
+    private ChessGame game;
     public ResultInfo() {
         this.authData = null;
         this.gameData = null;
@@ -42,6 +45,7 @@ public class ResultInfo {
         this.gameName = gameData.getName();
         this.whiteUsername = gameData.getWhiteUsername();
         this.blackUsername = gameData.getBlackUsername();
+        this.game = gameData.getGame();
     }
     public void setUserData(UserData userData) {
         this.userData = userData;
@@ -80,5 +84,8 @@ public class ResultInfo {
     }
     public HashSet<GameData> getGamesList(){
         return this.games;
+    }
+    public ChessBoard getChessBoard() {
+        return this.game.getBoard();
     }
 }

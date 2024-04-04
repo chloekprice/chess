@@ -55,6 +55,9 @@ public class GameData {
     public String getName() {
         return this.gameName;
     }
+    public ChessGame getGame() {
+        return this.game;
+    }
 
 
     @Override

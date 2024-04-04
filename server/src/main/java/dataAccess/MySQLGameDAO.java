@@ -25,9 +25,9 @@ public class MySQLGameDAO implements GameDAO {
             return null;
         }
 
-        String insertAuthDatabase = "INSERT INTO games (gameName, gameID) VALUES (?, ?);";
+        String insertGameDatabase = "INSERT INTO games (gameName, gameID) VALUES (?, ?);";
         try {
-            return executeInsertStatement(insertAuthDatabase, gameName, id);
+            return executeInsertStatement(insertGameDatabase, gameName, id);
         } catch (Exception e) {
             return null;
         }
@@ -86,6 +86,7 @@ public class MySQLGameDAO implements GameDAO {
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setString(1, gameName);
             stmt.setInt(2, gameID);
+
 
             if (stmt.executeUpdate() == 1) {
                 return new GameData(gameID, null, null, null, gameName);

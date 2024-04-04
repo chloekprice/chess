@@ -26,6 +26,7 @@ public class GamePlayUI {
                 case "help" -> printPrompt();
                 case "redraw" -> {
                     try {
+                        client.getData().getChessBoard();
                         printBoard();
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
@@ -34,7 +35,7 @@ public class GamePlayUI {
                 }
                 case "leave" -> {
                     try {
-                        client.setState(StateOfSystem.SIGNEDOUT);
+                        client.setState(StateOfSystem.SIGNEDIN);
                         System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println("leaving the game...");
@@ -61,7 +62,7 @@ public class GamePlayUI {
                 case "resign" -> {
                     try {
                         System.out.println();
-                        client.setState(StateOfSystem.SIGNEDOUT);
+                        client.setState(StateOfSystem.SIGNEDIN);
                         System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println("leaving the game...");
