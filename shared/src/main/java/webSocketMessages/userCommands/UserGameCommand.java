@@ -33,6 +33,9 @@ public class UserGameCommand {
     public CommandType getCommandType() {
         return this.commandType;
     }
+    public void setCommandType(CommandType command) {
+        this.commandType = command;
+    }
 
     @Override
     public boolean equals(Object o) {

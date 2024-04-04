@@ -3,6 +3,8 @@ package ui;
 import exception.ResponseException;
 import model.GameData;
 import server.ResultInfo;
+import ui.websockets.NotificationHandler;
+import ui.websockets.WebSocketFacade;
 
 
 public class ChessClient {
@@ -12,10 +14,13 @@ public class ChessClient {
     private final String serverUrl;
     private StateOfSystem state;
     private ResultInfo data = new ResultInfo();
+    private NotificationHandler notificationHandler;
+    private WebSocketFacade ws;
 
-    public ChessClient(String serverUrl) {
+    public ChessClient(String serverUrl, NotificationHandler notificationHandler) {
         this.server = new ServerFacade(serverUrl);
         this.serverUrl = serverUrl;
+        this.notificationHandler = notificationHandler;
         this.state = StateOfSystem.SIGNEDOUT;
     }
 

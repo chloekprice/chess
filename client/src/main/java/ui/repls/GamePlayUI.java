@@ -15,6 +15,11 @@ public class GamePlayUI {
     public void run() {
 
     }
+    public static void inputIndicator() {
+        System.out.println();
+        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print("[GAMEPLAY MODE] >>> ");
+    }
     public void printBoard() {
         System.out.print(SET_TEXT_COLOR_WHITE);
         System.out.print(whitePOV());

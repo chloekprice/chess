@@ -11,6 +11,7 @@ import java.util.Objects;
 public class ServerMessage {
     ServerMessageType serverMessageType;
 
+
     public enum ServerMessageType {
         LOAD_GAME,
         ERROR,
@@ -23,6 +24,9 @@ public class ServerMessage {
 
     public ServerMessageType getServerMessageType() {
         return this.serverMessageType;
+    }
+    public static String getServerMessage() {
+        return "notification\n";
     }
 
     @Override
