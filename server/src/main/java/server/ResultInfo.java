@@ -85,7 +85,7 @@ public class ResultInfo {
     public HashSet<GameData> getGamesList(){
         return this.games;
     }
-    public ChessBoard getChessBoard() {
-        return this.game.getBoard();
+    public ChessGame getGame() {
+        return this.game;
     }
 }

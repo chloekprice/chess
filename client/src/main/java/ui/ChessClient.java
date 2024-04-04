@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessGame;
 import exception.ResponseException;
 import model.GameData;
 import server.ResultInfo;
@@ -16,11 +17,13 @@ public class ChessClient {
     private ResultInfo data = new ResultInfo();
     private NotificationHandler notificationHandler;
     private WebSocketFacade ws;
+    private ChessGame game;
 
     public ChessClient(String serverUrl, NotificationHandler notificationHandler) {
         this.server = new ServerFacade(serverUrl);
         this.serverUrl = serverUrl;
         this.notificationHandler = notificationHandler;
+        this.game = null;
         this.state = StateOfSystem.SIGNEDOUT;
     }
 
@@ -48,6 +51,7 @@ public class ChessClient {
                 this.visitorName = username;
                 this.authToken = result.getAuthData().getAuthToken();
                 setState(StateOfSystem.SIGNEDIN);
+                ws = new WebSocketFacade(serverUrl, notificationHandler);
                 return "logged in as " + username + "\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -65,6 +69,7 @@ public class ChessClient {
                 this.visitorName = username;
                 this.authToken = result.getAuthData().getAuthToken();
                 setState(StateOfSystem.SIGNEDIN);
+                ws = new WebSocketFacade(serverUrl, notificationHandler);
                 return "logged in as " + username;
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -142,6 +147,8 @@ public class ChessClient {
             result = server.join(gameID, playerColor, authToken);
             this.data = result;
             if (result.getStatus() == 200) {
+                game = data.getGame();
+                ws.joinChessGame(authToken);
                 return "joining " + result.getGameName() + "...\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -163,6 +170,9 @@ public class ChessClient {
         } catch (Exception e) {
             throw new ResponseException(500, e.getMessage());
         }
+    }
+    public ChessGame redraw() throws ResponseException {
+       return game;
     }
 
 }

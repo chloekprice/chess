@@ -1,5 +1,6 @@
 package ui.repls;
 
+import chess.ChessBoard;
 import ui.ChessClient;
 
 import static java.lang.Integer.parseInt;
@@ -26,7 +27,7 @@ public class GamePlayUI {
                 case "help" -> printPrompt();
                 case "redraw" -> {
                     try {
-                        client.getData().getChessBoard();
+                        ChessBoard board = client.redraw().getBoard();
                         printBoard();
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
