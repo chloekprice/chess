@@ -1,5 +1,6 @@
 package model;
 
+import chess.ChessBoard;
 import chess.ChessGame;
 
 import java.util.HashSet;
@@ -15,15 +16,24 @@ public class GameData {
         this.gameID = gameID;
         this.whiteUsername = whiteUsername;
         this.blackUsername = blackUsername;
-        this.game = game;
         this.gameName = gameName;
+        if (game == null) {
+            ChessBoard newBoard = new ChessBoard();
+            newBoard.resetBoard();
+            this.game = new ChessGame();
+        } else {
+            this.game = game;
+        }
     }
     // empty constructor
     public GameData() {
         this.gameID = 0;
         this.whiteUsername = "";
         this.blackUsername = "";
-        this.game = null;
+        ChessBoard newBoard = new ChessBoard();
+        newBoard.resetBoard();
+        this.game = new ChessGame();
+        this.game.setBoard(newBoard);
     }
 
     public void updateGame(String color, String user) {
