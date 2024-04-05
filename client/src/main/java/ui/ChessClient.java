@@ -142,13 +142,14 @@ public class ChessClient {
         ResultInfo result = new ResultInfo();
         try {
             if (playerColor == null) {
+                ws.joinChessGame(visitorName, "observer");
                 return observeGame(gameID);
             }
             result = server.join(gameID, playerColor, authToken);
             this.data = result;
             if (result.getStatus() == 200) {
                 game = data.getGame();
-                ws.joinChessGame(authToken);
+                ws.joinChessGame(visitorName, playerColor);
                 return "joining " + result.getGameName() + "...\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());

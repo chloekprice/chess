@@ -27,11 +27,11 @@ public class WebSocketHandler {
         }
     }
 
-    private void enter(String visitorName, Session session) throws IOException {
-        connections.add(visitorName, session);
-        var message = String.format("%s is in the shop", visitorName);
-        var notification = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME);
-        connections.broadcast(visitorName, notification);
+    private void enter(String authString, Session session) throws IOException {
+        connections.add(authString, session);
+        var message = String.format("%s entered the game", authString);
+        var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+        connections.broadcast(authString, notification);
     }
 
     private void exit(String visitorName) throws IOException {
