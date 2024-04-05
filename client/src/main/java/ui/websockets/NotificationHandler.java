@@ -6,7 +6,7 @@ import ui.repls.GamePlayUI;
 
 public class NotificationHandler {
     void notify(ServerMessage notification) {
-        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED + ServerMessage.getServerMessage());
+        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED + notification);
         GamePlayUI.inputIndicator();
     }
 }

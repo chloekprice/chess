@@ -29,7 +29,7 @@ public class PostloginUI {
                     try {
                         System.out.println();
                         System.out.print(SET_TEXT_COLOR_LIGHT_GREY);
-                        System.out.println(client.logout());
+                        System.out.print(client.logout());
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());
