@@ -30,21 +30,21 @@ public class WebSocketHandler {
     private void enter(String authString, Session session) throws IOException {
         connections.add(authString, session);
         var message = String.format("%s entered the game", authString);
-        var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+        var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, message);
         connections.broadcast(authString, notification);
     }
 
     private void exit(String visitorName) throws IOException {
         connections.remove(visitorName);
         var message = String.format("%s left the shop", visitorName);
-        var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+        var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, message);
         connections.broadcast(visitorName, notification);
     }
 
     public void makeNoise(String petName, String sound) throws ResponseException {
         try {
             var message = String.format("%s says %s", petName, sound);
-            var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+            var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, message);
             connections.broadcast("", notification);
         } catch (Exception ex) {
             throw new ResponseException(500, ex.getMessage());

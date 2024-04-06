@@ -21,6 +21,11 @@ public class ServerMessage {
     public ServerMessage(ServerMessageType type) {
         this.serverMessageType = type;
     }
+    public ServerMessage(ServerMessageType type, String message) {
+        this.serverMessageType = type;
+        this.message = message;
+    }
+
 
     public ServerMessageType getServerMessageType() {
         return this.serverMessageType;
@@ -33,6 +38,11 @@ public class ServerMessage {
     }
     public static String getNotification() {
         return "";
+    }
+
+    @Override
+    public String toString() {
+        return this.message;
     }
 
     @Override
