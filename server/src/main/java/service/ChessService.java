@@ -208,7 +208,7 @@ public class ChessService {
         return ((int)(Math.random() * (10000)));
     }
     private GameData createGame(String gameName, int id) {
-        return gameDataAccess.create(gameName, id);
+        return gameDataAccess.create(gameName, id, null);
     }
     private GameData getGame(int id) {
         return gameDataAccess.getGame(id);
@@ -256,6 +256,7 @@ public class ChessService {
                 `whiteUsername` varchar(256),
                 `blackUsername` varchar(246),
                 `gameName` varchar(256) not null,
+                `gameBoard` LONGTEXT not null,
                 INDEX(gameID),
                 INDEX(whiteUsername),
                 INDEX(blackUsername),

@@ -21,6 +21,7 @@ public class GameData {
             ChessBoard newBoard = new ChessBoard();
             newBoard.resetBoard();
             this.game = new ChessGame();
+            this.game.setBoard(newBoard);
         } else {
             this.game = game;
         }

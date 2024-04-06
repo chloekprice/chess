@@ -1,5 +1,8 @@
 package dataAccess;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
 
@@ -20,14 +23,24 @@ public class MySQLGameDAO implements GameDAO {
     }
 
     @Override
-    public GameData create(String gameName, int id) {
+    public GameData create(String gameName, int id, ChessGame chessGame) {
         if (gameName==null) {
             return null;
         }
 
-        String insertGameDatabase = "INSERT INTO games (gameName, gameID) VALUES (?, ?);";
+        ChessGame newGame;
+        if (chessGame == null) {
+            newGame = new ChessGame();
+            ChessBoard newBoard = new ChessBoard();
+            newBoard.resetBoard();
+            newGame.setBoard(newBoard);
+        } else {
+            newGame = chessGame;
+        }
+
+        String insertGameDatabase = "INSERT INTO games (gameName, gameID, gameBoard) VALUES (?, ?, ?);";
         try {
-            return executeInsertStatement(insertGameDatabase, gameName, id);
+            return executeInsertStatement(insertGameDatabase, gameName, id, newGame);
         } catch (Exception e) {
             return null;
         }
@@ -62,7 +75,7 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public GameData getGame(int id) {
-        String selectAuthDatabase = "SELECT whiteUsername, blackUsername, gameName FROM games WHERE gameID = ?;";
+        String selectAuthDatabase = "SELECT gameBoard FROM games WHERE gameID = ?;";
         try {
             return executeSelectStatement(selectAuthDatabase, id);
         } catch (Exception e) {
@@ -82,14 +95,16 @@ public class MySQLGameDAO implements GameDAO {
         }
     }
 
-    private GameData executeInsertStatement(String sql, String gameName, int gameID) throws DataAccessException {
+    private GameData executeInsertStatement(String sql, String gameName, int gameID, ChessGame chessGame) throws DataAccessException {
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setString(1, gameName);
             stmt.setInt(2, gameID);
+            String game = new Gson().toJson(chessGame, ChessGame.class);
+            stmt.setString(3, game);
 
 
             if (stmt.executeUpdate() == 1) {
-                return new GameData(gameID, null, null, null, gameName);
+                return new GameData(gameID, null, null, chessGame, gameName);
             } else {
                 return null;
             }
@@ -142,7 +157,8 @@ public class MySQLGameDAO implements GameDAO {
         String gameName = rs.getString("gameName");
         String black = rs.getString("blackUsername");
         String white = rs.getString("whiteUsername");
-        return new GameData(id, white, black, null, gameName);
+        ChessGame game = new Gson().fromJson(rs.getString("gameBoard"), ChessGame.class);
+        return new GameData(id, white, black, game, gameName);
     }
     private GameData readList(ResultSet rs) throws SQLException {
         int id = rs.getInt("gameID");
