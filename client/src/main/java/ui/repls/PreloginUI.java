@@ -1,13 +1,12 @@
 package ui.repls;
 
 
-import server.ResultInfo;
 import ui.ChessClient;
 import ui.StateOfSystem;
 
 import java.util.Scanner;
 
-import static ui.EscapeSequences.*;
+import static ui.display.EscapeSequences.*;
 
 public class PreloginUI {
     ChessClient client;

@@ -1,4 +1,4 @@
-package dataAccess;
+package dataAccess.game;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,11 +1,13 @@
-package dataAccess;
+package dataAccess.auth;
 
+import dataAccess.DataAccessException;
+import dataAccess.DatabaseManager;
+import dataAccess.auth.AuthDAO;
 import model.AuthData;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 public class MySQLAuthDAO implements AuthDAO {
     public void clear() throws DataAccessException {

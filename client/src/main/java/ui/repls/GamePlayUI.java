@@ -4,7 +4,7 @@ import chess.ChessBoard;
 import ui.ChessClient;
 
 import static java.lang.Integer.parseInt;
-import static ui.EscapeSequences.*;
+import static ui.display.EscapeSequences.*;
 import ui.StateOfSystem;
 
 import java.util.Scanner;

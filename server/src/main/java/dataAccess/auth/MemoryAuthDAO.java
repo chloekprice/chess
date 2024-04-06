@@ -1,5 +1,6 @@
-package dataAccess;
+package dataAccess.auth;
 
+import dataAccess.auth.AuthDAO;
 import model.AuthData;
 
 import java.util.HashMap;

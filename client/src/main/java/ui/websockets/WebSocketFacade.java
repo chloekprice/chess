@@ -2,9 +2,7 @@ package ui.websockets;
 
 import com.google.gson.Gson;
 import exception.ResponseException;
-import ui.EscapeSequences;
-import ui.requestBody.User;
-import webSocketMessages.serverMessages.ServerMessage;
+import ui.display.EscapeSequences;
 import webSocketMessages.userCommands.JoinPlayerGameCommand;
 import webSocketMessages.userCommands.UserGameCommand;
 
@@ -13,7 +11,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static ui.EscapeSequences.SET_TEXT_COLOR_WHITE;
+import static ui.display.EscapeSequences.SET_TEXT_COLOR_WHITE;
 
 //need to extend Endpoint for websocket to work properly
 public class WebSocketFacade extends Endpoint {

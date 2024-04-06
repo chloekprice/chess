@@ -1,6 +1,15 @@
 package service;
 
 import dataAccess.*;
+import dataAccess.auth.AuthDAO;
+import dataAccess.auth.MemoryAuthDAO;
+import dataAccess.auth.MySQLAuthDAO;
+import dataAccess.game.GameDAO;
+import dataAccess.game.MemoryGameDAO;
+import dataAccess.game.MySQLGameDAO;
+import dataAccess.user.MemoryUserDAO;
+import dataAccess.user.MySQLUserDAO;
+import dataAccess.user.UserDAO;
 import model.AuthData;
 import model.GameData;
 import model.UserData;

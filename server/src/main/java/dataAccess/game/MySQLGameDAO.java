@@ -1,9 +1,10 @@
-package dataAccess;
+package dataAccess.game;
 
 import chess.ChessBoard;
 import chess.ChessGame;
 import com.google.gson.Gson;
-import model.AuthData;
+import dataAccess.DataAccessException;
+import dataAccess.DatabaseManager;
 import model.GameData;
 
 import java.sql.PreparedStatement;
@@ -75,7 +76,7 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public GameData getGame(int id) {
-        String selectAuthDatabase = "SELECT gameBoard FROM games WHERE gameID = ?;";
+        String selectAuthDatabase = "SELECT gameName, blackUsername, whiteUsername, gameBoard FROM games WHERE gameID = ?;";
         try {
             return executeSelectStatement(selectAuthDatabase, id);
         } catch (Exception e) {

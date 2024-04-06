@@ -6,7 +6,7 @@ import ui.StateOfSystem;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
-import static ui.EscapeSequences.*;
+import static ui.display.EscapeSequences.*;
 
 public class PostloginUI {
     ChessClient client;
