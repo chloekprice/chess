@@ -3,7 +3,6 @@ import ui.repls.GamePlayUI;
 import ui.repls.PostloginUI;
 import ui.repls.PreloginUI;
 import ui.StateOfSystem;
-import ui.websockets.NotificationHandler;
 
 public class Main {
 
@@ -13,7 +12,7 @@ public class Main {
             serverUrl = args[0];
         }
 
-        ChessClient client = new ChessClient(serverUrl, new NotificationHandler());
+        ChessClient client = new ChessClient(serverUrl);
         PreloginUI gettingStarted = new PreloginUI(client);
 
         do {

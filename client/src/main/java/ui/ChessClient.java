@@ -4,7 +4,6 @@ import chess.ChessGame;
 import exception.ResponseException;
 import model.GameData;
 import server.ResultInfo;
-import ui.websockets.NotificationHandler;
 import ui.websockets.WebSocketFacade;
 
 
@@ -15,14 +14,12 @@ public class ChessClient {
     private final String serverUrl;
     private StateOfSystem state;
     private ResultInfo data = new ResultInfo();
-    private NotificationHandler notificationHandler;
     private WebSocketFacade ws;
     private ChessGame game;
 
-    public ChessClient(String serverUrl, NotificationHandler notificationHandler) {
+    public ChessClient(String serverUrl) {
         this.server = new ServerFacade(serverUrl);
         this.serverUrl = serverUrl;
-        this.notificationHandler = notificationHandler;
         this.game = null;
         this.state = StateOfSystem.SIGNEDOUT;
     }
@@ -51,7 +48,7 @@ public class ChessClient {
                 this.visitorName = username;
                 this.authToken = result.getAuthData().getAuthToken();
                 setState(StateOfSystem.SIGNEDIN);
-                ws = new WebSocketFacade(serverUrl, notificationHandler);
+                ws = new WebSocketFacade(serverUrl);
                 return "logged in as " + username + "\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -69,7 +66,7 @@ public class ChessClient {
                 this.visitorName = username;
                 this.authToken = result.getAuthData().getAuthToken();
                 setState(StateOfSystem.SIGNEDIN);
-                ws = new WebSocketFacade(serverUrl, notificationHandler);
+                ws = new WebSocketFacade(serverUrl);
                 return "logged in as " + username;
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -142,14 +139,14 @@ public class ChessClient {
         ResultInfo result = new ResultInfo();
         try {
             if (playerColor == null) {
-                ws.joinChessGame(visitorName, "observer");
+                ws.joinChessGame(authToken, visitorName, "observer");
                 return observeGame(gameID);
             }
             result = server.join(gameID, playerColor, authToken);
             this.data = result;
             if (result.getStatus() == 200) {
                 game = data.getGame();
-                ws.joinChessGame(visitorName, playerColor);
+                ws.joinChessGame(authToken, visitorName, playerColor);
                 return "joining " + result.getGameName() + "...\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
