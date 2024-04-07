@@ -19,10 +19,12 @@ public class GamePlayUI {
     public GamePlayUI(ChessClient client) {
         printer = new ChessBoardPrinter();
         this.client = client;
-        game = client.getGame();
-
-        ChessBoardPrinter printer = new ChessBoardPrinter();
-        printer.print(game.getBoard());
+        try {
+            client.redraw();
+        } catch (Exception e) {
+            System.out.print(SET_TEXT_COLOR_RED);
+            System.out.println("Error: cannot print chess board");
+        }
     }
 
     public void run() {
@@ -35,7 +37,7 @@ public class GamePlayUI {
                 case "help" -> printPrompt();
                 case "redraw" -> {
                     try {
-//                        ChessBoard board = client.redraw().getBoard();
+                        client.redraw();
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());
@@ -44,6 +46,7 @@ public class GamePlayUI {
                 case "leave" -> {
                     try {
                         client.setState(StateOfSystem.SIGNEDIN);
+                        client.leaveGame();
                         System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println("leaving the game...");

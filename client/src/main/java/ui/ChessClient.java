@@ -40,10 +40,11 @@ public class ChessClient {
     public ResultInfo getData() {
         return this.data;
     }
+
     public String register(String username, String password, String email) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
-            result = server.registerUser(username,password,email);
+            result = server.registerUser(username, password, email);
             this.data = result;
             if (result.getStatus() == 200) {
                 this.visitorName = username;
@@ -58,6 +59,7 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
+
     public String signIn(String username, String password) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
@@ -76,6 +78,7 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
+
     public String logout() throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
@@ -94,6 +97,7 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
+
     public String createGame(String gameName) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
@@ -108,6 +112,7 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
+
     public String listGames() throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
@@ -136,6 +141,7 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
+
     public String joinGame(int gameID, String playerColor) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
@@ -157,6 +163,7 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
+
     public String observeGame(int gameID) throws ResponseException {
         ResultInfo result = new ResultInfo();
         try {
@@ -171,11 +178,17 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
-    public void redraw() throws ResponseException {
-       ChessBoardPrinter printer = new ChessBoardPrinter();
-       printer.print(game.getBoard());
+
+    public void leaveGame() {
+        try {
+            ws.leaveChessGame(authToken, visitorName, data.getGameID());
+        } catch (Exception e) {
+            System.out.println("Error: cannot leave game.\n YOU ARE STUCK HERE FOR EVERRRRR");
+        }
     }
-    public ChessGame getGame() {
-        return this.game;
+
+    public void redraw() throws ResponseException {
+        ChessBoardPrinter printer = new ChessBoardPrinter();
+        printer.print(game.getBoard());
     }
 }

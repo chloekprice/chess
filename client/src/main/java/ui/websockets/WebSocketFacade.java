@@ -5,7 +5,10 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import ui.display.EscapeSequences;
+import webSocketMessages.serverMessages.Notification;
+import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.JoinPlayerGameCommand;
+import webSocketMessages.userCommands.LeaveGameCommand;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.websocket.*;
@@ -33,10 +36,18 @@ public class WebSocketFacade extends Endpoint {
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 @Override
                 public void onMessage(String message) {
+                    ServerMessage action = new Gson().fromJson(message, ServerMessage.class);
+                    try {
+                        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
+                        switch (action.getServerMessageType()) {
+                            case ServerMessage.ServerMessageType.NOTIFICATION -> notification(message);
+                        }
+                    } catch (Exception e) {
+                        System.out.print("error");
+                    }
                     //print notification
-                    JoinPlayerGameCommand notification = new Gson().fromJson(message, JoinPlayerGameCommand.class);
-                    System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
-                    System.out.println(notification.getMessage());
+//                    JoinPlayerGameCommand notification = new Gson().fromJson(message, JoinPlayerGameCommand.class);
+//                    System.out.println(notification.getMessage());
                     // print input indicator
                     System.out.println();
                     System.out.print(SET_TEXT_COLOR_BLACK);
@@ -55,30 +66,15 @@ public class WebSocketFacade extends Endpoint {
 
     public void joinChessGame(String authToken, String visitorName, String playerColor) throws ResponseException {
         try {
-            UserGameCommand makeCommand = new JoinPlayerGameCommand(authToken, visitorName, playerColor);
+            JoinPlayerGameCommand makeCommand = new JoinPlayerGameCommand(authToken, visitorName, playerColor);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());
         }
     }
-
-//    public ChessBoard refreshGame() throws ResponseException {
-//
-//    }
-
-    public void observeChessGame(String authToken) throws ResponseException {
+    public void leaveChessGame(String authToken, String visitorName, int gameID) throws ResponseException {
         try {
-            var action = new UserGameCommand(authToken);
-//            action.setCommandType(UserGameCommand.CommandType.JOIN_OBSERVER);
-            this.session.getBasicRemote().sendText(new Gson().toJson(action));
-        } catch (IOException ex) {
-            throw new ResponseException(500, ex.getMessage());
-        }
-    }
-    public void resignChessGame(String authToken) throws ResponseException {
-        try {
-            var action = new UserGameCommand(authToken);
-//            action.setCommandType(UserGameCommand.CommandType.RESIGN);
+            var action = new LeaveGameCommand(authToken, visitorName, gameID);
             this.session.getBasicRemote().sendText(new Gson().toJson(action));
             this.session.close();
         } catch (IOException ex) {
@@ -86,15 +82,9 @@ public class WebSocketFacade extends Endpoint {
         }
     }
 
-    public void leaveChessGame(String authToken) throws ResponseException {
-        try {
-            var action = new UserGameCommand(authToken);
-//            action.setCommandType(UserGameCommand.CommandType.LEAVE);
-            this.session.getBasicRemote().sendText(new Gson().toJson(action));
-            this.session.close();
-        } catch (IOException ex) {
-            throw new ResponseException(500, ex.getMessage());
-        }
+    private void notification(String message) {
+        Notification notification = new Gson().fromJson(message, Notification.class);
+        System.out.println(notification.getServerMessage());
     }
 
 }
