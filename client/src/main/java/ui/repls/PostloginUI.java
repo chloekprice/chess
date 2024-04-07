@@ -2,6 +2,7 @@ package ui.repls;
 
 import ui.ChessClient;
 import ui.StateOfSystem;
+import ui.display.ChessBoardPrinter;
 
 import java.util.Scanner;
 
@@ -73,7 +74,6 @@ public class PostloginUI {
                     }
                 }
                 case "join" -> {
-
                     int gameID = parseInt(scanner.next());
                     String playerColor = null;
                     if (scanner.hasNext()) {
@@ -85,7 +85,6 @@ public class PostloginUI {
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println(client.joinGame(gameID, playerColor));
                         client.setState(StateOfSystem.GAMEPLAY);
-                        System.out.println(RESET_BG_COLOR);
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());
@@ -143,7 +142,7 @@ public class PostloginUI {
 
     private void inputIndicator() {
         System.out.println();
-        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_COLOR_BLACK);
         System.out.print("[LOGGED IN AS ");
         System.out.print(client.getVisitorName());
         System.out.print("] >>> ");

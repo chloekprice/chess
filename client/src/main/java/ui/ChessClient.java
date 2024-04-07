@@ -4,6 +4,7 @@ import chess.ChessGame;
 import exception.ResponseException;
 import model.GameData;
 import server.ResultInfo;
+import ui.display.ChessBoardPrinter;
 import ui.websockets.WebSocketFacade;
 
 
@@ -145,6 +146,7 @@ public class ChessClient {
             result = server.join(gameID, playerColor, authToken);
             this.data = result;
             if (result.getStatus() == 200) {
+
                 game = data.getGame();
                 ws.joinChessGame(authToken, visitorName, playerColor);
                 return "joining " + result.getGameName() + "...\n";
@@ -169,8 +171,11 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
-    public ChessGame redraw() throws ResponseException {
-       return game;
+    public void redraw() throws ResponseException {
+       ChessBoardPrinter printer = new ChessBoardPrinter();
+       printer.print(game.getBoard());
     }
-
+    public ChessGame getGame() {
+        return this.game;
+    }
 }

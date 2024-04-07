@@ -13,7 +13,6 @@ public class PreloginUI {
     public PreloginUI(ChessClient client) {
         this.client = client;
 
-        System.out.println(RESET_BG_COLOR);
         System.out.print(SET_TEXT_COLOR_BLUE);
         System.out.print(SET_TEXT_BOLD);
         System.out.println("♕ Welcome to 240 Chess! ♕");
@@ -22,7 +21,6 @@ public class PreloginUI {
     }
 
     public void run() {
-        System.out.println(RESET_BG_COLOR);
         inputIndicator();
         Scanner scanner = new Scanner(System.in);
         var input = "";
@@ -102,7 +100,7 @@ public class PreloginUI {
 
     private void inputIndicator() {
         System.out.println();
-        System.out.print(SET_TEXT_COLOR_WHITE);
+        System.out.print(SET_TEXT_COLOR_BLACK);
         System.out.print("[LOGGED OUT] >>> ");
     }
 

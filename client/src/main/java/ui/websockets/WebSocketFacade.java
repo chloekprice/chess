@@ -1,5 +1,7 @@
 package ui.websockets;
 
+import chess.ChessBoard;
+import chess.ChessGame;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import ui.display.EscapeSequences;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static ui.display.EscapeSequences.SET_TEXT_COLOR_BLACK;
 import static ui.display.EscapeSequences.SET_TEXT_COLOR_WHITE;
 
 //need to extend Endpoint for websocket to work properly
@@ -36,7 +39,7 @@ public class WebSocketFacade extends Endpoint {
                     System.out.println(notification.getMessage());
                     // print input indicator
                     System.out.println();
-                    System.out.print(SET_TEXT_COLOR_WHITE);
+                    System.out.print(SET_TEXT_COLOR_BLACK);
                     System.out.print("[GAMEPLAY MODE] >>> ");
                 }
             });
@@ -54,12 +57,14 @@ public class WebSocketFacade extends Endpoint {
         try {
             UserGameCommand makeCommand = new JoinPlayerGameCommand(authToken, visitorName, playerColor);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
-//            var action = new JoinPlayerGameCommand(visitorName);
-//            this.session.getBasicRemote().sendText(new Gson().toJson(action));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());
         }
     }
+
+//    public ChessBoard refreshGame() throws ResponseException {
+//
+//    }
 
     public void observeChessGame(String authToken) throws ResponseException {
         try {
