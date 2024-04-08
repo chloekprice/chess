@@ -45,7 +45,7 @@ public class WebSocketHandler {
 
     private void leaveGame(Session session, String message) throws IOException {
         LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
-        Notification notification = new Notification(message);
+        Notification notification = new Notification(command.getMessage());
         session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
     }
     public void broadcastMessage(int gameID, String message, String exceptThisAuthToken) {

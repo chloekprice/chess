@@ -38,7 +38,6 @@ public class WebSocketFacade extends Endpoint {
                 public void onMessage(String message) {
                     ServerMessage action = new Gson().fromJson(message, ServerMessage.class);
                     try {
-                        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
                         switch (action.getServerMessageType()) {
                             case ServerMessage.ServerMessageType.NOTIFICATION -> notification(message);
                         }
@@ -74,9 +73,8 @@ public class WebSocketFacade extends Endpoint {
     }
     public void leaveChessGame(String authToken, String visitorName, int gameID) throws ResponseException {
         try {
-            var action = new LeaveGameCommand(authToken, visitorName, gameID);
-            this.session.getBasicRemote().sendText(new Gson().toJson(action));
-            this.session.close();
+            LeaveGameCommand makeCommand = new LeaveGameCommand(authToken, visitorName, gameID);
+            session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());
         }
@@ -84,6 +82,7 @@ public class WebSocketFacade extends Endpoint {
 
     private void notification(String message) {
         Notification notification = new Gson().fromJson(message, Notification.class);
+        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
         System.out.println(notification.getServerMessage());
     }
 
