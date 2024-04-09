@@ -1,6 +1,8 @@
 package ui;
 
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
 import exception.ResponseException;
 import model.GameData;
 import server.ResultInfo;
@@ -99,7 +101,7 @@ public class ChessClient {
     }
 
     public String createGame(String gameName) throws ResponseException {
-        ResultInfo result = new ResultInfo();
+        ResultInfo result;
         try {
             result = server.create(gameName, authToken);
             this.data = result;
@@ -114,7 +116,7 @@ public class ChessClient {
     }
 
     public String listGames() throws ResponseException {
-        ResultInfo result = new ResultInfo();
+        ResultInfo result;
         try {
             result = server.list(authToken);
             this.data = result;
@@ -143,18 +145,17 @@ public class ChessClient {
     }
 
     public String joinGame(int gameID, String playerColor) throws ResponseException {
-        ResultInfo result = new ResultInfo();
+        ResultInfo result;
         try {
             if (playerColor == null) {
-                ws.joinChessGame(authToken, visitorName, "observer");
+                ws.joinChessGame(authToken, visitorName, "observer", gameID);
                 return observeGame(gameID);
             }
             result = server.join(gameID, playerColor, authToken);
             this.data = result;
             if (result.getStatus() == 200) {
-
                 game = data.getGame();
-                ws.joinChessGame(authToken, visitorName, playerColor);
+                ws.joinChessGame(authToken, visitorName, playerColor, gameID);
                 return "joining " + result.getGameName() + "...\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -165,11 +166,13 @@ public class ChessClient {
     }
 
     public String observeGame(int gameID) throws ResponseException {
-        ResultInfo result = new ResultInfo();
+        ResultInfo result;
         try {
             result = server.join(gameID, null, authToken);
             this.data = result;
             if (result.getStatus() == 200) {
+                game = data.getGame();
+                ws.observeChessGame(authToken, visitorName, gameID);
                 return "now observing " + result.getGameName() + "...\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -178,7 +181,17 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
-
+    public void makeMove(int col, int row, int newCol, int newRow) throws ResponseException {
+        try {
+            ChessPosition startPosition = new ChessPosition(row, col);
+            ChessPosition endPosition = new ChessPosition(newRow, newCol);
+            ChessMove move = new ChessMove(startPosition, endPosition);
+            game.makeMove(move);
+            data.updateGame(game);
+        } catch (Exception e) {
+            throw new ResponseException(500, e.getMessage());
+        }
+    }
     public void leaveGame() {
         try {
             ws.leaveChessGame(authToken, visitorName, data.getGameID());

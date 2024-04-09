@@ -19,12 +19,12 @@ public class ChessBoardPrinter {
         System.out.println(blackPOV());
     }
 
-    private String whitePOV() {
+    private String blackPOV() {
         StringBuilder chessBoard = new StringBuilder();
         chessBoard.append("\n");
         chessBoard.append(SET_BG_COLOR_MAGENTA);
         chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    a  b  c  d  e  f  g  h    ");
+        chessBoard.append("    h  g  f  e  d  c  b  a    ");
         chessBoard.append(RESET);
         chessBoard.append("\n");
 
@@ -71,17 +71,17 @@ public class ChessBoardPrinter {
         }
         chessBoard.append(SET_BG_COLOR_MAGENTA);
         chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    a  b  c  d  e  f  g  h    ");
+        chessBoard.append("    h  g  f  e  d  c  b  a    ");
         chessBoard.append(RESET);
         chessBoard.append("\n");
 
         return String.valueOf(chessBoard);
     }
-    private String blackPOV() {
+    private String whitePOV() {
         StringBuilder chessBoard = new StringBuilder();
         chessBoard.append(SET_BG_COLOR_MAGENTA);
         chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    h  g  f  e  d  c  b  a    ");
+        chessBoard.append("    a  b  c  d  e  f  g  h    ");
         chessBoard.append(RESET);
         chessBoard.append("\n");
 
@@ -129,7 +129,7 @@ public class ChessBoardPrinter {
 
         chessBoard.append(SET_BG_COLOR_MAGENTA);
         chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    h  g  f  e  d  c  b  a    ");
+        chessBoard.append("    a  b  c  d  e  f  g  h    ");
         chessBoard.append(RESET);
         chessBoard.append("\n");
         return String.valueOf(chessBoard);

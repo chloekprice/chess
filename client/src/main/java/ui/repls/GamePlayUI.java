@@ -50,21 +50,31 @@ public class GamePlayUI {
                         System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
                         System.out.println("leaving the game...");
+                        client.setState(StateOfSystem.SIGNEDIN);
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());
                     }
                 }
                 case "move" -> {
-                    var origColumn = scanner.next();
+                    var column = scanner.next();
                     int origRow = parseInt(scanner.next());
                     scanner.next();
-                    var newColumn = scanner.next();
+                    var nextColumn = scanner.next();
                     int newRow = parseInt(scanner.next());
+
+                    int origColumn = 0;
+                    int newColumn = 0;
+                    // determine col #
+                    origColumn = getNum(origColumn, column);
+                    newColumn = getNum(newColumn, nextColumn);
 
                     try {
                         System.out.println();
-                        System.out.println(RESET_BG_COLOR);
+                        System.out.println(RESET);
+                        client.makeMove(origColumn, origRow, newColumn, newRow);
+                        game = client.getData().getGame();
+                        printer.print(game.getBoard());
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());
@@ -90,7 +100,7 @@ public class GamePlayUI {
                         System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
 
-                        System.out.println(RESET_BG_COLOR);
+                        System.out.println(RESET);
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());
@@ -105,6 +115,22 @@ public class GamePlayUI {
         }
 
     }
+
+    private static int getNum(int orig, String next) {
+        orig = switch (next) {
+            case "A" -> 1;
+            case "B" -> 2;
+            case "C" -> 3;
+            case "D" -> 4;
+            case "E" -> 5;
+            case "F" -> 6;
+            case "G" -> 7;
+            case "H" -> 8;
+            default -> orig;
+        };
+        return orig;
+    }
+
     public static void inputIndicator() {
         System.out.println();
         System.out.print(SET_TEXT_COLOR_BLACK);

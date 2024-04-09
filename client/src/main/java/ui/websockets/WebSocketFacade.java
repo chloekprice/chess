@@ -9,6 +9,7 @@ import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.JoinPlayerGameCommand;
 import webSocketMessages.userCommands.LeaveGameCommand;
+import webSocketMessages.userCommands.ObserveGameCommand;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.websocket.*;
@@ -44,9 +45,6 @@ public class WebSocketFacade extends Endpoint {
                     } catch (Exception e) {
                         System.out.print("error");
                     }
-                    //print notification
-//                    JoinPlayerGameCommand notification = new Gson().fromJson(message, JoinPlayerGameCommand.class);
-//                    System.out.println(notification.getMessage());
                     // print input indicator
                     System.out.println();
                     System.out.print(SET_TEXT_COLOR_BLACK);
@@ -63,7 +61,7 @@ public class WebSocketFacade extends Endpoint {
     public void onOpen(Session session, EndpointConfig endpointConfig) {
     }
 
-    public void joinChessGame(String authToken, String visitorName, String playerColor) throws ResponseException {
+    public void joinChessGame(String authToken, String visitorName, String playerColor, int gameID) throws ResponseException {
         try {
             JoinPlayerGameCommand makeCommand = new JoinPlayerGameCommand(authToken, visitorName, playerColor);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
@@ -74,6 +72,14 @@ public class WebSocketFacade extends Endpoint {
     public void leaveChessGame(String authToken, String visitorName, int gameID) throws ResponseException {
         try {
             LeaveGameCommand makeCommand = new LeaveGameCommand(authToken, visitorName, gameID);
+            session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
+        } catch (IOException ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
+    public void observeChessGame(String authToken, String visitorName, int gameID) throws ResponseException {
+        try {
+            ObserveGameCommand makeCommand = new ObserveGameCommand(authToken, visitorName);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());

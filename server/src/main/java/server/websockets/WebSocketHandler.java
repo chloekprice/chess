@@ -9,6 +9,7 @@ import server.exception.ResponseException;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.userCommands.JoinPlayerGameCommand;
 import webSocketMessages.userCommands.LeaveGameCommand;
+import webSocketMessages.userCommands.ObserveGameCommand;
 import webSocketMessages.userCommands.UserGameCommand;
 import webSocketMessages.serverMessages.ServerMessage;
 
@@ -29,7 +30,7 @@ public class WebSocketHandler {
                 case UserGameCommand.CommandType.JOIN_PLAYER -> joinPlayer(session, message);
                 case UserGameCommand.CommandType.LEAVE -> leaveGame(session, message);
 //                case UserGameCommand.CommandType.RESIGN -> resignGame("lol", "lol");
-//                case UserGameCommand.CommandType.JOIN_OBSERVER -> joinObserver("lol", "lol");
+                case UserGameCommand.CommandType.JOIN_OBSERVER -> joinObserver(session, message);
 //                case UserGameCommand.CommandType.MAKE_MOVE -> makeMove("lol", "lol");
             }
         } catch (Exception e) {
@@ -39,6 +40,11 @@ public class WebSocketHandler {
 
     private void joinPlayer(Session session, String message) throws IOException {
         JoinPlayerGameCommand command = new Gson().fromJson(message, JoinPlayerGameCommand.class);
+        Notification notification = new Notification(command.getMessage());
+        session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
+    }
+    private void joinObserver(Session session, String message) throws IOException {
+        ObserveGameCommand command = new Gson().fromJson(message, ObserveGameCommand.class);
         Notification notification = new Notification(command.getMessage());
         session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
     }

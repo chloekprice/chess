@@ -55,7 +55,7 @@ public class PostloginUI {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(client.observeGame(gameID));
                         client.setState(StateOfSystem.GAMEPLAY);
-                        System.out.println(RESET_BG_COLOR);
+                        System.out.println(RESET);
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());

@@ -32,6 +32,10 @@ public class ResultInfo {
         this.status = 200;
     }
 
+    public void updateGame(ChessGame game) {
+        this.game = game;
+    }
+
     // setters
     public void setAuthData(AuthData authData) {
         this.authData = authData;
