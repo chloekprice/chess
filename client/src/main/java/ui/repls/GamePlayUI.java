@@ -19,6 +19,7 @@ public class GamePlayUI {
     public GamePlayUI(ChessClient client) {
         printer = new ChessBoardPrinter();
         this.client = client;
+        this.game = client.getData().getGame();
         try {
             client.redraw();
         } catch (Exception e) {

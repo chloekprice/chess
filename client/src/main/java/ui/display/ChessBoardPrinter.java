@@ -10,6 +10,8 @@ import static ui.display.EscapeSequences.SET_BG_COLOR_LIGHT_GREY;
 
 public class ChessBoardPrinter {
     ChessBoard board;
+    ChessPosition startPosition;
+    Collection<ChessMove> validMoves;
     public ChessBoardPrinter() {
     }
     public void print(ChessBoard board) {
@@ -21,8 +23,8 @@ public class ChessBoardPrinter {
     }
     public void highlight(ChessGame game, int column, int row) {
         this.board = game.getBoard();
-        ChessPosition startPosition = new ChessPosition(row, column);
-        Collection<ChessMove> validMoves = game.validMoves(startPosition);
+        this.startPosition = new ChessPosition(row, column);
+        this.validMoves = game.validMoves(startPosition);
         System.out.println();
         System.out.println(whiteHighlight());
         System.out.println(blackHighlight());
@@ -223,29 +225,38 @@ public class ChessBoardPrinter {
             chessBoard.append(i);
             chessBoard.append(" ");
             for (int j = 1; j <= 8; j++) {
-                if ((j|1) > j) {
-                    if ((i | 1) > i) {
-                        chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
-                    } else {
-                        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
-                    }
+                ChessPosition checkPosition = new ChessPosition(i, j);
+                ChessMove chessMove = new ChessMove(startPosition, checkPosition);
+                if (validMoves.contains(chessMove)) {
+                    chessBoard.append(SET_BG_COLOR_GREEN);
+                    chessBoard.append(" ");
+                    chessBoard.append(getSquareValues(i, j));
+                    chessBoard.append(" ");
                 } else {
-                    if ((i | 1) > i) {
-                        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                    if ((j | 1) > j) {
+                        if ((i | 1) > i) {
+                            chessBoard.append(SET_BG_COLOR_DARK_GREY);
+                            chessBoard.append(" ");
+                            chessBoard.append(getSquareValues(i, j));
+                            chessBoard.append(" ");
+                        } else {
+                            chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
+                            chessBoard.append(" ");
+                            chessBoard.append(getSquareValues(i, j));
+                            chessBoard.append(" ");
+                        }
                     } else {
-                        chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        if ((i | 1) > i) {
+                            chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
+                            chessBoard.append(" ");
+                            chessBoard.append(getSquareValues(i, j));
+                            chessBoard.append(" ");
+                        } else {
+                            chessBoard.append(SET_BG_COLOR_DARK_GREY);
+                            chessBoard.append(" ");
+                            chessBoard.append(getSquareValues(i, j));
+                            chessBoard.append(" ");
+                        }
                     }
                 }
             }
@@ -281,29 +292,38 @@ public class ChessBoardPrinter {
             chessBoard.append(i);
             chessBoard.append(" ");
             for (int j = 8; j >= 1; j--) {
-                if ((j|1) > j) {
-                    if ((i | 1) > i) {
-                        chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
-                    } else {
-                        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
-                    }
+                ChessPosition checkPosition = new ChessPosition(i, j);
+                ChessMove chessMove = new ChessMove(startPosition, checkPosition);
+                if (validMoves.contains(chessMove)) {
+                    chessBoard.append(SET_BG_COLOR_GREEN);
+                    chessBoard.append(" ");
+                    chessBoard.append(getSquareValues(i, j));
+                    chessBoard.append(" ");
                 } else {
-                    if ((i | 1) > i) {
-                        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                    if ((j | 1) > j) {
+                        if ((i | 1) > i) {
+                            chessBoard.append(SET_BG_COLOR_DARK_GREY);
+                            chessBoard.append(" ");
+                            chessBoard.append(getSquareValues(i, j));
+                            chessBoard.append(" ");
+                        } else {
+                            chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
+                            chessBoard.append(" ");
+                            chessBoard.append(getSquareValues(i, j));
+                            chessBoard.append(" ");
+                        }
                     } else {
-                        chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        if ((i | 1) > i) {
+                            chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
+                            chessBoard.append(" ");
+                            chessBoard.append(getSquareValues(i, j));
+                            chessBoard.append(" ");
+                        } else {
+                            chessBoard.append(SET_BG_COLOR_DARK_GREY);
+                            chessBoard.append(" ");
+                            chessBoard.append(getSquareValues(i, j));
+                            chessBoard.append(" ");
+                        }
                     }
                 }
             }
