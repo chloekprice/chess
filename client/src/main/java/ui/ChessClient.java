@@ -120,7 +120,7 @@ public class ChessClient {
         try {
             result = server.list(authToken);
             this.data = result;
-            if (result.getStatus() == 200) {
+            if (result.getStatus() == 200 && result.getGamesList() != null) {
 
                 StringBuilder games = new StringBuilder("\n");
                 int num = 1;
@@ -137,7 +137,7 @@ public class ChessClient {
                 }
                 return String.valueOf(games);
             } else {
-                return (data.getStatus() + ": " + data.getMessage());
+                throw new ResponseException(500, "no games have been created, yet");
             }
         } catch (Exception e) {
             throw new ResponseException(500, e.getMessage());

@@ -118,18 +118,19 @@ public class GamePlayUI {
 
     private static int getNum(int orig, String next) {
         orig = switch (next) {
-            case "A" -> 1;
-            case "B" -> 2;
-            case "C" -> 3;
-            case "D" -> 4;
+            case "A" -> 8;
+            case "B" -> 7;
+            case "C" -> 6;
+            case "D" -> 5;
             case "E" -> 5;
-            case "F" -> 6;
-            case "G" -> 7;
-            case "H" -> 8;
+            case "F" -> 3;
+            case "G" -> 2;
+            case "H" -> 1;
             default -> orig;
         };
         return orig;
     }
+
 
     public static void inputIndicator() {
         System.out.println();

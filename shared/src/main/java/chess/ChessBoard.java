@@ -118,6 +118,13 @@ public class ChessBoard {
         knight = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT);
         position = new ChessPosition(8, 7);
         addPiece(position, knight);
+        // SET NULL
+        for (int i = 3; i <= 6; i ++) {
+            for (int j = 1; j <= 8; j++) {
+                position = new ChessPosition(i, j);
+                addPiece(position, null);
+            }
+        }
     }
 
     @Override

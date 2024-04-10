@@ -71,6 +71,7 @@ public class ChessBoardPrinter {
         }
         chessBoard.append(SET_BG_COLOR_MAGENTA);
         chessBoard.append(SET_TEXT_COLOR_WHITE);
+
         chessBoard.append("    h  g  f  e  d  c  b  a    ");
         chessBoard.append(RESET);
         chessBoard.append("\n");
