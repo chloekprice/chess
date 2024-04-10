@@ -5,6 +5,8 @@ import chess.ChessGame;
 import chess.ChessPiece;
 import com.google.gson.Gson;
 import exception.ResponseException;
+import ui.ChessClient;
+import ui.display.ChessBoardPrinter;
 import ui.display.EscapeSequences;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
@@ -23,9 +25,11 @@ import static ui.display.EscapeSequences.SET_TEXT_COLOR_WHITE;
 public class WebSocketFacade extends Endpoint {
 
     Session session;
+    ChessClient client;
 
-    public WebSocketFacade(String url) throws ResponseException {
+    public WebSocketFacade(String url, ChessClient client) throws ResponseException {
         try {
+            this.client = client;
             url = url.replace("http", "ws");
             URI socketURI = new URI(url + "/connect");
 
@@ -87,7 +91,7 @@ public class WebSocketFacade extends Endpoint {
     }
     public void sendUpdatedGame(String authToken, String visitorName, int gameID, ChessGame game, ChessPiece piece) throws ResponseException {
         try {
-            MakeMoveCommand makeCommand = new MakeMoveCommand(authToken, visitorName, piece, game);
+            MakeMoveCommand makeCommand = new MakeMoveCommand(authToken, visitorName, piece, game, gameID);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());
@@ -96,13 +100,13 @@ public class WebSocketFacade extends Endpoint {
 
     private void notification(String message) {
         Notification notification = new Gson().fromJson(message, Notification.class);
-        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
+        System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW);
         System.out.println(notification.getServerMessage());
     }
-    private void load(String message) {
+    private void load(String message) throws ResponseException {
         LoadGame game = new Gson().fromJson(message, LoadGame.class);
-        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
-        System.out.println("updated game received");
+        client.updateGame(game.getServerGame());
+        client.redraw();
     }
 
 }

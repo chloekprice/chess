@@ -1,6 +1,7 @@
 package server.websockets;
 
 import com.google.gson.Gson;
+import dataAccess.game.MySQLGameDAO;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
@@ -56,7 +57,9 @@ public class WebSocketHandler {
         MakeMoveCommand command = new Gson().fromJson(message, MakeMoveCommand.class);
         Notification notification = new Notification(command.getMessage());
         session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
-        LoadGame load = new LoadGame(command.getGame());
+        LoadGame load = new LoadGame(command.getGame(), command.getID());
+        MySQLGameDAO gameDAO = new MySQLGameDAO();
+        gameDAO.refresh(load.getID(), load.getServerGame());
         session.getRemote().sendString(new Gson().toJson(load, load.getClass()));
     }
     public void broadcastMessage(int gameID, String message, String exceptThisAuthToken) {

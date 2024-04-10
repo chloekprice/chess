@@ -62,6 +62,16 @@ public class MySQLGameDAO implements GameDAO {
             return null;
         }
     }
+    @Override
+    public GameData refresh(int id, ChessGame game) {
+        String refreshGameDatabase = "UPDATE games SET gameBoard=? WHERE gameID=?;";
+        try {
+            executeRefreshStatement(refreshGameDatabase, game, id);
+            return getGame(id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 
     @Override
@@ -118,6 +128,20 @@ public class MySQLGameDAO implements GameDAO {
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setString(1, user);
             stmt.setInt(2, gameID);
+
+            if (stmt.executeUpdate() == 1) {
+                return;
+            }
+        } catch (SQLException ex) {
+            return;
+        }
+    }
+
+    private void executeRefreshStatement(String sql, ChessGame game, int id) throws DataAccessException {
+        try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
+            String chessGame = new Gson().toJson(game, ChessGame.class);
+            stmt.setString(1, chessGame);
+            stmt.setInt(2, id);
 
             if (stmt.executeUpdate() == 1) {
                 return;

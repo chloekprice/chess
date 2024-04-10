@@ -9,12 +9,14 @@ public class MakeMoveCommand extends  UserGameCommand{
     String message;
     ChessPiece piece;
     ChessGame game;
-    public MakeMoveCommand(String authToken, String visitorName, ChessPiece piece, ChessGame game) {
+    int gameID;
+    public MakeMoveCommand(String authToken, String visitorName, ChessPiece piece, ChessGame game, int id) {
         super(authToken);
         commandType = CommandType.MAKE_MOVE;
         this.visitorName = visitorName;
         this.piece = piece;
         this.game = game;
+        this.gameID = id;
 
         this.message = visitorName + " has moved their " + piece.getPieceType().toString();
     }
@@ -23,5 +25,8 @@ public class MakeMoveCommand extends  UserGameCommand{
     }
     public ChessGame getGame() {
         return this.game;
+    }
+    public int getID() {
+        return this.gameID;
     }
 }

@@ -52,7 +52,7 @@ public class ChessClient {
                 this.visitorName = username;
                 this.authToken = result.getAuthData().getAuthToken();
                 setState(StateOfSystem.SIGNEDIN);
-                ws = new WebSocketFacade(serverUrl);
+                ws = new WebSocketFacade(serverUrl, this);
                 return "logged in as " + username + "\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -71,7 +71,7 @@ public class ChessClient {
                 this.visitorName = username;
                 this.authToken = result.getAuthData().getAuthToken();
                 setState(StateOfSystem.SIGNEDIN);
-                ws = new WebSocketFacade(serverUrl);
+                ws = new WebSocketFacade(serverUrl, this);
                 return "logged in as " + username;
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -203,5 +203,9 @@ public class ChessClient {
     public void redraw() throws ResponseException {
         ChessBoardPrinter printer = new ChessBoardPrinter();
         printer.print(game.getBoard());
+    }
+    public void updateGame(ChessGame game) {
+        this.game = game;
+        data.updateGame(game);
     }
 }

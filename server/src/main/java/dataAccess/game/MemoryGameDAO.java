@@ -29,6 +29,11 @@ public class MemoryGameDAO implements GameDAO {
         return updateGame;
     }
 
+    @Override
+    public GameData refresh(int id, ChessGame game) {
+        return null;
+    }
+
     public HashSet<GameData> getGameList() {
         HashSet<GameData> gameList = new HashSet<GameData>();
         games.forEach((key, value)

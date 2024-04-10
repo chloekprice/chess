@@ -14,6 +14,7 @@ public class ChessBoardPrinter {
     }
     public void print(ChessBoard board) {
         this.board = board;
+
         System.out.println();
         System.out.println(whitePOV());
         System.out.println(blackPOV());
