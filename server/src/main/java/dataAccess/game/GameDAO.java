@@ -11,7 +11,8 @@ public interface GameDAO {
     GameData create(String gameName, int id, ChessGame chessGame);
     GameData update(int id, String color, String user);
     void refresh(int id, ChessGame game);
-    void remove(int id, String playerColor);
+    void removePlayer(int id, String playerColor);
+    void removeGame(int id);
 
 
     HashSet<GameData> getGameList();

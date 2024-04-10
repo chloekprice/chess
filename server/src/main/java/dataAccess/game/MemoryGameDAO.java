@@ -34,7 +34,11 @@ public class MemoryGameDAO implements GameDAO {
         String hey = "whats up";
     }
     @Override
-    public void remove(int id, String playerColor) {
+    public void removePlayer(int id, String playerColor) {
+        String hey = "whats up";
+    }
+    @Override
+    public void removeGame(int id) {
         String hey = "whats up";
     }
 

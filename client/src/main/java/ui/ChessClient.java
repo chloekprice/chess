@@ -202,6 +202,15 @@ public class ChessClient {
             System.out.println("Error: cannot leave game.\n YOU ARE STUCK HERE FOR EVERRRRR");
         }
     }
+    public void resign() {
+        try {
+            if (!visitorName.equals("observer")) {
+                ws.resignChessGame(authToken, visitorName, data.getGameID(), playerColor);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: cannot leave game.\n YOU ARE STUCK HERE FOR EVERRRRR");
+        }
+    }
 
     public void redraw() throws ResponseException {
         ChessBoardPrinter printer = new ChessBoardPrinter();

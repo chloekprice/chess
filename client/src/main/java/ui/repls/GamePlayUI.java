@@ -83,11 +83,15 @@ public class GamePlayUI {
                 }
                 case "resign" -> {
                     try {
-                        System.out.println();
-                        client.setState(StateOfSystem.SIGNEDIN);
-                        System.out.println();
-                        System.out.print(SET_TEXT_COLOR_BLUE);
-                        System.out.println("leaving the game...");
+                        System.out.println(SET_TEXT_COLOR_LIGHT_GREY);
+                        System.out.println("do you actually wanna resign and lose?? (Y/N)");
+                        String confirm = scanner.next();
+                        if (confirm.equals("Y")) {
+                            client.resign();
+                        } else if (!confirm.equals("N")) {
+                            System.out.print(SET_TEXT_COLOR_RED);
+                            System.out.println("Sorry, that was not valid. Try typing \"help\".");
+                        }
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());

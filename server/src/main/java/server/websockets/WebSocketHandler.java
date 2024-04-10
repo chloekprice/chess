@@ -28,7 +28,7 @@ public class WebSocketHandler {
             switch (command.getCommandType()) {
                 case UserGameCommand.CommandType.JOIN_PLAYER -> joinPlayer(session, message);
                 case UserGameCommand.CommandType.LEAVE -> leaveGame(session, message);
-//                case UserGameCommand.CommandType.RESIGN -> resignGame("lol", "lol");
+                case UserGameCommand.CommandType.RESIGN -> resignGame(session, message);
                 case UserGameCommand.CommandType.JOIN_OBSERVER -> joinObserver(session, message);
                 case UserGameCommand.CommandType.MAKE_MOVE -> makeMove(session, message);
             }
@@ -52,7 +52,14 @@ public class WebSocketHandler {
         LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
         Notification notification = new Notification(command.getMessage());
         MySQLGameDAO gameDAO = new MySQLGameDAO();
-        gameDAO.remove(command.getId(), command.getPlayerColor());
+        gameDAO.removePlayer(command.getId(), command.getPlayerColor());
+        session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
+    }
+    private void resignGame(Session session, String message) throws IOException {
+        ResignGameCommand command = new Gson().fromJson(message, ResignGameCommand.class);
+        Notification notification = new Notification(command.getMessage());
+        MySQLGameDAO gameDAO = new MySQLGameDAO();
+        gameDAO.removeGame(command.getId());
         session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
     }
     private void makeMove(Session session, String message) throws IOException {
