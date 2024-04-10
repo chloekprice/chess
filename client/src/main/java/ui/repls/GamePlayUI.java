@@ -72,7 +72,7 @@ public class GamePlayUI {
                     try {
                         System.out.println();
                         System.out.println(RESET);
-                        client.makeMove(origColumn, origRow, newColumn, newRow);
+                        client.makeMove(origColumn, origRow, newColumn, newRow, client.getData().getGameID());
                         game = client.getData().getGame();
                         printer.print(game.getBoard());
                     } catch (Exception e) {
@@ -122,7 +122,7 @@ public class GamePlayUI {
             case "B" -> 7;
             case "C" -> 6;
             case "D" -> 5;
-            case "E" -> 5;
+            case "E" -> 4;
             case "F" -> 3;
             case "G" -> 2;
             case "H" -> 1;

@@ -6,7 +6,7 @@ public class ObserveGameCommand extends  UserGameCommand{
     String playerColor;
     public ObserveGameCommand(String authToken, String visitorName) {
         super(authToken);
-        commandType = CommandType.JOIN_PLAYER;
+        commandType = CommandType.JOIN_OBSERVER;
         this.visitorName = visitorName;
 
         this.message = visitorName + " has joined the game as an observer";

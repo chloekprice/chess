@@ -2,15 +2,14 @@ package ui.websockets;
 
 import chess.ChessBoard;
 import chess.ChessGame;
+import chess.ChessPiece;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import ui.display.EscapeSequences;
+import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.JoinPlayerGameCommand;
-import webSocketMessages.userCommands.LeaveGameCommand;
-import webSocketMessages.userCommands.ObserveGameCommand;
-import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.*;
 
 import javax.websocket.*;
 import java.io.IOException;
@@ -41,6 +40,7 @@ public class WebSocketFacade extends Endpoint {
                     try {
                         switch (action.getServerMessageType()) {
                             case ServerMessage.ServerMessageType.NOTIFICATION -> notification(message);
+                            case ServerMessage.ServerMessageType.LOAD_GAME -> load(message);
                         }
                     } catch (Exception e) {
                         System.out.print("error");
@@ -85,11 +85,24 @@ public class WebSocketFacade extends Endpoint {
             throw new ResponseException(500, ex.getMessage());
         }
     }
+    public void sendUpdatedGame(String authToken, String visitorName, int gameID, ChessGame game, ChessPiece piece) throws ResponseException {
+        try {
+            MakeMoveCommand makeCommand = new MakeMoveCommand(authToken, visitorName, piece, game);
+            session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
+        } catch (IOException ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
 
     private void notification(String message) {
         Notification notification = new Gson().fromJson(message, Notification.class);
         System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
         System.out.println(notification.getServerMessage());
+    }
+    private void load(String message) {
+        LoadGame game = new Gson().fromJson(message, LoadGame.class);
+        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
+        System.out.println("updated game received");
     }
 
 }

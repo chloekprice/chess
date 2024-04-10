@@ -181,13 +181,13 @@ public class ChessClient {
             throw new ResponseException(500, e.getMessage());
         }
     }
-    public void makeMove(int col, int row, int newCol, int newRow) throws ResponseException {
+    public void makeMove(int col, int row, int newCol, int newRow, int gameID) throws ResponseException {
         try {
             ChessPosition startPosition = new ChessPosition(row, col);
             ChessPosition endPosition = new ChessPosition(newRow, newCol);
             ChessMove move = new ChessMove(startPosition, endPosition);
             game.makeMove(move);
-            data.updateGame(game);
+            ws.sendUpdatedGame(authToken, visitorName, gameID, game, game.getBoard().getPiece(endPosition));
         } catch (Exception e) {
             throw new ResponseException(500, e.getMessage());
         }

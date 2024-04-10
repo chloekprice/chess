@@ -6,11 +6,9 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.springframework.security.core.userdetails.User;
 import server.exception.ResponseException;
+import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
-import webSocketMessages.userCommands.JoinPlayerGameCommand;
-import webSocketMessages.userCommands.LeaveGameCommand;
-import webSocketMessages.userCommands.ObserveGameCommand;
-import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.*;
 import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.IOException;
@@ -31,7 +29,7 @@ public class WebSocketHandler {
                 case UserGameCommand.CommandType.LEAVE -> leaveGame(session, message);
 //                case UserGameCommand.CommandType.RESIGN -> resignGame("lol", "lol");
                 case UserGameCommand.CommandType.JOIN_OBSERVER -> joinObserver(session, message);
-//                case UserGameCommand.CommandType.MAKE_MOVE -> makeMove("lol", "lol");
+                case UserGameCommand.CommandType.MAKE_MOVE -> makeMove(session, message);
             }
         } catch (Exception e) {
             System.out.print("error");
@@ -48,11 +46,17 @@ public class WebSocketHandler {
         Notification notification = new Notification(command.getMessage());
         session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
     }
-
     private void leaveGame(Session session, String message) throws IOException {
         LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
         Notification notification = new Notification(command.getMessage());
         session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
+    }
+    private void makeMove(Session session, String message) throws IOException {
+        MakeMoveCommand command = new Gson().fromJson(message, MakeMoveCommand.class);
+        Notification notification = new Notification(command.getMessage());
+        session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
+        LoadGame load = new LoadGame(command.getGame());
+        session.getRemote().sendString(new Gson().toJson(load, load.getClass()));
     }
     public void broadcastMessage(int gameID, String message, String exceptThisAuthToken) {
         int game = gameID;
