@@ -93,14 +93,18 @@ public class GamePlayUI {
                     }
                 }
                 case "legal-moves" -> {
-                    var column = scanner.next();
+                    var col = scanner.next();
                     int row = parseInt(scanner.next());
+
+                    int column = 0;
+                    column = getNum(column, col);
 
                     try {
                         System.out.println();
                         System.out.print(SET_TEXT_COLOR_BLUE);
-
+                        System.out.print("valid moves are now highlighted");
                         System.out.println(RESET);
+                        printer.highlight(game, column, row);
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());
