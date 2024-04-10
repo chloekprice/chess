@@ -30,8 +30,12 @@ public class MemoryGameDAO implements GameDAO {
     }
 
     @Override
-    public GameData refresh(int id, ChessGame game) {
-        return null;
+    public void refresh(int id, ChessGame game) {
+        String hey = "whats up";
+    }
+    @Override
+    public void remove(int id, String playerColor) {
+        String hey = "whats up";
     }
 
     public HashSet<GameData> getGameList() {

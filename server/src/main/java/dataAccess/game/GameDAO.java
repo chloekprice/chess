@@ -10,8 +10,9 @@ public interface GameDAO {
     void clear() throws DataAccessException;
     GameData create(String gameName, int id, ChessGame chessGame);
     GameData update(int id, String color, String user);
+    void refresh(int id, ChessGame game);
+    void remove(int id, String playerColor);
 
-    GameData refresh(int id, ChessGame game);
 
     HashSet<GameData> getGameList();
     GameData getGame(int id);

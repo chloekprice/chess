@@ -51,6 +51,8 @@ public class WebSocketHandler {
     private void leaveGame(Session session, String message) throws IOException {
         LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
         Notification notification = new Notification(command.getMessage());
+        MySQLGameDAO gameDAO = new MySQLGameDAO();
+        gameDAO.remove(command.getId(), command.getPlayerColor());
         session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
     }
     private void makeMove(Session session, String message) throws IOException {

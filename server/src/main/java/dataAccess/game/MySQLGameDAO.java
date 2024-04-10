@@ -63,13 +63,29 @@ public class MySQLGameDAO implements GameDAO {
         }
     }
     @Override
-    public GameData refresh(int id, ChessGame game) {
+    public void refresh(int id, ChessGame game) {
         String refreshGameDatabase = "UPDATE games SET gameBoard=? WHERE gameID=?;";
         try {
             executeRefreshStatement(refreshGameDatabase, game, id);
-            return getGame(id);
         } catch (Exception e) {
-            return null;
+            System.out.print("error");
+        }
+    }
+
+    @Override
+    public void remove(int id, String playerColor) {
+        String refreshGameDatabase;
+        if (playerColor.equals("WHITE")) {
+            refreshGameDatabase = "UPDATE games SET whiteUsername=NULL WHERE gameID=?;";
+        } else if (playerColor.equals("BLACK")){
+            refreshGameDatabase = "UPDATE games SET blackUsername=NULL WHERE gameID=?;";
+        } else {
+            return;
+        }
+        try {
+            executeRemoveStatement(refreshGameDatabase, id);
+        } catch (Exception e) {
+            System.out.print("error");
         }
     }
 
@@ -128,6 +144,18 @@ public class MySQLGameDAO implements GameDAO {
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setString(1, user);
             stmt.setInt(2, gameID);
+
+            if (stmt.executeUpdate() == 1) {
+                return;
+            }
+        } catch (SQLException ex) {
+            return;
+        }
+    }
+
+    private void executeRemoveStatement(String sql, int gameID) throws DataAccessException {
+        try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, gameID);
 
             if (stmt.executeUpdate() == 1) {
                 return;

@@ -19,6 +19,7 @@ public class ChessClient {
     private ResultInfo data = new ResultInfo();
     private WebSocketFacade ws;
     private ChessGame game;
+    private String playerColor;
 
     public ChessClient(String serverUrl) {
         this.server = new ServerFacade(serverUrl);
@@ -148,6 +149,7 @@ public class ChessClient {
         ResultInfo result;
         try {
             if (playerColor == null) {
+                playerColor = "observer";
                 ws.joinChessGame(authToken, visitorName, "observer", gameID);
                 return observeGame(gameID);
             }
@@ -155,6 +157,7 @@ public class ChessClient {
             this.data = result;
             if (result.getStatus() == 200) {
                 game = data.getGame();
+                this.playerColor = playerColor;
                 ws.joinChessGame(authToken, visitorName, playerColor, gameID);
                 return "joining " + result.getGameName() + "...\n";
             } else {
@@ -194,7 +197,7 @@ public class ChessClient {
     }
     public void leaveGame() {
         try {
-            ws.leaveChessGame(authToken, visitorName, data.getGameID());
+            ws.leaveChessGame(authToken, visitorName, data.getGameID(), this.playerColor);
         } catch (Exception e) {
             System.out.println("Error: cannot leave game.\n YOU ARE STUCK HERE FOR EVERRRRR");
         }
