@@ -15,4 +15,7 @@ public class JoinPlayerGameCommand extends  UserGameCommand{
     public String getMessage() {
         return this.message;
     }
+    public String getName() {
+        return this.visitorName;
+    }
 }

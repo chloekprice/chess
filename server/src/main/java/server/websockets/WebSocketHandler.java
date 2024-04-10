@@ -38,6 +38,7 @@ public class WebSocketHandler {
 
     private void joinPlayer(Session session, String message) throws IOException {
         JoinPlayerGameCommand command = new Gson().fromJson(message, JoinPlayerGameCommand.class);
+        connections.add(command.getName(), session);
         Notification notification = new Notification(command.getMessage());
         session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
     }
