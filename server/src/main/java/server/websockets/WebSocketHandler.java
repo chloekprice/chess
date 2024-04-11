@@ -39,39 +39,39 @@ public class WebSocketHandler {
 
     private void joinPlayer(Session session, String message) throws IOException {
         JoinPlayerGameCommand command = new Gson().fromJson(message, JoinPlayerGameCommand.class);
-        connections.add(command.getName(), session);
+        connections.addPlayerConnection(command.getName(), command.getID(), session);
         Notification notification = new Notification(command.getMessage());
-        session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
+        connections.broadcast(command.getName(), command.getID(), notification);
     }
     private void joinObserver(Session session, String message) throws IOException {
         ObserveGameCommand command = new Gson().fromJson(message, ObserveGameCommand.class);
+        connections.addPlayerConnection(command.getVisitorName(), command.getID(), session);
         Notification notification = new Notification(command.getMessage());
-        session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
+        connections.broadcast(command.getVisitorName(), command.getID(), notification);
     }
     private void leaveGame(Session session, String message) throws IOException {
         LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
         Notification notification = new Notification(command.getMessage());
+        connections.broadcast(command.getVisitorName(), command.getId(), notification);
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.removePlayer(command.getId(), command.getPlayerColor());
-        session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
+        connections.removePlayer(command.getVisitorName(), command.getId());
     }
     private void resignGame(Session session, String message) throws IOException {
         ResignGameCommand command = new Gson().fromJson(message, ResignGameCommand.class);
         Notification notification = new Notification(command.getMessage());
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.removeGame(command.getId());
-        session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
+        connections.broadcast(command.getVisitorName(), command.getId(), notification);
+        connections.removeGame(command.getId());
     }
     private void makeMove(Session session, String message) throws IOException {
         MakeMoveCommand command = new Gson().fromJson(message, MakeMoveCommand.class);
         Notification notification = new Notification(command.getMessage());
-        session.getRemote().sendString(new Gson().toJson(notification, notification.getClass()));
         LoadGame load = new LoadGame(command.getGame(), command.getID());
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.refresh(load.getID(), load.getServerGame());
-        session.getRemote().sendString(new Gson().toJson(load, load.getClass()));
-    }
-    public void broadcastMessage(int gameID, String message, String exceptThisAuthToken) {
-        int game = gameID;
+        connections.broadcast(command.getVisitorName(), command.getID(), notification);
+        connections.refresh(null, command.getID(), load);
     }
 }

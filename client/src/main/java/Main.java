@@ -35,10 +35,7 @@ public class Main {
             while (client.getState() == StateOfSystem.SIGNEDIN) {
                 doingStuff.run();
             }
-            if (client.getState() == StateOfSystem.QUIT) {
-                return;
-            }
-        } while (client.getState() == StateOfSystem.SIGNEDOUT);
+        } while (client.getState() != StateOfSystem.QUIT);
     }
 
 }

@@ -31,4 +31,8 @@ public class ResignGameCommand extends  UserGameCommand {
     public int getId() {
         return this.id;
     }
+
+    public String getVisitorName() {
+        return this.visitorName;
+    }
 }

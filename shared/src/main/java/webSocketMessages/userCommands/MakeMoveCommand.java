@@ -29,4 +29,7 @@ public class MakeMoveCommand extends  UserGameCommand{
     public int getID() {
         return this.gameID;
     }
+    public String getVisitorName() {
+        return this.visitorName;
+    }
 }

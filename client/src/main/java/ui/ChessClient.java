@@ -149,8 +149,8 @@ public class ChessClient {
         ResultInfo result;
         try {
             if (playerColor == null) {
-                playerColor = "observer";
-                ws.joinChessGame(authToken, visitorName, "observer", gameID);
+                this.playerColor = "observer";
+                ws.joinChessGame(authToken, visitorName, playerColor, gameID);
                 return observeGame(gameID);
             }
             result = server.join(gameID, playerColor, authToken);
@@ -170,6 +170,7 @@ public class ChessClient {
 
     public String observeGame(int gameID) throws ResponseException {
         ResultInfo result;
+        this.playerColor = "observer";
         try {
             result = server.join(gameID, null, authToken);
             this.data = result;
