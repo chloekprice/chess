@@ -8,6 +8,7 @@ import exception.ResponseException;
 import ui.ChessClient;
 import ui.display.ChessBoardPrinter;
 import ui.display.EscapeSequences;
+import ui.requestBody.User;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
@@ -65,15 +66,18 @@ public class WebSocketFacade extends Endpoint {
     public void onOpen(Session session, EndpointConfig endpointConfig) {
     }
 
-    public void joinChessGame(String authToken, String visitorName, String playerColor, int gameID, ChessGame game) throws ResponseException {
+    public void joinChessGame(String authToken, String visitorName, ChessGame.TeamColor playerColor, int gameID, ChessGame game) throws ResponseException {
         try {
-            JoinPlayerGameCommand makeCommand = new JoinPlayerGameCommand(authToken, visitorName, playerColor, gameID, game);
+            UserGameCommand cmd = new UserGameCommand(authToken);
+            JoinPlayerGameCommand makeCommand = new JoinPlayerGameCommand(authToken, gameID, playerColor);
+            makeCommand.setGame(game);
+            makeCommand.setMessage(visitorName);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());
         }
     }
-    public void leaveChessGame(String authToken, String visitorName, int gameID, String playerColor) throws ResponseException {
+    public void leaveChessGame(String authToken, String visitorName, int gameID, ChessGame.TeamColor playerColor) throws ResponseException {
         try {
             LeaveGameCommand makeCommand = new LeaveGameCommand(authToken, visitorName, gameID, playerColor);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
@@ -81,7 +85,7 @@ public class WebSocketFacade extends Endpoint {
             throw new ResponseException(500, ex.getMessage());
         }
     }
-    public void resignChessGame(String authToken, String visitorName, int gameID, String playerColor) throws ResponseException {
+    public void resignChessGame(String authToken, String visitorName, int gameID, ChessGame.TeamColor playerColor) throws ResponseException {
         try {
             ResignGameCommand makeCommand = new ResignGameCommand(authToken, visitorName, gameID, playerColor);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));

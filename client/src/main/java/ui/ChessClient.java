@@ -19,7 +19,7 @@ public class ChessClient {
     private ResultInfo data = new ResultInfo();
     private WebSocketFacade ws;
     private ChessGame game;
-    private String playerColor;
+    private ChessGame.TeamColor color;
 
     public ChessClient(String serverUrl) {
         this.server = new ServerFacade(serverUrl);
@@ -149,16 +149,20 @@ public class ChessClient {
         ResultInfo result;
         try {
             if (playerColor == null) {
-                this.playerColor = "observer";
-                ws.joinChessGame(authToken, visitorName, playerColor, gameID, game);
+                this.color = null;
+                ws.joinChessGame(authToken, visitorName, color, gameID, game);
                 return observeGame(gameID);
             }
             result = server.join(gameID, playerColor, authToken);
             this.data = result;
             if (result.getStatus() == 200) {
                 game = data.getGame();
-                this.playerColor = playerColor;
-                ws.joinChessGame(authToken, visitorName, playerColor, gameID, game);
+                if (playerColor.equals("WHITE")) {
+                    this.color = ChessGame.TeamColor.WHITE;
+                } else {
+                    this.color = ChessGame.TeamColor.BLACK;
+                }
+                ws.joinChessGame(authToken, visitorName, color, gameID, game);
                 return "joining " + result.getGameName() + "...\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -170,7 +174,7 @@ public class ChessClient {
 
     public String observeGame(int gameID) throws ResponseException {
         ResultInfo result;
-        this.playerColor = "observer";
+        this.color = null;
         try {
             result = server.join(gameID, null, authToken);
             this.data = result;
@@ -198,15 +202,15 @@ public class ChessClient {
     }
     public void leaveGame() {
         try {
-            ws.leaveChessGame(authToken, visitorName, data.getGameID(), this.playerColor);
+            ws.leaveChessGame(authToken, visitorName, data.getGameID(), this.color);
         } catch (Exception e) {
             System.out.println("Error: cannot leave game.\n YOU ARE STUCK HERE FOR EVERRRRR");
         }
     }
     public void resign() {
         try {
-            if (!visitorName.equals("observer")) {
-                ws.resignChessGame(authToken, visitorName, data.getGameID(), playerColor);
+            if (color != null) {
+                ws.resignChessGame(authToken, visitorName, data.getGameID(), this.color);
             }
         } catch (Exception e) {
             System.out.println("Error: cannot leave game.\n YOU ARE STUCK HERE FOR EVERRRRR");
