@@ -42,6 +42,11 @@ public class WebSocketHandler {
         connections.addPlayerConnection(command.getName(), command.getID(), session);
         Notification notification = new Notification(command.getMessage());
         connections.broadcast(command.getName(), command.getID(), notification);
+        command.getGame().setID(command.getID());
+        LoadGame load = new LoadGame(command.getGame());
+        MySQLGameDAO gameDAO = new MySQLGameDAO();
+        gameDAO.refresh(load.getID(), load.getServerGame());
+        connections.refresh(null, command.getID(), load);
     }
     private void joinObserver(Session session, String message) throws IOException {
         ObserveGameCommand command = new Gson().fromJson(message, ObserveGameCommand.class);
@@ -68,7 +73,8 @@ public class WebSocketHandler {
     private void makeMove(Session session, String message) throws IOException {
         MakeMoveCommand command = new Gson().fromJson(message, MakeMoveCommand.class);
         Notification notification = new Notification(command.getMessage());
-        LoadGame load = new LoadGame(command.getGame(), command.getID());
+        command.getGame().setID(command.getID());
+        LoadGame load = new LoadGame(command.getGame());
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.refresh(load.getID(), load.getServerGame());
         connections.broadcast(command.getVisitorName(), command.getID(), notification);

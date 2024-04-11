@@ -20,12 +20,6 @@ public class GamePlayUI {
         printer = new ChessBoardPrinter();
         this.client = client;
         this.game = client.getData().getGame();
-        try {
-            client.redraw();
-        } catch (Exception e) {
-            System.out.print(SET_TEXT_COLOR_RED);
-            System.out.println("Error: cannot print chess board");
-        }
     }
 
     public void run() {

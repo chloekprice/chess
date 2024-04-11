@@ -14,7 +14,7 @@ public class MemoryGameDAO implements GameDAO {
     public void clear(){
         games.clear();
     }
-    public GameData create(String gameName, int id, ChessGame chessGame) {
+    public GameData create(String gameName, int id) {
         Integer gameID = id;
         ChessGame newChessGame = new ChessGame();
         GameData newGame = new GameData(id, null, null, newChessGame, gameName);

@@ -150,7 +150,7 @@ public class ChessClient {
         try {
             if (playerColor == null) {
                 this.playerColor = "observer";
-                ws.joinChessGame(authToken, visitorName, playerColor, gameID);
+                ws.joinChessGame(authToken, visitorName, playerColor, gameID, game);
                 return observeGame(gameID);
             }
             result = server.join(gameID, playerColor, authToken);
@@ -158,7 +158,7 @@ public class ChessClient {
             if (result.getStatus() == 200) {
                 game = data.getGame();
                 this.playerColor = playerColor;
-                ws.joinChessGame(authToken, visitorName, playerColor, gameID);
+                ws.joinChessGame(authToken, visitorName, playerColor, gameID, game);
                 return "joining " + result.getGameName() + "...\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());

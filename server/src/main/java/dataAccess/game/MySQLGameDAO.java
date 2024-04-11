@@ -24,20 +24,16 @@ public class MySQLGameDAO implements GameDAO {
     }
 
     @Override
-    public GameData create(String gameName, int id, ChessGame chessGame) {
+    public GameData create(String gameName, int id) {
         if (gameName==null) {
             return null;
         }
 
-        ChessGame newGame;
-        if (chessGame == null) {
-            newGame = new ChessGame();
-            ChessBoard newBoard = new ChessBoard();
-            newBoard.resetBoard();
-            newGame.setBoard(newBoard);
-        } else {
-            newGame = chessGame;
-        }
+        ChessGame newGame = new ChessGame();
+        ChessBoard newBoard = new ChessBoard();
+        newBoard.resetBoard();
+        newGame.setBoard(newBoard);
+
 
         String insertGameDatabase = "INSERT INTO games (gameName, gameID, gameBoard) VALUES (?, ?, ?);";
         try {

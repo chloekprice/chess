@@ -12,6 +12,7 @@ import java.util.HashSet;
 public class ChessGame {
     private ChessBoard game;
     private TeamColor currentTeam;
+    private int id;
     public ChessGame() {
         currentTeam = TeamColor.WHITE;
     }
@@ -263,5 +264,11 @@ public class ChessGame {
      */
     public ChessBoard getBoard() {
         return this.game;
+    }
+    public void setID(int gameID) {
+        this.id = gameID;
+    }
+    public int getID() {
+        return this.id;
     }
 }

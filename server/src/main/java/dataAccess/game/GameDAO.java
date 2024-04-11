@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 public interface GameDAO {
     void clear() throws DataAccessException;
-    GameData create(String gameName, int id, ChessGame chessGame);
+    GameData create(String gameName, int id);
     GameData update(int id, String color, String user);
     void refresh(int id, ChessGame game);
     void removePlayer(int id, String playerColor);

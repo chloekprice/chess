@@ -217,7 +217,7 @@ public class ChessService {
         return ((int)(Math.random() * (10000)));
     }
     private GameData createGame(String gameName, int id) {
-        return gameDataAccess.create(gameName, id, null);
+        return gameDataAccess.create(gameName, id);
     }
     private GameData getGame(int id) {
         return gameDataAccess.getGame(id);
