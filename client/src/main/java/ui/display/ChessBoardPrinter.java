@@ -14,20 +14,27 @@ public class ChessBoardPrinter {
     Collection<ChessMove> validMoves;
     public ChessBoardPrinter() {
     }
-    public void print(ChessBoard board) {
+    public void print(ChessBoard board, ChessGame.TeamColor color) {
         this.board = board;
-
         System.out.println();
-        System.out.println(whitePOV());
-        System.out.println(blackPOV());
+        if (color == ChessGame.TeamColor.BLACK) {
+            System.out.println(blackPOV());
+
+        } else {
+            System.out.println(whitePOV());
+        }
     }
-    public void highlight(ChessGame game, int column, int row) {
+    public void highlight(ChessGame game, int column, int row, ChessGame.TeamColor color) {
         this.board = game.getBoard();
         this.startPosition = new ChessPosition(row, column);
         this.validMoves = game.validMoves(startPosition);
         System.out.println();
-        System.out.println(whiteHighlight());
-        System.out.println(blackHighlight());
+        if (color == ChessGame.TeamColor.BLACK) {
+            System.out.println(blackHighlight());
+
+        } else {
+            System.out.println(whiteHighlight());
+        }
     }
 
     private String blackPOV() {

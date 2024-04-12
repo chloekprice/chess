@@ -174,8 +174,8 @@ public class ChessClient {
 
     public String observeGame(int gameID) throws ResponseException {
         ResultInfo result;
-        this.color = null;
         try {
+            this.color = null;
             result = server.join(gameID, null, authToken);
             this.data = result;
             if (result.getStatus() == 200) {
@@ -219,10 +219,18 @@ public class ChessClient {
 
     public void redraw() throws ResponseException {
         ChessBoardPrinter printer = new ChessBoardPrinter();
-        printer.print(game.getBoard());
+        if (color == ChessGame.TeamColor.BLACK) {
+            printer.print(game.getBoard(), color);
+        } else {
+            printer.print(game.getBoard(), ChessGame.TeamColor.WHITE);
+        }
     }
+
     public void updateGame(ChessGame game) {
         this.game = game;
         data.updateGame(game);
+    }
+    public ChessGame.TeamColor getColor() {
+        return this.color;
     }
 }

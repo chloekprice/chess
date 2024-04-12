@@ -20,8 +20,13 @@ public class LeaveGameCommand extends  UserGameCommand{
         return this.message;
     }
     public String getPlayerColor() {
-        return this.playerColor.toString();
-    }
+        if (playerColor == ChessGame.TeamColor.BLACK) {
+            return "BLACK";
+        } else if (playerColor == ChessGame.TeamColor.WHITE){
+            return "WHITE";
+        } else {
+            return "observer";
+        }    }
     public int getId() {
         return this.id;
     }

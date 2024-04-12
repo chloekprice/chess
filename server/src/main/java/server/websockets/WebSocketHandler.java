@@ -46,20 +46,27 @@ public class WebSocketHandler {
         LoadGame load = new LoadGame(command.getGame());
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.refresh(load.getID(), load.getServerGame());
-        connections.refresh(null, command.getID(), load);
+        session.getRemote().sendString(new Gson().toJson(load));
     }
     private void joinObserver(Session session, String message) throws IOException {
         ObserveGameCommand command = new Gson().fromJson(message, ObserveGameCommand.class);
         connections.addPlayerConnection(command.getVisitorName(), command.getID(), session);
         Notification notification = new Notification(command.getMessage());
         connections.broadcast(command.getVisitorName(), command.getID(), notification);
+        command.getGame().setID(command.getID());
+        LoadGame load = new LoadGame(command.getGame());
+        MySQLGameDAO gameDAO = new MySQLGameDAO();
+        gameDAO.refresh(load.getID(), load.getServerGame());
+        session.getRemote().sendString(new Gson().toJson(load));
     }
     private void leaveGame(Session session, String message) throws IOException {
         LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
         Notification notification = new Notification(command.getMessage());
         connections.broadcast(command.getVisitorName(), command.getId(), notification);
         MySQLGameDAO gameDAO = new MySQLGameDAO();
-        gameDAO.removePlayer(command.getId(), command.getPlayerColor());
+        if (!command.getPlayerColor().equals("observer")) {
+            gameDAO.removePlayer(command.getId(), command.getPlayerColor());
+        }
         connections.removePlayer(command.getVisitorName(), command.getId());
     }
     private void resignGame(Session session, String message) throws IOException {
@@ -78,6 +85,6 @@ public class WebSocketHandler {
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.refresh(load.getID(), load.getServerGame());
         connections.broadcast(command.getVisitorName(), command.getID(), notification);
-        connections.refresh(null, command.getID(), load);
+        connections.refresh(command.getVisitorName(), command.getID(), load);
     }
 }

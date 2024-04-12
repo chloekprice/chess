@@ -1,10 +1,13 @@
 package webSocketMessages.userCommands;
 
+import chess.ChessGame;
+
 public class ObserveGameCommand extends  UserGameCommand{
     String visitorName;
     String message;
     String playerColor;
     int gameID;
+    ChessGame game;
     public ObserveGameCommand(String authToken, String visitorName, int gameID) {
         super(authToken);
         commandType = CommandType.JOIN_OBSERVER;
@@ -21,5 +24,11 @@ public class ObserveGameCommand extends  UserGameCommand{
     }
     public String getVisitorName() {
         return this.visitorName;
+    }
+    public ChessGame getGame() {
+        return this.game;
+    }
+    public void setGame(ChessGame game) {
+        this.game = game;
     }
 }
