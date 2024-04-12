@@ -6,10 +6,12 @@ import chess.ChessMove;
 import chess.ChessPiece;
 import com.google.gson.Gson;
 import exception.ResponseException;
+import server.ResultInfo;
 import ui.ChessClient;
 import ui.display.ChessBoardPrinter;
 import ui.display.EscapeSequences;
 import ui.requestBody.User;
+import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
@@ -36,6 +38,7 @@ public class WebSocketFacade extends Endpoint {
             URI socketURI = new URI(url + "/connect");
 
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+            session.setMaxIdleTimeout(5000);
             this.session = container.connectToServer(this, socketURI);
 
             //set message handler
@@ -47,6 +50,7 @@ public class WebSocketFacade extends Endpoint {
                         switch (action.getServerMessageType()) {
                             case ServerMessage.ServerMessageType.NOTIFICATION -> notification(message);
                             case ServerMessage.ServerMessageType.LOAD_GAME -> load(message);
+                            case ServerMessage.ServerMessageType.ERROR -> error(message);
                         }
                     } catch (Exception e) {
                         System.out.print("error");
@@ -67,14 +71,13 @@ public class WebSocketFacade extends Endpoint {
     public void onOpen(Session session, EndpointConfig endpointConfig) {
     }
 
-    public void joinChessGame(String authToken, String visitorName, ChessGame.TeamColor playerColor, int gameID, ChessGame game) throws ResponseException {
+    public void joinChessGame(String authToken, ChessGame.TeamColor playerColor, int gameID) throws ResponseException {
         try {
-            JoinPlayerGameCommand makeCommand = new JoinPlayerGameCommand(authToken, gameID, playerColor);
-            makeCommand.setGame(game);
-            makeCommand.setMessage(visitorName);
+            JoinPlayerGameCommand makeCommand = new JoinPlayerGameCommand(authToken, UserGameCommand.CommandType.JOIN_PLAYER, gameID, playerColor);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
-            throw new ResponseException(500, ex.getMessage());
+            Error error = new Error(ServerMessage.ServerMessageType.ERROR, ex.getMessage());
+            error(error.getServerMessage());
         }
     }
     public void leaveChessGame(String authToken, String visitorName, int gameID, ChessGame.TeamColor playerColor) throws ResponseException {
@@ -93,10 +96,9 @@ public class WebSocketFacade extends Endpoint {
             throw new ResponseException(500, ex.getMessage());
         }
     }
-    public void observeChessGame(String authToken, String visitorName, int gameID) throws ResponseException {
+    public void observeChessGame(String authToken, int gameID) throws ResponseException {
         try {
-            ObserveGameCommand makeCommand = new ObserveGameCommand(authToken, visitorName, gameID);
-            makeCommand.setGame(client.getData().getGame());
+            ObserveGameCommand makeCommand = new ObserveGameCommand(authToken, UserGameCommand.CommandType.JOIN_OBSERVER, gameID);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());
@@ -108,7 +110,8 @@ public class WebSocketFacade extends Endpoint {
             makeCommand.setVisitorName(visitorName);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
-            throw new ResponseException(500, ex.getMessage());
+            Error error = new Error(ServerMessage.ServerMessageType.ERROR, ex.getMessage());
+            error(error.getServerMessage());
         }
     }
 
@@ -116,6 +119,11 @@ public class WebSocketFacade extends Endpoint {
         Notification notification = new Gson().fromJson(message, Notification.class);
         System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW);
         System.out.println(notification.getServerMessage());
+    }
+    private void error(String message) {
+        Error error = new Gson().fromJson(message, Error.class);
+        System.out.println(EscapeSequences.SET_TEXT_COLOR_RED);
+        System.out.println(error.getServerMessage());
     }
     private void load(String message) throws ResponseException {
         LoadGame game = new Gson().fromJson(message, LoadGame.class);

@@ -44,7 +44,7 @@ public class MySQLGameDAO implements GameDAO {
     }
 
     @Override
-    public GameData update(int id, String color, String user) {
+    public GameData update(int id, String color, String user) throws DataAccessException {
         String updateGameDatabase;
         if (color.equals("BLACK")) {
             updateGameDatabase = "UPDATE games SET blackUsername=? WHERE gameID=?;";
@@ -55,7 +55,7 @@ public class MySQLGameDAO implements GameDAO {
             executeUpdateStatement(updateGameDatabase, user, id);
             return getGame(id);
         } catch (Exception e) {
-            return null;
+            throw new DataAccessException("Error: team color already taken");
         }
     }
     @Override
@@ -139,10 +139,10 @@ public class MySQLGameDAO implements GameDAO {
             if (stmt.executeUpdate() == 1) {
                 return new GameData(gameID, null, null, chessGame, gameName);
             } else {
-                return null;
+                throw new DataAccessException("Error: cannot create new game");
             }
         } catch (SQLException ex) {
-            return null;
+            throw new DataAccessException("Error: cannot create new game");
         }
     }
 
@@ -153,9 +153,11 @@ public class MySQLGameDAO implements GameDAO {
 
             if (stmt.executeUpdate() == 1) {
                 return;
+            } else {
+                throw new DataAccessException("Error: cannot update game");
             }
         } catch (SQLException ex) {
-            return;
+            throw new DataAccessException("Error: cannot update game");
         }
     }
 
@@ -165,9 +167,11 @@ public class MySQLGameDAO implements GameDAO {
 
             if (stmt.executeUpdate() == 1) {
                 return;
+            } else {
+                throw new DataAccessException("Error: cannot resign game");
             }
         } catch (SQLException ex) {
-            return;
+            throw new DataAccessException("Error: cannot resign game");
         }
     }
 
@@ -177,9 +181,11 @@ public class MySQLGameDAO implements GameDAO {
 
             if (stmt.executeUpdate() == 1) {
                 return;
+            } else {
+                throw new DataAccessException("Error: cannot resign");
             }
         } catch (SQLException ex) {
-            return;
+            throw new DataAccessException("Error: cannot resign");
         }
     }
 
@@ -191,9 +197,12 @@ public class MySQLGameDAO implements GameDAO {
 
             if (stmt.executeUpdate() == 1) {
                 return;
+            } else {
+                throw new DataAccessException("Error: cannot update game");
+
             }
         } catch (SQLException ex) {
-            return;
+            throw new DataAccessException("Error: cannot update game");
         }
     }
 
@@ -207,7 +216,7 @@ public class MySQLGameDAO implements GameDAO {
                 }
             }
         } catch(SQLException ex) {
-            return null;
+            throw new DataAccessException("Error: cannot access game");
         }
         return null;
     }
@@ -221,7 +230,7 @@ public class MySQLGameDAO implements GameDAO {
                 return gamesList;
             }
         } catch(SQLException ex) {
-            return null;
+            throw new DataAccessException("Error: cannot access games list");
         }
     }
     private GameData readGame(ResultSet rs, int id) throws SQLException {

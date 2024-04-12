@@ -144,6 +144,7 @@ public class ChessService {
             result.setMessage("Error: unauthorized");
             return result;
         }
+        result.setAuthData(authData);
 
         GameData game = getGame(gameID);
         if (playerColor == null) {
@@ -154,14 +155,24 @@ public class ChessService {
         if (playerColor.equals("BLACK") || playerColor.equals("WHITE")) {
             if (playerColor.equals("BLACK")) {
                 if (game.getBlackUsername() != null) {
+                    if (game.getBlackUsername().equals(authData.getUsername())) {
+                        result.setGameData(game);
+                        return result;
+                    } else {
+                        result.setStatus(403);
+                        result.setMessage("Error: already taken");
+                        return result;
+                    }
+                }
+            } else if (game.getWhiteUsername() != null) {
+                if (game.getWhiteUsername().equals(authData.getUsername())) {
+                    result.setGameData(game);
+                    return result;
+                } else {
                     result.setStatus(403);
                     result.setMessage("Error: already taken");
                     return result;
                 }
-            } else if (game.getWhiteUsername() != null) {
-                result.setStatus(403);
-                result.setMessage("Error: already taken");
-                return result;
             }
             gameDataAccess.update(gameID,playerColor, authData.getUsername());
             result.setGameData(game);

@@ -2,6 +2,7 @@ package webSocketMessages.userCommands;
 
 import chess.ChessGame;
 import chess.ChessPiece;
+import webSocketMessages.serverMessages.ServerMessage;
 
 public class JoinPlayerGameCommand extends  UserGameCommand{
     String visitorName;
@@ -9,11 +10,12 @@ public class JoinPlayerGameCommand extends  UserGameCommand{
     ChessGame.TeamColor playerColor;
     int gameID;
     ChessGame game;
-    public JoinPlayerGameCommand(String authToken, int gameID, ChessGame.TeamColor color) {
+    public JoinPlayerGameCommand(String authToken, CommandType type, int gameID, ChessGame.TeamColor color) {
         super(authToken);
         commandType = CommandType.JOIN_PLAYER;
         this.playerColor = color;
         this.gameID = gameID;
+        this.visitorName = null;
     }
     public String getMessage() {
         return this.message;
@@ -31,7 +33,13 @@ public class JoinPlayerGameCommand extends  UserGameCommand{
     public void setGame(ChessGame game) {
         this.game = game;
     }
+    public String getVisitorName() {
+        return  this.visitorName;
+    }
     public ChessGame getGame() {
         return this.game;
+    }
+    public ChessGame.TeamColor getPlayerColor() {
+        return playerColor;
     }
 }

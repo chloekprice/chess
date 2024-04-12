@@ -84,7 +84,7 @@ public class ChessGame {
             // MOVE NOT PART OF VALID MOVES
             Collection<ChessMove> moves = movePiece.pieceMoves(this.game, move.getStartPosition());
             if (!moves.contains(move)) {
-                throw new InvalidMoveException();
+                throw new InvalidMoveException("Error: no a valid move");
             }
             TeamColor color = movePiece.getTeamColor();
             // SAVE CAPTURED PIECE
@@ -105,16 +105,21 @@ public class ChessGame {
     }
 
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        ChessPiece captured = this.verifyMove(move);
+        ChessPiece captured;
+        try {
+            captured = this.verifyMove(move);
+        } catch (Exception e) {
+            throw new InvalidMoveException(e.getMessage());
+        }
         if (this.isInCheck(this.getTeamTurn())) {
             this.undoMove(move, captured);
-            throw new InvalidMoveException();
+            throw new InvalidMoveException("Error: that move puts your king in check");
         }
         // MAKE SURE IT IS THEIR TURN
         if (this.getBoard().getPiece(move.getEndPosition()) != null) {
             if (this.getBoard().getPiece(move.getEndPosition()).getTeamColor() != this.getTeamTurn()) {
                 this.undoMove(move, captured);
-                throw new InvalidMoveException();
+                throw new InvalidMoveException("Error: not your turn, please wait");
             }
         }
         // SET CURRENT TEAM

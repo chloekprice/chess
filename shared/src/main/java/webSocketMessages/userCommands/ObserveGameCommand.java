@@ -8,13 +8,11 @@ public class ObserveGameCommand extends  UserGameCommand{
     String playerColor;
     int gameID;
     ChessGame game;
-    public ObserveGameCommand(String authToken, String visitorName, int gameID) {
+    public ObserveGameCommand(String authToken, CommandType type,  int gameID) {
         super(authToken);
         commandType = CommandType.JOIN_OBSERVER;
-        this.visitorName = visitorName;
         this.gameID = gameID;
 
-        this.message = visitorName + " has joined the game as an observer";
     }
     public String getMessage() {
         return this.message;
@@ -30,5 +28,9 @@ public class ObserveGameCommand extends  UserGameCommand{
     }
     public void setGame(ChessGame game) {
         this.game = game;
+    }
+    public void setMessage(String visitorName) {
+        this.visitorName =visitorName;
+        this.message = visitorName + " has joined the game as an observer";
     }
 }

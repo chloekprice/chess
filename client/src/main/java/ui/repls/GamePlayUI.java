@@ -69,11 +69,6 @@ public class GamePlayUI {
                         System.out.println(RESET);
                         client.makeMove(origColumn, origRow, newColumn, newRow, client.getData().getGameID());
                         game = client.getData().getGame();
-                        if (client.getColor() == null) {
-                            printer.print(game.getBoard(), ChessGame.TeamColor.WHITE);
-                        } else {
-                            printer.print(game.getBoard(), client.getColor());
-                        }
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);
                         System.out.println(e.getMessage());

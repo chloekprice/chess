@@ -13,26 +13,26 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConnectionManager {
     public final ConcurrentHashMap<Integer, ConcurrentHashMap<String, Connection>> connections = new ConcurrentHashMap<>();
 
-    private void addGameConnection(String visitorName, int gameID, Session session) {
+    private void addGameConnection(String authToken, int gameID, Session session) {
         Integer id = gameID;
-        Connection firstPlayer = new Connection(visitorName, session);
+        Connection firstPlayer = new Connection(authToken, session);
         ConcurrentHashMap<String, Connection> players = new ConcurrentHashMap<>();
-        players.put(visitorName, firstPlayer);
+        players.put(authToken, firstPlayer);
         connections.put(id, players);
     }
-    public void addPlayerConnection(String visitorName, int gameID, Session session) {
+    public void addPlayerConnection(String authToken, int gameID, Session session) {
         Integer id = gameID;
         if (connections.containsKey(id)) {
-            Connection connection = new Connection(visitorName, session);
-            connections.get(id).put(visitorName, connection);
+            Connection connection = new Connection(authToken, session);
+            connections.get(id).put(authToken, connection);
         } else {
-            addGameConnection(visitorName, gameID, session);
+            addGameConnection(authToken, gameID, session);
         }
     }
 
-    public void removePlayer(String visitorName, int gameID) {
+    public void removePlayer(String authToken, int gameID) {
         Integer id = gameID;
-        connections.get(id).remove(visitorName);
+        connections.get(id).remove(authToken);
     }
 
     public void removeGame(int gameID) {
@@ -40,14 +40,14 @@ public class ConnectionManager {
         connections.remove(id);
     }
 
-    public void broadcast(String excludeVisitorName, int gameID, Notification message) throws IOException {
+    public void broadcast(String excludeAuth, int gameID, Notification message) throws IOException {
         Integer id = gameID;
         var removeList = new ArrayList<Connection>();
         for (var c : connections.keySet()) {
             if (c.equals(id)) {
                 for (var p : connections.get(c).keySet()) {
                     if (connections.get(c).get(p).getSession().isOpen()){
-                        if (!p.equals(excludeVisitorName)) {
+                        if (!p.equals(excludeAuth)) {
                             connections.get(c).get(p).send(message);
                         }
                     } else{
@@ -59,18 +59,18 @@ public class ConnectionManager {
 
         // Clean up any connections that were left open.
         for (var c : removeList) {
-            connections.get(id).remove(c.visitorName);
+            connections.get(id).remove(c.authToken);
         }
     }
 
-    public void refresh(String excludeVisitorName, int gameID, LoadGame message) throws IOException {
+    public void refresh(String excludeAuth, int gameID, LoadGame message) throws IOException {
         Integer id = gameID;
         var removeList = new ArrayList<Connection>();
         for (var c : connections.keySet()) {
             if (c.equals(id)) {
                 for (var p : connections.get(c).keySet()) {
                     if (connections.get(c).get(p).getSession().isOpen()){
-                        if (!p.equals(excludeVisitorName)) {
+                        if (!p.equals(excludeAuth)) {
                             connections.get(c).get(p).update(message);
                         }
                     } else{
@@ -82,7 +82,7 @@ public class ConnectionManager {
 
         // Clean up any connections that were left open.
         for (var c : removeList) {
-            connections.get(id).remove(c.visitorName);
+            connections.get(id).remove(c.authToken);
         }
     }
 }

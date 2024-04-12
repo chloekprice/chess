@@ -150,23 +150,30 @@ public class ChessClient {
         try {
             if (playerColor == null) {
                 this.color = null;
-                ws.joinChessGame(authToken, visitorName, color, gameID, game);
+                ws.joinChessGame(authToken, color, gameID);
                 return observeGame(gameID);
             }
-            result = server.join(gameID, playerColor, authToken);
-            this.data = result;
-            if (result.getStatus() == 200) {
-                game = data.getGame();
-                if (playerColor.equals("WHITE")) {
-                    this.color = ChessGame.TeamColor.WHITE;
-                } else {
-                    this.color = ChessGame.TeamColor.BLACK;
-                }
-                ws.joinChessGame(authToken, visitorName, color, gameID, game);
-                return "joining " + result.getGameName() + "...\n";
+//            result = server.join(gameID, playerColor, authToken);
+//            this.data = result;
+//            if (result.getStatus() == 200) {
+//                game = data.getGame();
+//                if (playerColor.equals("WHITE")) {
+//                    this.color = ChessGame.TeamColor.WHITE;
+//                } else {
+//                    this.color = ChessGame.TeamColor.BLACK;
+//                }
+//                ws.joinChessGame(authToken, visitorName, color, gameID, game);
+//                return "joining " + result.getGameName() + "...\n";
+//            } else {
+//                return (data.getStatus() + ": " + data.getMessage());
+//            }
+            if (playerColor.equals("WHITE")) {
+                this.color = ChessGame.TeamColor.WHITE;
             } else {
-                return (data.getStatus() + ": " + data.getMessage());
+                this.color = ChessGame.TeamColor.BLACK;
             }
+            ws.joinChessGame(authToken, color, gameID);
+            return "joining " + data.getGameName() + "...\n";
         } catch (Exception e) {
             throw new ResponseException(500, e.getMessage());
         }
@@ -180,7 +187,7 @@ public class ChessClient {
             this.data = result;
             if (result.getStatus() == 200) {
                 game = data.getGame();
-                ws.observeChessGame(authToken, visitorName, gameID);
+                ws.observeChessGame(authToken, gameID);
                 return "now observing " + result.getGameName() + "...\n";
             } else {
                 return (data.getStatus() + ": " + data.getMessage());
@@ -194,7 +201,6 @@ public class ChessClient {
             ChessPosition startPosition = new ChessPosition(row, col);
             ChessPosition endPosition = new ChessPosition(newRow, newCol);
             ChessMove move = new ChessMove(startPosition, endPosition);
-//            game.makeMove(move);
             ws.sendUpdatedGame(authToken, visitorName, gameID, move);
         } catch (Exception e) {
             throw new ResponseException(500, e.getMessage());

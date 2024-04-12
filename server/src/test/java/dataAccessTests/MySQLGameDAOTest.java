@@ -50,13 +50,13 @@ class MySQLGameDAOTest {
     }
 
     @Test
-    void posUpdateGame(){
+    void posUpdateGame() throws DataAccessException {
         test.create(gameName, gameID);
         GameData actual = test.update(gameID, "BLACK", userBlack);
         assertEquals(new GameData(gameID, null, userBlack, null, gameName), actual);
     }
     @Test
-    void negUpdateGame() {
+    void negUpdateGame() throws DataAccessException {
         test.create(gameName, gameID);
         GameData actual = test.update(2291, "BLACK", userBlack);
         assertNull(actual);
