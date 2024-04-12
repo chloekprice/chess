@@ -3,8 +3,6 @@ package model;
 import chess.ChessBoard;
 import chess.ChessGame;
 
-import java.util.HashSet;
-
 public class GameData {
     private final int gameID;
     private  String whiteUsername;

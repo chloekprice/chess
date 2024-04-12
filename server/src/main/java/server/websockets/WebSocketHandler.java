@@ -2,19 +2,12 @@ package server.websockets;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
-import dataAccess.DataAccessException;
-import dataAccess.auth.AuthDAO;
 import dataAccess.auth.MySQLAuthDAO;
-import dataAccess.game.GameDAO;
 import dataAccess.game.MySQLGameDAO;
-import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.springframework.security.core.userdetails.User;
 import server.ResultInfo;
-import server.Server;
-import server.exception.ResponseException;
 import service.ChessService;
 import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.LoadGame;
@@ -23,7 +16,6 @@ import webSocketMessages.userCommands.*;
 import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.IOException;
-import java.util.Timer;
 
 
 @WebSocket
