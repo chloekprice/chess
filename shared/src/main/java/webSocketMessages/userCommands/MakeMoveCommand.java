@@ -7,29 +7,37 @@ import chess.ChessPiece;
 public class MakeMoveCommand extends  UserGameCommand{
     String visitorName;
     String message;
-    ChessPiece piece;
-    ChessGame game;
+    ChessPiece.PieceType piece;
+    ChessMove move;
     int gameID;
-    public MakeMoveCommand(String authToken, String visitorName, ChessPiece piece, ChessGame game, int id) {
+    public MakeMoveCommand(String authToken, CommandType type, int gameID, ChessMove move) {
         super(authToken);
-        commandType = CommandType.MAKE_MOVE;
-        this.visitorName = visitorName;
-        this.piece = piece;
-        this.game = game;
-        this.gameID = id;
-
-        this.message = visitorName + " has moved their " + piece.getPieceType().toString();
+        commandType = type;
+        this.visitorName = "";
+        this.piece = ChessPiece.PieceType.PAWN;
+        this.gameID = gameID;
+        this.move = move;
     }
     public String getMessage() {
         return this.message;
     }
-    public ChessGame getGame() {
-        return this.game;
-    }
     public int getID() {
         return this.gameID;
+    }
+    public void setVisitorName(String visitorName) {
+        this.visitorName = visitorName;
     }
     public String getVisitorName() {
         return this.visitorName;
     }
+    public void setPiece(ChessPiece.PieceType type) {
+        this.piece = type;
+    }
+    public void setMessage() {
+        this.message = visitorName + " moved their " + piece;
+    }
+    public ChessMove getMove() {
+        return this.move;
+    }
+
 }

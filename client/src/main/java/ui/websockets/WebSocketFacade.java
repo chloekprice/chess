@@ -2,6 +2,7 @@ package ui.websockets;
 
 import chess.ChessBoard;
 import chess.ChessGame;
+import chess.ChessMove;
 import chess.ChessPiece;
 import com.google.gson.Gson;
 import exception.ResponseException;
@@ -101,9 +102,10 @@ public class WebSocketFacade extends Endpoint {
             throw new ResponseException(500, ex.getMessage());
         }
     }
-    public void sendUpdatedGame(String authToken, String visitorName, int gameID, ChessGame game, ChessPiece piece) throws ResponseException {
+    public void sendUpdatedGame(String authToken, String visitorName, int gameID, ChessMove move) throws ResponseException {
         try {
-            MakeMoveCommand makeCommand = new MakeMoveCommand(authToken, visitorName, piece, game, gameID);
+            MakeMoveCommand makeCommand = new MakeMoveCommand(authToken, UserGameCommand.CommandType.MAKE_MOVE, gameID, move);
+            makeCommand.setVisitorName(visitorName);
             session.getBasicRemote().sendText(new Gson().toJson(makeCommand));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());

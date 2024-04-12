@@ -1,6 +1,10 @@
 package server.websockets;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
+import dataAccess.auth.AuthDAO;
+import dataAccess.auth.MySQLAuthDAO;
+import dataAccess.game.GameDAO;
 import dataAccess.game.MySQLGameDAO;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
@@ -40,10 +44,10 @@ public class WebSocketHandler {
     private void joinPlayer(Session session, String message) throws IOException {
         JoinPlayerGameCommand command = new Gson().fromJson(message, JoinPlayerGameCommand.class);
         connections.addPlayerConnection(command.getName(), command.getID(), session);
-        Notification notification = new Notification(command.getMessage());
+        Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
         connections.broadcast(command.getName(), command.getID(), notification);
         command.getGame().setID(command.getID());
-        LoadGame load = new LoadGame(command.getGame());
+        LoadGame load = new LoadGame(ServerMessage.ServerMessageType.LOAD_GAME, command.getGame());
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.refresh(load.getID(), load.getServerGame());
         session.getRemote().sendString(new Gson().toJson(load));
@@ -51,17 +55,17 @@ public class WebSocketHandler {
     private void joinObserver(Session session, String message) throws IOException {
         ObserveGameCommand command = new Gson().fromJson(message, ObserveGameCommand.class);
         connections.addPlayerConnection(command.getVisitorName(), command.getID(), session);
-        Notification notification = new Notification(command.getMessage());
+        Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
         connections.broadcast(command.getVisitorName(), command.getID(), notification);
         command.getGame().setID(command.getID());
-        LoadGame load = new LoadGame(command.getGame());
+        LoadGame load = new LoadGame(ServerMessage.ServerMessageType.LOAD_GAME, command.getGame());
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.refresh(load.getID(), load.getServerGame());
         session.getRemote().sendString(new Gson().toJson(load));
     }
     private void leaveGame(Session session, String message) throws IOException {
         LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
-        Notification notification = new Notification(command.getMessage());
+        Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
         connections.broadcast(command.getVisitorName(), command.getId(), notification);
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         if (!command.getPlayerColor().equals("observer")) {
@@ -71,20 +75,29 @@ public class WebSocketHandler {
     }
     private void resignGame(Session session, String message) throws IOException {
         ResignGameCommand command = new Gson().fromJson(message, ResignGameCommand.class);
-        Notification notification = new Notification(command.getMessage());
+        Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
         MySQLGameDAO gameDAO = new MySQLGameDAO();
         gameDAO.removeGame(command.getId());
         connections.broadcast(command.getVisitorName(), command.getId(), notification);
         connections.removeGame(command.getId());
     }
     private void makeMove(Session session, String message) throws IOException {
-        MakeMoveCommand command = new Gson().fromJson(message, MakeMoveCommand.class);
-        Notification notification = new Notification(command.getMessage());
-        command.getGame().setID(command.getID());
-        LoadGame load = new LoadGame(command.getGame());
-        MySQLGameDAO gameDAO = new MySQLGameDAO();
-        gameDAO.refresh(load.getID(), load.getServerGame());
-        connections.broadcast(command.getVisitorName(), command.getID(), notification);
-        connections.refresh(command.getVisitorName(), command.getID(), load);
+        try {
+            MakeMoveCommand command = new Gson().fromJson(message, MakeMoveCommand.class);
+            MySQLGameDAO gameAccess = new MySQLGameDAO();
+            ChessGame game = gameAccess.getGame(command.getID()).getGame();
+            game.makeMove(command.getMove());
+
+            command.setMessage();
+            Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
+            game.setID(command.getID());
+            LoadGame load = new LoadGame(ServerMessage.ServerMessageType.LOAD_GAME, game);
+            gameAccess.refresh(load.getID(), load.getServerGame());
+
+            connections.broadcast(command.getVisitorName(), command.getID(), notification);
+            connections.refresh(null, command.getID(), load);
+        } catch (Exception e) {
+            this.connections.notify();
+        }
     }
 }

@@ -194,8 +194,8 @@ public class ChessClient {
             ChessPosition startPosition = new ChessPosition(row, col);
             ChessPosition endPosition = new ChessPosition(newRow, newCol);
             ChessMove move = new ChessMove(startPosition, endPosition);
-            game.makeMove(move);
-            ws.sendUpdatedGame(authToken, visitorName, gameID, game, game.getBoard().getPiece(endPosition));
+//            game.makeMove(move);
+            ws.sendUpdatedGame(authToken, visitorName, gameID, move);
         } catch (Exception e) {
             throw new ResponseException(500, e.getMessage());
         }
