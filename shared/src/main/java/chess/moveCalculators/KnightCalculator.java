@@ -23,53 +23,52 @@ public class KnightCalculator {
         // UP TWO RIGHT ONE
         if (row < 7 && col < 8) {
             ChessPosition newPosition = new ChessPosition((row + 2), (col + 1));
-            checkAndAddMove(newPosition, moves);
+            checkAndAddAMove(newPosition, moves);
         }
         // UP TWO LEFT ONE
         if (row < 7 & col > 1) {
             ChessPosition newPosition = new ChessPosition((row + 2), (col - 1));
-            checkAndAddMove(newPosition, moves);
+            checkAndAddAMove(newPosition, moves);
         }
         // RIGHT TWO UP ONE
         if (row < 8 & col < 7) {
             ChessPosition newPosition = new ChessPosition((row + 1), (col + 2));
-            checkAndAddMove(newPosition, moves);
+            checkAndAddAMove(newPosition, moves);
         }
         // RIGHT TWO DOWN ONE
         if (row > 1 & col < 7) {
             ChessPosition newPosition = new ChessPosition((row - 1), (col + 2));
-            checkAndAddMove(newPosition, moves);
+            checkAndAddAMove(newPosition, moves);
         }
         // LEFT TWO UP ONE
         if (row < 7 & col > 2) {
             ChessPosition newPosition = new ChessPosition((row + 1), (col - 2));
-            checkAndAddMove(newPosition, moves);
+            checkAndAddAMove(newPosition, moves);
         }
         // LEFT TWO DOWN ONE
         if (row > 1 & col > 2) {
             ChessPosition newPosition = new ChessPosition((row - 1), (col - 2));
-            checkAndAddMove(newPosition, moves);
+            checkAndAddAMove(newPosition, moves);
         }
         // DOWN TWO RIGHT ONE
         if (row > 2 & col < 8) {
             ChessPosition newPosition = new ChessPosition((row - 2), (col + 1));
-            checkAndAddMove(newPosition, moves);
+            checkAndAddAMove(newPosition, moves);
         }
         // DOWN TWO LEFT ONE
         if (row > 2 & col > 1) {
             ChessPosition newPosition = new ChessPosition((row - 2), (col - 1));
-            checkAndAddMove(newPosition, moves);
+            checkAndAddAMove(newPosition, moves);
         }
 
         return moves;
     }
 
-    private void checkAndAddMove(ChessPosition newPosition, ArrayList<ChessMove> moves) {
-        ChessMove addMove = new ChessMove(startPosition, newPosition);
+    private void checkAndAddAMove(ChessPosition newPosition, ArrayList<ChessMove> moves) {
         if (board.getPiece(newPosition) == null) {
-            moves.add(addMove);
+            moves.add(new ChessMove(startPosition, newPosition));
         } else if (board.getPiece(newPosition).getTeamColor() != board.getPiece(startPosition).getTeamColor()) {
-            moves.add(addMove);
+            moves.add(new ChessMove(startPosition, newPosition));
         }
     }
 }

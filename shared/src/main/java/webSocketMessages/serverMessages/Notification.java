@@ -9,7 +9,4 @@ public class Notification extends ServerMessage{
     public String getServerMessage() {
         return this.message;
     }
-    public ServerMessageType serverMessageType() {
-        return this.serverMessageType;
-    }
 }

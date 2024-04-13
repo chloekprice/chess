@@ -53,15 +53,15 @@ public class MySQLAuthDAO implements AuthDAO {
         }
     }
 
-    private void executeClearStatement(String[] clearUserDatabase) throws DataAccessException {
+    private void executeClearStatement(String[] clearAuthDatabase) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : clearUserDatabase) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
+            for (var statement : clearAuthDatabase) {
+                try (var prepared = conn.prepareStatement(statement)) {
+                    prepared.executeUpdate();
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException(String.format("Unable to clear user: %s", ex.getMessage()));
+            throw new DataAccessException(String.format("Unable to clear auth: %s", ex.getMessage()));
         }
     }
 

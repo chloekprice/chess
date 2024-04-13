@@ -17,7 +17,7 @@ public class MySQLUserDAO implements UserDAO {
             """
         };
 
-        executeStatement(clearUserDatabase);
+        executeClearOrInsertStatement(clearUserDatabase);
     }
 
     @Override
@@ -42,20 +42,20 @@ public class MySQLUserDAO implements UserDAO {
             "INSERT INTO users (username, password, email) VALUES ('" + username + "', '" + password + "', '" + email + "');"
         };
 
-        executeStatement(addUserDatabase);
+        executeClearOrInsertStatement(addUserDatabase);
 
         return userData;
     }
 
-    private static void executeStatement(String[] clearUserDatabase) throws DataAccessException {
+    private static void executeClearOrInsertStatement(String[] editUserDatabase) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : clearUserDatabase) {
+            for (var statement : editUserDatabase) {
                 try (var preparedStatement = conn.prepareStatement(statement)) {
                     preparedStatement.executeUpdate();
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException(String.format("Unable to clear user: %s", ex.getMessage()));
+            throw new DataAccessException(String.format("Unable to clear or insert user: %s", ex.getMessage()));
         }
     }
 
