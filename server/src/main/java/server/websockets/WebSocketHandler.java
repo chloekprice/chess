@@ -2,6 +2,7 @@ package server.websockets;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
+import dataAccess.DataAccessException;
 import dataAccess.auth.MySQLAuthDAO;
 import dataAccess.game.MySQLGameDAO;
 import org.eclipse.jetty.websocket.api.Session;
@@ -43,6 +44,20 @@ public class WebSocketHandler {
         try {
             JoinPlayerGameCommand command = new Gson().fromJson(message, JoinPlayerGameCommand.class);
 
+            MySQLAuthDAO authAccess = new MySQLAuthDAO();
+            String user = authAccess.getAuth(command.getAuthString()).getUsername();
+
+            MySQLGameDAO gameAccess = new MySQLGameDAO();
+            if (command.getPlayerColor().equals(ChessGame.TeamColor.BLACK)) {
+                if (!gameAccess.getGame(command.getID()).getBlackUsername().equals(user)) {
+                    throw new DataAccessException("Error: did not successfully join game");
+                }
+            } else if (command.getPlayerColor().equals(ChessGame.TeamColor.WHITE)) {
+                if (!gameAccess.getGame(command.getID()).getWhiteUsername().equals(user)) {
+                    throw new DataAccessException("Error: did not successfully join game");
+                }
+            }
+
             ChessService service = new ChessService();
             ResultInfo result = service.joinGameHandler(command.getAuthString(), command.getPlayerColor().toString(), command.getID());
             command.setGame(result.getGame());
@@ -83,14 +98,27 @@ public class WebSocketHandler {
         }
     }
     private void leaveGame(Session session, String message) throws IOException {
-        LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
-        Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
-        connections.broadcast(command.getAuthString(), command.getId(), notification);
-        MySQLGameDAO gameDAO = new MySQLGameDAO();
-        if (!command.getPlayerColor().equals("observer")) {
-            gameDAO.removePlayer(command.getId(), command.getPlayerColor());
+        try {
+            LeaveGameCommand command = new Gson().fromJson(message, LeaveGameCommand.class);
+
+            MySQLAuthDAO authAccess = new MySQLAuthDAO();
+            String user = authAccess.getAuth(command.getAuthString()).getUsername();
+            command.setMessage(user);
+
+            MySQLGameDAO gameAccess = new MySQLGameDAO();
+            if (gameAccess.getGame(command.getId()).getWhiteUsername().equals(user)) {
+                gameAccess.removePlayer(command.getId(), "WHITE");
+            } else if (gameAccess.getGame(command.getId()).getBlackUsername().equals(user)) {
+                gameAccess.removePlayer(command.getId(), "BLACK");
+            }
+
+            connections.removePlayer(command.getVisitorName(), command.getId());
+            Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
+            connections.broadcast(null, command.getId(), notification);
+        } catch (Exception e) {
+            Error error = new Error(ServerMessage.ServerMessageType.ERROR, e.getMessage());
+            session.getRemote().sendString(new Gson().toJson(error));
         }
-        connections.removePlayer(command.getVisitorName(), command.getId());
     }
     private void resignGame(Session session, String message) throws IOException {
         ResignGameCommand command = new Gson().fromJson(message, ResignGameCommand.class);

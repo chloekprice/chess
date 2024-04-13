@@ -1,18 +1,17 @@
 package webSocketMessages.userCommands;
 
 import chess.ChessGame;
+import webSocketMessages.serverMessages.ServerMessage;
 
 public class LeaveGameCommand extends  UserGameCommand{
     String message;
     int id;
     String visitorName;
     ChessGame.TeamColor playerColor;
-    public LeaveGameCommand(String authToken, String visitorName, int gameID, ChessGame.TeamColor playerColor) {
+    public LeaveGameCommand(String authToken, UserGameCommand.CommandType type,  int gameID) {
         super(authToken);
         commandType = CommandType.LEAVE;
-        id = gameID;
-        this.visitorName = visitorName;
-        this.playerColor = playerColor;
+        this.id = gameID;
 
         this.message = this.visitorName + " has left the game";
     }
@@ -32,5 +31,8 @@ public class LeaveGameCommand extends  UserGameCommand{
     }
     public String getVisitorName() {
         return this.visitorName;
+    }
+    public void setMessage(String playerName) {
+        this.message = playerName + " has left the game";
     }
 }
