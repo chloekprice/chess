@@ -69,13 +69,6 @@ public class ChessGame {
         return validMoves;
     }
 
-    public boolean isCheck(ChessGame.TeamColor team) {
-        return this.isInCheck(team);
-    }
-    public boolean isCheckmate(ChessGame.TeamColor team) {
-        return this.isInCheckmate(team);
-    }
-
     /**
      * Makes a move in a chess game
      *
