@@ -112,9 +112,9 @@ public class WebSocketHandler {
                 gameAccess.removePlayer(command.getId(), "BLACK");
             }
 
-            connections.removePlayer(command.getVisitorName(), command.getId());
+            connections.removePlayer(command.getAuthString(), command.getId());
             Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
-            connections.broadcast(null, command.getId(), notification);
+            connections.broadcast(command.getAuthString(), command.getId(), notification);
         } catch (Exception e) {
             Error error = new Error(ServerMessage.ServerMessageType.ERROR, e.getMessage());
             session.getRemote().sendString(new Gson().toJson(error));

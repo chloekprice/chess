@@ -72,9 +72,9 @@ public class MySQLGameDAO implements GameDAO {
     public void removePlayer(int id, String playerColor) {
         String refreshGameDatabase;
         if (playerColor.equals("WHITE")) {
-            refreshGameDatabase = "UPDATE games SET whiteUsername=NULL WHERE gameID=?;";
+            refreshGameDatabase = "UPDATE games SET whiteUsername=NULL WHERE gameID=?";
         } else if (playerColor.equals("BLACK")){
-            refreshGameDatabase = "UPDATE games SET blackUsername=NULL WHERE gameID=?;";
+            refreshGameDatabase = "UPDATE games SET blackUsername=NULL WHERE gameID=?";
         } else {
             return;
         }
