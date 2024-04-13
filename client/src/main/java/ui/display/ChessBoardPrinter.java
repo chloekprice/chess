@@ -53,23 +53,7 @@ public class ChessBoardPrinter {
             chessBoard.append(i);
             chessBoard.append(" ");
             for (int j = 1; j <= 8; j++) {
-                if ((j|1) > j) {
-                    if ((i | 1) > i) {
-                        chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        setBoardSquare(chessBoard, i, j);
-                    } else {
-                        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        setBoardSquare(chessBoard, i, j);
-                    }
-                } else {
-                    if ((i | 1) > i) {
-                        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        setBoardSquare(chessBoard, i, j);
-                    } else {
-                        chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        setBoardSquare(chessBoard, i, j);
-                    }
-                }
+                checkSquareColor(chessBoard, i, j);
             }
             chessBoard.append(SET_BG_COLOR_MAGENTA);
             chessBoard.append(SET_TEXT_COLOR_WHITE);
@@ -88,6 +72,27 @@ public class ChessBoardPrinter {
 
         return String.valueOf(chessBoard);
     }
+
+    private void checkSquareColor(StringBuilder chessBoard, int i, int j) {
+        if ((j|1) > j) {
+            if ((i | 1) > i) {
+                chessBoard.append(SET_BG_COLOR_DARK_GREY);
+                setBoardSquare(chessBoard, i, j);
+            } else {
+                chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
+                setBoardSquare(chessBoard, i, j);
+            }
+        } else {
+            if ((i | 1) > i) {
+                chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
+                setBoardSquare(chessBoard, i, j);
+            } else {
+                chessBoard.append(SET_BG_COLOR_DARK_GREY);
+                setBoardSquare(chessBoard, i, j);
+            }
+        }
+    }
+
     private String whitePOV() {
         StringBuilder chessBoard = new StringBuilder();
         chessBoard.append(SET_BG_COLOR_MAGENTA);
@@ -103,23 +108,7 @@ public class ChessBoardPrinter {
             chessBoard.append(i);
             chessBoard.append(" ");
             for (int j = 8; j >= 1; j--) {
-                if ((j|1) > j) {
-                    if ((i | 1) > i) {
-                        chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        setBoardSquare(chessBoard, i, j);
-                    } else {
-                        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        setBoardSquare(chessBoard, i, j);
-                    }
-                } else {
-                    if ((i | 1) > i) {
-                        chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        setBoardSquare(chessBoard, i, j);
-                    } else {
-                        chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        setBoardSquare(chessBoard, i, j);
-                    }
-                }
+                checkSquareColor(chessBoard, i, j);
             }
             chessBoard.append(SET_BG_COLOR_MAGENTA);
             chessBoard.append(SET_TEXT_COLOR_WHITE);
@@ -216,30 +205,7 @@ public class ChessBoardPrinter {
             chessBoard.append(i);
             chessBoard.append(" ");
             for (int j = 1; j <= 8; j++) {
-                ChessPosition checkPosition = new ChessPosition(i, j);
-                ChessMove chessMove = new ChessMove(startPosition, checkPosition);
-                if (validMoves.contains(chessMove)) {
-                    chessBoard.append(SET_BG_COLOR_GREEN);
-                    setBoardSquare(chessBoard, i, j);
-                } else {
-                    if ((j | 1) > j) {
-                        if ((i | 1) > i) {
-                            chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                            setBoardSquare(chessBoard, i, j);
-                        } else {
-                            chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                            setBoardSquare(chessBoard, i, j);
-                        }
-                    } else {
-                        if ((i | 1) > i) {
-                            chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                            setBoardSquare(chessBoard, i, j);
-                        } else {
-                            chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                            setBoardSquare(chessBoard, i, j);
-                        }
-                    }
-                }
+                checkValidMovePosition(chessBoard, i, j);
             }
             chessBoard.append(SET_BG_COLOR_MAGENTA);
             chessBoard.append(SET_TEXT_COLOR_WHITE);
@@ -280,30 +246,7 @@ public class ChessBoardPrinter {
             chessBoard.append(i);
             chessBoard.append(" ");
             for (int j = 8; j >= 1; j--) {
-                ChessPosition checkPosition = new ChessPosition(i, j);
-                ChessMove chessMove = new ChessMove(startPosition, checkPosition);
-                if (validMoves.contains(chessMove)) {
-                    chessBoard.append(SET_BG_COLOR_GREEN);
-                    setBoardSquare(chessBoard, i, j);
-                } else {
-                    if ((j | 1) > j) {
-                        if ((i | 1) > i) {
-                            chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                            setBoardSquare(chessBoard, i, j);
-                        } else {
-                            chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                            setBoardSquare(chessBoard, i, j);
-                        }
-                    } else {
-                        if ((i | 1) > i) {
-                            chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                            setBoardSquare(chessBoard, i, j);
-                        } else {
-                            chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                            setBoardSquare(chessBoard, i, j);
-                        }
-                    }
-                }
+                checkValidMovePosition(chessBoard, i, j);
             }
             chessBoard.append(SET_BG_COLOR_MAGENTA);
             chessBoard.append(SET_TEXT_COLOR_WHITE);
@@ -320,5 +263,16 @@ public class ChessBoardPrinter {
         chessBoard.append(RESET);
         chessBoard.append("\n");
         return String.valueOf(chessBoard);
+    }
+
+    private void checkValidMovePosition(StringBuilder chessBoard, int i, int j) {
+        ChessPosition checkPosition = new ChessPosition(i, j);
+        ChessMove chessMove = new ChessMove(startPosition, checkPosition);
+        if (validMoves.contains(chessMove)) {
+            chessBoard.append(SET_BG_COLOR_GREEN);
+            setBoardSquare(chessBoard, i, j);
+        } else {
+            checkSquareColor(chessBoard, i, j);
+        }
     }
 }
