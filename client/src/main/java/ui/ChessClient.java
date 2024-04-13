@@ -224,6 +224,15 @@ public class ChessClient {
         }
     }
 
+    public void highlight(int col, int row) throws ResponseException {
+        ChessBoardPrinter printer = new ChessBoardPrinter();
+        if (color == ChessGame.TeamColor.BLACK) {
+            printer.highlight(game, col, row, color);
+        } else {
+            printer.highlight(game, col, row, ChessGame.TeamColor.WHITE);
+        }
+    }
+
     public void updateGame(ChessGame game) {
         this.game = game;
         data.updateGame(game);
