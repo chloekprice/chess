@@ -121,12 +121,33 @@ public class WebSocketHandler {
         }
     }
     private void resignGame(Session session, String message) throws IOException {
-        ResignGameCommand command = new Gson().fromJson(message, ResignGameCommand.class);
-        Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
-        MySQLGameDAO gameDAO = new MySQLGameDAO();
-        gameDAO.removeGame(command.getId());
-        connections.broadcast(command.getAuthString(), command.getId(), notification);
-        connections.removeGame(command.getId());
+        try {
+            ResignGameCommand command = new Gson().fromJson(message, ResignGameCommand.class);
+            MySQLGameDAO gameAccess = new MySQLGameDAO();
+            if (gameAccess.getGame(command.getId()) != null) {
+                MySQLAuthDAO authAccess = new MySQLAuthDAO();
+                String user = authAccess.getAuth(command.getAuthString()).getUsername();
+
+
+                if (gameAccess.getGame(command.getId()).getBlackUsername().equals(user)) {
+                    command.setMessage(user, ChessGame.TeamColor.BLACK);
+                } else if (gameAccess.getGame(command.getId()).getWhiteUsername().equals(user)) {
+                    command.setMessage(user, ChessGame.TeamColor.WHITE);
+                } else {
+                    throw new DataAccessException("Error: cannot resign game");
+                }
+
+                Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
+                gameAccess.removeGame(command.getId());
+                connections.broadcast(command.getAuthString(), command.getId(), notification);
+                connections.removeGame(command.getId());
+            } else {
+                throw new DataAccessException("Error: invalid resignation");
+            }
+        } catch (Exception e) {
+            Error error = new Error(ServerMessage.ServerMessageType.ERROR, e.getMessage());
+            session.getRemote().sendString(new Gson().toJson(error));
+        }
     }
     private void makeMove(Session session, String message) throws IOException {
         try {

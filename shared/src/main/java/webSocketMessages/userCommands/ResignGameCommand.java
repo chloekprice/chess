@@ -4,22 +4,15 @@ import chess.ChessGame;
 
 public class ResignGameCommand extends  UserGameCommand {
     String message;
-    int id;
+    int gameID;
     String visitorName;
     ChessGame.TeamColor playerColor;
     ChessGame.TeamColor notPlayerColor = ChessGame.TeamColor.BLACK;
 
-    public ResignGameCommand(String authToken, String visitorName, int gameID, ChessGame.TeamColor playerColor) {
+    public ResignGameCommand(String authToken, UserGameCommand.CommandType type, int gameID) {
         super(authToken);
         commandType = CommandType.RESIGN;
-        id = gameID;
-        this.visitorName = visitorName;
-        this.playerColor = playerColor;
-        if (playerColor.equals(ChessGame.TeamColor.BLACK)) {
-            notPlayerColor = ChessGame.TeamColor.WHITE;
-        }
-
-        this.message = this.visitorName + " has resigned.\n" + notPlayerColor + " WINS THE GAME!!";
+        this.gameID = gameID;
     }
 
     public String getMessage() {
@@ -31,10 +24,18 @@ public class ResignGameCommand extends  UserGameCommand {
     }
 
     public int getId() {
-        return this.id;
+        return this.gameID;
     }
 
     public String getVisitorName() {
         return this.visitorName;
+    }
+    public void setMessage(String visitorName, ChessGame.TeamColor playerColor) {
+        if (playerColor.equals(ChessGame.TeamColor.BLACK)) {
+            notPlayerColor = ChessGame.TeamColor.WHITE;
+        }
+        this.visitorName = visitorName;
+        this.playerColor = playerColor;
+        this.message = visitorName + " has resigned.\n" + notPlayerColor + " WINS THE GAME!!";
     }
 }
