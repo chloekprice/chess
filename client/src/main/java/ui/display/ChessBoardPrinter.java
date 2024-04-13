@@ -39,12 +39,7 @@ public class ChessBoardPrinter {
 
     private String blackPOV() {
         StringBuilder chessBoard = new StringBuilder();
-        chessBoard.append("\n");
-        chessBoard.append(SET_BG_COLOR_MAGENTA);
-        chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    h  g  f  e  d  c  b  a    ");
-        chessBoard.append(RESET);
-        chessBoard.append("\n");
+        setBoardTopHGF(chessBoard);
 
         for (int i = 1; i <= 8; i++) {
             chessBoard.append(SET_BG_COLOR_MAGENTA);
@@ -55,20 +50,9 @@ public class ChessBoardPrinter {
             for (int j = 1; j <= 8; j++) {
                 checkSquareColor(chessBoard, i, j);
             }
-            chessBoard.append(SET_BG_COLOR_MAGENTA);
-            chessBoard.append(SET_TEXT_COLOR_WHITE);
-            chessBoard.append(" ");
-            chessBoard.append(i);
-            chessBoard.append(" ");
-            chessBoard.append(RESET);
-            chessBoard.append("\n");
+            boardSideNumbers(chessBoard, i);
         }
-        chessBoard.append(SET_BG_COLOR_MAGENTA);
-        chessBoard.append(SET_TEXT_COLOR_WHITE);
-
-        chessBoard.append("    h  g  f  e  d  c  b  a    ");
-        chessBoard.append(RESET);
-        chessBoard.append("\n");
+        setBoardBottomHGF(chessBoard);
 
         return String.valueOf(chessBoard);
     }
@@ -95,11 +79,7 @@ public class ChessBoardPrinter {
 
     private String whitePOV() {
         StringBuilder chessBoard = new StringBuilder();
-        chessBoard.append(SET_BG_COLOR_MAGENTA);
-        chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    a  b  c  d  e  f  g  h    ");
-        chessBoard.append(RESET);
-        chessBoard.append("\n");
+        setBoardBottomABC(chessBoard);
 
         for (int i = 8; i >= 1; i--) {
             chessBoard.append(SET_BG_COLOR_MAGENTA);
@@ -110,20 +90,10 @@ public class ChessBoardPrinter {
             for (int j = 8; j >= 1; j--) {
                 checkSquareColor(chessBoard, i, j);
             }
-            chessBoard.append(SET_BG_COLOR_MAGENTA);
-            chessBoard.append(SET_TEXT_COLOR_WHITE);
-            chessBoard.append(" ");
-            chessBoard.append(i);
-            chessBoard.append(" ");
-            chessBoard.append(RESET);
-            chessBoard.append("\n");
+            boardSideNumbers(chessBoard, i);
         }
 
-        chessBoard.append(SET_BG_COLOR_MAGENTA);
-        chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    a  b  c  d  e  f  g  h    ");
-        chessBoard.append(RESET);
-        chessBoard.append("\n");
+        setBoardBottomABC(chessBoard);
         return String.valueOf(chessBoard);
     }
     private String getSquareValues(int r, int c) {
@@ -191,12 +161,7 @@ public class ChessBoardPrinter {
     }
     private String blackHighlight() {
         StringBuilder chessBoard = new StringBuilder();
-        chessBoard.append("\n");
-        chessBoard.append(SET_BG_COLOR_MAGENTA);
-        chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    h  g  f  e  d  c  b  a    ");
-        chessBoard.append(RESET);
-        chessBoard.append("\n");
+        setBoardTopHGF(chessBoard);
 
         for (int i = 1; i <= 8; i++) {
             chessBoard.append(SET_BG_COLOR_MAGENTA);
@@ -207,22 +172,39 @@ public class ChessBoardPrinter {
             for (int j = 1; j <= 8; j++) {
                 checkValidMovePosition(chessBoard, i, j);
             }
-            chessBoard.append(SET_BG_COLOR_MAGENTA);
-            chessBoard.append(SET_TEXT_COLOR_WHITE);
-            chessBoard.append(" ");
-            chessBoard.append(i);
-            chessBoard.append(" ");
-            chessBoard.append(RESET);
-            chessBoard.append("\n");
+            boardSideNumbers(chessBoard, i);
         }
+        setBoardBottomHGF(chessBoard);
+
+        return String.valueOf(chessBoard);
+    }
+
+    private static void setBoardTopHGF(StringBuilder chessBoard) {
+        chessBoard.append("\n");
+        chessBoard.append(SET_BG_COLOR_MAGENTA);
+        chessBoard.append(SET_TEXT_COLOR_WHITE);
+        chessBoard.append("    h  g  f  e  d  c  b  a    ");
+        chessBoard.append(RESET);
+        chessBoard.append("\n");
+    }
+
+    private static void setBoardBottomHGF(StringBuilder chessBoard) {
         chessBoard.append(SET_BG_COLOR_MAGENTA);
         chessBoard.append(SET_TEXT_COLOR_WHITE);
 
         chessBoard.append("    h  g  f  e  d  c  b  a    ");
         chessBoard.append(RESET);
         chessBoard.append("\n");
+    }
 
-        return String.valueOf(chessBoard);
+    private static void boardSideNumbers(StringBuilder chessBoard, int i) {
+        chessBoard.append(SET_BG_COLOR_MAGENTA);
+        chessBoard.append(SET_TEXT_COLOR_WHITE);
+        chessBoard.append(" ");
+        chessBoard.append(i);
+        chessBoard.append(" ");
+        chessBoard.append(RESET);
+        chessBoard.append("\n");
     }
 
     private void setBoardSquare(StringBuilder chessBoard, int i, int j) {
@@ -233,11 +215,7 @@ public class ChessBoardPrinter {
 
     private String whiteHighlight() {
         StringBuilder chessBoard = new StringBuilder();
-        chessBoard.append(SET_BG_COLOR_MAGENTA);
-        chessBoard.append(SET_TEXT_COLOR_WHITE);
-        chessBoard.append("    a  b  c  d  e  f  g  h    ");
-        chessBoard.append(RESET);
-        chessBoard.append("\n");
+        setBoardBottomABC(chessBoard);
 
         for (int i = 8; i >= 1; i--) {
             chessBoard.append(SET_BG_COLOR_MAGENTA);
@@ -248,21 +226,19 @@ public class ChessBoardPrinter {
             for (int j = 8; j >= 1; j--) {
                 checkValidMovePosition(chessBoard, i, j);
             }
-            chessBoard.append(SET_BG_COLOR_MAGENTA);
-            chessBoard.append(SET_TEXT_COLOR_WHITE);
-            chessBoard.append(" ");
-            chessBoard.append(i);
-            chessBoard.append(" ");
-            chessBoard.append(RESET);
-            chessBoard.append("\n");
+            boardSideNumbers(chessBoard, i);
         }
 
+        setBoardBottomABC(chessBoard);
+        return String.valueOf(chessBoard);
+    }
+
+    private static void setBoardBottomABC(StringBuilder chessBoard) {
         chessBoard.append(SET_BG_COLOR_MAGENTA);
         chessBoard.append(SET_TEXT_COLOR_WHITE);
         chessBoard.append("    a  b  c  d  e  f  g  h    ");
         chessBoard.append(RESET);
         chessBoard.append("\n");
-        return String.valueOf(chessBoard);
     }
 
     private void checkValidMovePosition(StringBuilder chessBoard, int i, int j) {
