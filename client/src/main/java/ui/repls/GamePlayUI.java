@@ -67,7 +67,7 @@ public class GamePlayUI {
                     try {
                         System.out.println();
                         System.out.println(RESET);
-                        client.makeMove(origColumn, origRow, newColumn, newRow, client.getData().getGameID());
+                        client.makeMove(origColumn, origRow, newColumn, newRow, client.getGameID());
                         game = client.getData().getGame();
                     } catch (Exception e) {
                         System.out.print(SET_TEXT_COLOR_RED);

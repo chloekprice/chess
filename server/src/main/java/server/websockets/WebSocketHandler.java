@@ -17,6 +17,7 @@ import webSocketMessages.userCommands.*;
 import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 
 @WebSocket
@@ -37,7 +38,8 @@ public class WebSocketHandler {
             }
         } catch (Exception e) {
             Error error = new Error(ServerMessage.ServerMessageType.ERROR, e.getMessage());
-            session.getRemote().sendString(new Gson().toJson(error));        }
+            session.getRemote().sendString(new Gson().toJson(error));
+        }
     }
 
     private void joinPlayer(Session session, String message) throws IOException {
@@ -106,9 +108,9 @@ public class WebSocketHandler {
             command.setMessage(user);
 
             MySQLGameDAO gameAccess = new MySQLGameDAO();
-            if (gameAccess.getGame(command.getId()).getWhiteUsername().equals(user)) {
+            if (Objects.equals(gameAccess.getGame(command.getId()).getWhiteUsername(), user)) {
                 gameAccess.removePlayer(command.getId(), "WHITE");
-            } else if (gameAccess.getGame(command.getId()).getBlackUsername().equals(user)) {
+            } else if (Objects.equals(gameAccess.getGame(command.getId()).getBlackUsername(), user)) {
                 gameAccess.removePlayer(command.getId(), "BLACK");
             }
 
@@ -129,9 +131,9 @@ public class WebSocketHandler {
                 String user = authAccess.getAuth(command.getAuthString()).getUsername();
 
 
-                if (gameAccess.getGame(command.getId()).getBlackUsername().equals(user)) {
+                if (Objects.equals(gameAccess.getGame(command.getId()).getBlackUsername(), user)) {
                     command.setMessage(user, ChessGame.TeamColor.BLACK);
-                } else if (gameAccess.getGame(command.getId()).getWhiteUsername().equals(user)) {
+                } else if (Objects.equals(gameAccess.getGame(command.getId()).getWhiteUsername(), user)) {
                     command.setMessage(user, ChessGame.TeamColor.WHITE);
                 } else {
                     throw new DataAccessException("Error: cannot resign game");
@@ -139,7 +141,7 @@ public class WebSocketHandler {
 
                 Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
                 gameAccess.removeGame(command.getId());
-                connections.broadcast(command.getAuthString(), command.getId(), notification);
+                connections.broadcast(null, command.getId(), notification);
                 connections.removeGame(command.getId());
             } else {
                 throw new DataAccessException("Error: invalid resignation");
@@ -169,9 +171,23 @@ public class WebSocketHandler {
             game.makeMove(command.getMove());
             game.setID(command.getID());
             gameAccess.refresh(game.getID(), game);
+            command.setMessage(game.getBoard().getPiece(command.getMove().getEndPosition()).getPieceType());
 
-            command.setMessage();
-            Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, command.getMessage());
+            String realMessage;
+            if (game.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+                realMessage = command.getMessage() + "\n BLACK is in checkmate";
+            } else if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+                realMessage = command.getMessage() + "\n WHITE is in checkmate";
+            } else if (game.isInCheck(ChessGame.TeamColor.WHITE)) {
+                realMessage = command.getMessage() + "\n WHITE is in check";
+            } else if (game.isInCheck(ChessGame.TeamColor.BLACK)) {
+                realMessage = command.getMessage() + "\n BLACK is in check";
+            } else {
+                realMessage = command.getMessage();
+            }
+
+
+            Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, realMessage);
             LoadGame load = new LoadGame(ServerMessage.ServerMessageType.LOAD_GAME, game);
             gameAccess.refresh(load.getID(), load.getServerGame());
 

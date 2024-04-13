@@ -150,7 +150,7 @@ public class ChessClient {
         ResultInfo result;
         try {
             this.gameID = gameID;
-            server.join(gameID, playerColor, authToken);
+            result = server.join(gameID, playerColor, authToken);
 
             if (playerColor == null) {
                 this.color = null;
@@ -164,7 +164,7 @@ public class ChessClient {
                 this.color = ChessGame.TeamColor.BLACK;
             }
             ws.joinChessGame(authToken, color, gameID);
-            return "joining " + data.getGameName() + "...\n";
+            return "joining " + result.getGameName() + "...\n";
         } catch (Exception e) {
             throw new ResponseException(500, e.getMessage());
         }
@@ -230,5 +230,8 @@ public class ChessClient {
     }
     public ChessGame.TeamColor getColor() {
         return this.color;
+    }
+    public int getGameID() {
+        return this.gameID;
     }
 }
