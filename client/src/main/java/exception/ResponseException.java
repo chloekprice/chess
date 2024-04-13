@@ -10,7 +10,7 @@ public class ResponseException extends Exception {
         this.message = message;
     }
 
-    public int StatusCode() {
+    public int statusCode() {
         return statusCode;
     }
 

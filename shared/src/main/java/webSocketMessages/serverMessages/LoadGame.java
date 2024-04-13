@@ -17,9 +17,6 @@ public class LoadGame extends ServerMessage {
     public ChessGame getServerGame() {
         return this.game;
     }
-    public ServerMessageType serverMessageType() {
-        return this.getServerMessageType();
-    }
     public int getID() {
         return this.gameID;
     }

@@ -10,10 +10,6 @@ public class ResponseException extends Exception {
         this.message = message;
     }
 
-    public int StatusCode() {
-        return statusCode;
-    }
-
     public String getMessage() {
         return message;
     }

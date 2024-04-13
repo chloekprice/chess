@@ -56,26 +56,18 @@ public class ChessBoardPrinter {
                 if ((j|1) > j) {
                     if ((i | 1) > i) {
                         chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        setBoardSquare(chessBoard, i, j);
                     } else {
                         chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        setBoardSquare(chessBoard, i, j);
                     }
                 } else {
                     if ((i | 1) > i) {
                         chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        setBoardSquare(chessBoard, i, j);
                     } else {
                         chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        setBoardSquare(chessBoard, i, j);
                     }
                 }
             }
@@ -114,26 +106,18 @@ public class ChessBoardPrinter {
                 if ((j|1) > j) {
                     if ((i | 1) > i) {
                         chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        setBoardSquare(chessBoard, i, j);
                     } else {
                         chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        setBoardSquare(chessBoard, i, j);
                     }
                 } else {
                     if ((i | 1) > i) {
                         chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        setBoardSquare(chessBoard, i, j);
                     } else {
                         chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                        chessBoard.append(" ");
-                        chessBoard.append(getSquareValues(i, j));
-                        chessBoard.append(" ");
+                        setBoardSquare(chessBoard, i, j);
                     }
                 }
             }
@@ -236,33 +220,23 @@ public class ChessBoardPrinter {
                 ChessMove chessMove = new ChessMove(startPosition, checkPosition);
                 if (validMoves.contains(chessMove)) {
                     chessBoard.append(SET_BG_COLOR_GREEN);
-                    chessBoard.append(" ");
-                    chessBoard.append(getSquareValues(i, j));
-                    chessBoard.append(" ");
+                    setBoardSquare(chessBoard, i, j);
                 } else {
                     if ((j | 1) > j) {
                         if ((i | 1) > i) {
                             chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                            chessBoard.append(" ");
-                            chessBoard.append(getSquareValues(i, j));
-                            chessBoard.append(" ");
+                            setBoardSquare(chessBoard, i, j);
                         } else {
                             chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                            chessBoard.append(" ");
-                            chessBoard.append(getSquareValues(i, j));
-                            chessBoard.append(" ");
+                            setBoardSquare(chessBoard, i, j);
                         }
                     } else {
                         if ((i | 1) > i) {
                             chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                            chessBoard.append(" ");
-                            chessBoard.append(getSquareValues(i, j));
-                            chessBoard.append(" ");
+                            setBoardSquare(chessBoard, i, j);
                         } else {
                             chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                            chessBoard.append(" ");
-                            chessBoard.append(getSquareValues(i, j));
-                            chessBoard.append(" ");
+                            setBoardSquare(chessBoard, i, j);
                         }
                     }
                 }
@@ -284,6 +258,13 @@ public class ChessBoardPrinter {
 
         return String.valueOf(chessBoard);
     }
+
+    private void setBoardSquare(StringBuilder chessBoard, int i, int j) {
+        chessBoard.append(" ");
+        chessBoard.append(getSquareValues(i, j));
+        chessBoard.append(" ");
+    }
+
     private String whiteHighlight() {
         StringBuilder chessBoard = new StringBuilder();
         chessBoard.append(SET_BG_COLOR_MAGENTA);
@@ -303,33 +284,23 @@ public class ChessBoardPrinter {
                 ChessMove chessMove = new ChessMove(startPosition, checkPosition);
                 if (validMoves.contains(chessMove)) {
                     chessBoard.append(SET_BG_COLOR_GREEN);
-                    chessBoard.append(" ");
-                    chessBoard.append(getSquareValues(i, j));
-                    chessBoard.append(" ");
+                    setBoardSquare(chessBoard, i, j);
                 } else {
                     if ((j | 1) > j) {
                         if ((i | 1) > i) {
                             chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                            chessBoard.append(" ");
-                            chessBoard.append(getSquareValues(i, j));
-                            chessBoard.append(" ");
+                            setBoardSquare(chessBoard, i, j);
                         } else {
                             chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                            chessBoard.append(" ");
-                            chessBoard.append(getSquareValues(i, j));
-                            chessBoard.append(" ");
+                            setBoardSquare(chessBoard, i, j);
                         }
                     } else {
                         if ((i | 1) > i) {
                             chessBoard.append(SET_BG_COLOR_LIGHT_GREY);
-                            chessBoard.append(" ");
-                            chessBoard.append(getSquareValues(i, j));
-                            chessBoard.append(" ");
+                            setBoardSquare(chessBoard, i, j);
                         } else {
                             chessBoard.append(SET_BG_COLOR_DARK_GREY);
-                            chessBoard.append(" ");
-                            chessBoard.append(getSquareValues(i, j));
-                            chessBoard.append(" ");
+                            setBoardSquare(chessBoard, i, j);
                         }
                     }
                 }

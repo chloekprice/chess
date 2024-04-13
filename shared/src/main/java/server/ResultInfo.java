@@ -64,8 +64,8 @@ public class ResultInfo {
         this.games = games;
     }
 
-    public void setStatus(int status_code) {
-        this.status = status_code;
+    public void setStatus(int statusCode) {
+        this.status = statusCode;
     }
 
     // getters

@@ -30,9 +30,6 @@ public class MakeMoveCommand extends  UserGameCommand{
     public String getVisitorName() {
         return this.visitorName;
     }
-    public void setPiece(ChessPiece.PieceType type) {
-        this.piece = type;
-    }
     public void setMessage() {
         this.message = visitorName + " moved their " + piece;
     }
