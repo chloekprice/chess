@@ -186,12 +186,15 @@ public class WebSocketHandler {
                 realMessage = command.getMessage();
             }
 
-
             Notification notification = new Notification(ServerMessage.ServerMessageType.NOTIFICATION, realMessage);
             LoadGame load = new LoadGame(ServerMessage.ServerMessageType.LOAD_GAME, game);
             gameAccess.refresh(load.getID(), load.getServerGame());
 
-            connections.broadcast(command.getAuthString(), command.getID(), notification);
+            if (realMessage.equals(command.getMessage())) {
+                connections.broadcast(command.getAuthString(), command.getID(), notification);
+            } else {
+                connections.broadcast(null, command.getID(), notification);
+            }
             connections.refresh(null, command.getID(), load);
         } catch (Exception e) {
             Error error = new Error(ServerMessage.ServerMessageType.ERROR, e.getMessage());

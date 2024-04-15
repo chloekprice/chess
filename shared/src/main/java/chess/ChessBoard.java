@@ -89,19 +89,19 @@ public class ChessBoard {
         position = new ChessPosition(8, 8);
         addPiece(position, rook);
         // WHITE QUEEN
-        ChessPiece queen = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.QUEEN);
+        ChessPiece queen = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING);
         position = new ChessPosition(1, 4);
         addPiece(position, queen);
         // BLACK QUEEN
-        queen = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN);
+        queen = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING);
         position = new ChessPosition(8, 4);
         addPiece(position, queen);
         // WHITE KING
-        ChessPiece king = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING);
+        ChessPiece king = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.QUEEN);
         position = new ChessPosition(1, 5);
         addPiece(position, king);
         // BLACK KING
-        king = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING);
+        king = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN);
         position = new ChessPosition(8, 5);
         addPiece(position, king);
         // WHITE KNIGHT
